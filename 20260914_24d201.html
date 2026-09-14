@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0b3a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>نظام خروج الطلاب — مدرسة عبدالرحمن بن عوف الإعدادية للبنين</title>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --navy: #0b2545; --navy-2: #13315c;
+    --green-1: #0b3a2e; --green-2: #14563f; --green-3: #1e7a58;
+    --gold: #d4a24c; --gold-2: #f0c674;
+    --bg-1: #0f2027; --bg-2: #203a43; --bg-3: #2c5364;
+    --ok: #00b894; --err: #d63031; --info: #0984e3;
+    --text: #ffffff; --text-dim: rgba(255,255,255,0.75);
+    --card-bg: rgba(255,255,255,0.08); --card-border: rgba(255,255,255,0.14);
+    --vh: 1vh;
+  }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; min-height: 100%; }
+  html, body {
+    min-height: 100%;
+    font-family: 'Segoe UI', Tahoma, 'Noto Naskh Arabic', 'Helvetica Neue', Arial, sans-serif;
+    color: var(--text);
+    background: linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+    background-attachment: fixed;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden; overscroll-behavior-y: none;
+  }
+  body {
+    display: flex; flex-direction: column;
+    min-height: 100vh; min-height: calc(var(--vh, 1vh) * 100);
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* ============ Header ============ */
+  .school-header {
+    width: 100%;
+    background: linear-gradient(180deg, var(--navy), var(--navy-2));
+    border-bottom: 3px solid var(--gold);
+    padding: 14px clamp(12px, 3vw, 32px);
+    padding-left: max(clamp(12px, 3vw, 32px), env(safe-area-inset-left));
+    padding-right: max(clamp(12px, 3vw, 32px), env(safe-area-inset-right));
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 16px; flex-wrap: wrap;
+    position: relative; z-index: 10;
+  }
+  .school-header .brand { display: flex; align-items: center; gap: 12px; }
+  .school-header .brand-logo {
+    width: clamp(40px, 8vw, 60px); height: clamp(40px, 8vw, 60px);
+    flex-shrink: 0; background: var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(20px, 4vw, 30px);
+    color: var(--navy); font-weight: 900;
+    box-shadow: 0 4px 12px rgba(212,162,76,0.4);
+  }
+  .school-header .brand-text h2 {
+    color: var(--gold-2); font-size: clamp(13px, 2.4vw, 17px);
+    font-weight: 800; margin-bottom: 2px;
+  }
+  .school-header .brand-text p {
+    color: rgba(255,255,255,0.7);
+    font-size: clamp(10px, 1.8vw, 12px);
+  }
+  .header-back-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    color: #fff; padding: 8px 16px; border-radius: 10px;
+    font-size: clamp(12px, 2.2vw, 14px); font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: all .2s;
+  }
+  .header-back-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* ============ Year Ribbon ============ */
+  .year-ribbon {
+    width: 100%;
+    background: linear-gradient(90deg, var(--green-1), var(--green-2), var(--green-3));
+    padding: 10px clamp(12px, 3vw, 32px);
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .year-ribbon .year-badge, .year-ribbon .sync-status {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff; padding: 6px 14px; border-radius: 999px;
+    font-size: clamp(11px, 2vw, 14px); font-weight: 700;
+    white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .year-ribbon .sync-status .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #999; display: inline-block;
+  }
+  .year-ribbon .sync-status.online .dot {
+    background: var(--ok); box-shadow: 0 0 8px var(--ok);
+    animation: blink 2s ease-in-out infinite;
+  }
+  .year-ribbon .sync-status.offline .dot { background: var(--err); }
+
+  /* ============ Pages ============ */
+  .page { display: none; }
+  .page.active { display: flex; flex-direction: column; flex: 1; }
+
+  /* ============ Page Title ============ */
+  .page-title {
+    text-align: center;
+    padding: clamp(18px, 4vw, 34px) 12px clamp(6px, 1.5vw, 12px);
+  }
+  .page-title h1 {
+    font-size: clamp(22px, 5.5vw, 40px);
+    font-weight: 900; color: #fff;
+    text-shadow: 0 4px 18px rgba(0,0,0,0.4);
+    display: inline-flex; align-items: center; gap: 12px;
+    letter-spacing: 0.5px;
+  }
+  .page-title h1 .icon { display: inline-block; animation: pulse 2.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+  .page-title p { color: var(--text-dim); margin-top: 6px; font-size: clamp(12px, 2.4vw, 15px); }
+
+  /* ============ Container / Card ============ */
+  .container {
+    width: 100%; max-width: 1100px; margin: 0 auto;
+    padding: clamp(16px, 3.5vw, 40px) clamp(12px, 3vw, 24px);
+    padding-left: max(clamp(12px, 3vw, 24px), env(safe-area-inset-left));
+    padding-right: max(clamp(12px, 3vw, 24px), env(safe-area-inset-right));
+    flex: 1; display: flex; flex-direction: column;
+    gap: clamp(14px, 2.5vw, 20px);
+  }
+  .card {
+    background: var(--card-bg);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--card-border);
+    border-radius: 18px; padding: clamp(20px, 4vw, 36px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  }
+
+  /* ============ Inputs ============ */
+  .input-field {
+    width: 100%;
+    padding: clamp(14px, 2.8vw, 18px) clamp(16px, 3vw, 22px);
+    border-radius: 14px; border: 2px solid transparent;
+    font-size: clamp(15px, 3vw, 18px);
+    outline: none; background: rgba(255,255,255,0.95); color: #111;
+    font-family: inherit; min-height: 56px;
+    transition: border-color .2s, box-shadow .2s;
+    appearance: none;
+  }
+  .input-field:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(212,162,76,0.25);
+  }
+
+  /* ============ Buttons ============ */
+  .btn-row {
+    display: flex; gap: 12px; margin-top: 18px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .btn {
+    padding: clamp(12px, 2.6vw, 16px) clamp(20px, 4vw, 32px);
+    border: none; border-radius: 12px;
+    font-size: clamp(14px, 2.8vw, 16px);
+    font-weight: 700; cursor: pointer;
+    transition: transform .15s, background .2s, box-shadow .2s;
+    font-family: inherit;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 6px; white-space: nowrap;
+    user-select: none; min-height: 50px;
+    touch-action: manipulation;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--ok); color: #fff; }
+  .btn-primary:hover { background: #019874; box-shadow: 0 4px 16px rgba(0,184,148,0.4); }
+  .btn-scan { background: var(--info); color: #fff; }
+  .btn-scan:hover { background: #0768b8; box-shadow: 0 4px 16px rgba(9,132,227,0.4); }
+  .btn-danger { background: var(--err); color: #fff; }
+  .btn-danger:hover { background: #b02427; }
+  .btn-gold { background: var(--gold); color: #0b2545; }
+  .btn-gold:hover { background: var(--gold-2); }
+  .btn-admin { background: linear-gradient(160deg, #d4a24c, #b8862f); color: #0b2545; }
+  .btn-admin:hover { background: linear-gradient(160deg, #f0c674, #d4a24c); box-shadow: 0 4px 16px rgba(212,162,76,0.5); }
+  .btn-sm { padding: 7px 12px; font-size: clamp(11px, 2vw, 13px); border-radius: 9px; min-height: unset; }
+
+  /* ============ Status Bar ============ */
+  .status-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .status-dot-wrap {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,184,148,0.15);
+    border: 1px solid rgba(0,184,148,0.35);
+    color: #a8f0dc; padding: 6px 12px; border-radius: 999px;
+    font-size: clamp(11px, 2vw, 13px); font-weight: 700;
+  }
+  .status-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--ok);
+    box-shadow: 0 0 10px var(--ok);
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+  .empty-msg {
+    text-align: center; padding: 18px;
+    color: var(--text-dim);
+    font-size: clamp(12px, 2.4vw, 14px);
+  }
+
+  /* ============ QR Reader ============ */
+  #reader {
+    width: 100%; max-width: 480px; margin: 14px auto 0;
+    border-radius: 14px; overflow: hidden;
+    border: 2px solid var(--gold); background: #000; display: none;
+  }
+  #reader video { border-radius: 12px; width: 100% !important; height: auto !important; }
+
+  /* ============ Toast ============ */
+  #toast {
+    position: fixed;
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--ok); color: #fff;
+    padding: clamp(12px, 2.6vw, 16px) clamp(18px, 3.5vw, 26px);
+    border-radius: 14px; font-size: clamp(13px, 2.6vw, 15px);
+    font-weight: 700; display: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 9999; max-width: calc(100vw - 32px);
+    text-align: center; line-height: 1.5;
+    opacity: 0; transition: opacity .25s, transform .25s;
+  }
+  #toast.show {
+    display: block; opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  #toast.error { background: var(--err); }
+  #toast.info { background: var(--info); }
+
+  /* ============ Modals (shared) ============ */
+  .modal-overlay, .results-overlay, .success-overlay, .password-overlay, .upload-overlay, .section-members-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; z-index: 100000;
+    opacity: 0; transition: opacity .25s;
+    overflow-y: auto;
+  }
+  .modal-overlay.show, .results-overlay.show, .success-overlay.show,
+  .password-overlay.show, .upload-overlay.show, .section-members-overlay.show {
+    display: flex; opacity: 1;
+  }
+  .modal-box, .results-box, .password-box, .upload-box, .section-members-box {
+    background: linear-gradient(160deg, #0b2545, #13315c, #0b3a2e);
+    border: 2px solid var(--gold); border-radius: 22px;
+    padding: clamp(20px, 4vw, 32px);
+    width: 100%; max-width: 720px;
+    max-height: 90vh; max-height: 90dvh;
+    display: flex; flex-direction: column;
+    box-shadow: 0 0 0 6px rgba(212,162,76,0.1), 0 30px 80px rgba(0,0,0,0.75);
+    animation: popIn .35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    margin: auto;
+  }
+  .password-box, .upload-box { max-width: 480px; text-align: center; }
+  @keyframes popIn {
+    0% { transform: scale(0.85) translateY(20px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  /* ============ Password ============ */
+  .password-icon, .upload-icon {
+    font-size: clamp(44px, 10vw, 64px);
+    line-height: 1; margin-bottom: 12px; display: block;
+  }
+  .password-title, .upload-title {
+    font-size: clamp(18px, 4vw, 22px);
+    color: var(--gold-2); font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .password-desc, .upload-desc {
+    color: var(--text-dim);
+    font-size: clamp(12px, 2.4vw, 14px);
+    margin-bottom: 18px; line-height: 1.7;
+  }
+  .upload-desc code {
+    background: rgba(0,0,0,0.3); color: var(--gold-2);
+    padding: 2px 6px; border-radius: 4px;
+    font-size: 0.9em; direction: ltr;
+    display: inline-block;
+  }
+  .password-error {
+    color: #ff6b6b;
+    font-size: clamp(12px, 2.2vw, 13px);
+    font-weight: 700; min-height: 20px;
+    margin: 4px 0; text-align: center;
+  }
+
+  /* ============ Results / Section header ============ */
+  .results-header, .section-members-header {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; padding-bottom: 16px; margin-bottom: 14px;
+    border-bottom: 2px solid rgba(212,162,76,0.35);
+    flex-wrap: wrap;
+  }
+  .results-header h3, .section-members-header h3 {
+    font-size: clamp(16px, 3vw, 20px);
+    color: var(--gold-2); font-weight: 900;
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap;
+  }
+  .results-count {
+    background: rgba(0,184,148,0.25);
+    color: #d4fff1; padding: 4px 12px;
+    border-radius: 999px;
+    font-size: clamp(12px, 2.2vw, 14px);
+    font-weight: 700;
+    border: 1px solid rgba(0,184,148,0.5);
+  }
+  .results-close-icon {
+    background: var(--err); color: #fff;
+    border: none; width: 40px; height: 40px;
+    border-radius: 50%; cursor: pointer;
+    font-size: 22px; font-weight: 900;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0; line-height: 1;
+    transition: transform .15s, background .2s;
+  }
+  .results-close-icon:hover { background: #b02427; transform: rotate(90deg); }
+  .results-list {
+    flex: 1; overflow-y: auto;
+    display: flex; flex-direction: column;
+    gap: 10px; padding-left: 6px; padding-right: 2px;
+  }
+  .result-item {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: clamp(14px, 2.8vw, 18px) clamp(16px, 3.2vw, 22px);
+    border-radius: 14px; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; transition: .18s;
+    min-height: 62px;
+  }
+  .result-item:hover {
+    background: rgba(212,162,76,0.18);
+    border-color: var(--gold);
+    transform: translateX(-6px);
+  }
+  .result-item .name {
+    font-weight: 700;
+    font-size: clamp(14px, 2.6vw, 16px);
+    flex: 1; word-break: break-word;
+  }
+  .result-item .section {
+    font-size: clamp(12px, 2.1vw, 14px);
+    background: rgba(0,184,148,0.28);
+    border: 1px solid rgba(0,184,148,0.55);
+    color: #d4fff1; padding: 6px 14px;
+    border-radius: 10px; white-space: nowrap;
+    font-weight: 700;
+  }
+  .results-footer {
+    padding-top: 14px; margin-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+  }
+
+  /* ============ Success modal ============ */
+  .success-overlay { z-index: 100001; }
+  .success-box {
+    background: linear-gradient(160deg, #0b3a2e, #14563f, #1e7a58);
+    border: 3px solid var(--gold); border-radius: 24px;
+    padding: clamp(28px, 5vw, 48px) clamp(24px, 4vw, 40px);
+    width: 100%; max-width: 540px; text-align: center;
+    box-shadow: 0 0 0 6px rgba(212,162,76,0.15), 0 30px 80px rgba(0,0,0,0.7), 0 0 80px rgba(0,184,148,0.35);
+    animation: popIn .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative; margin: auto;
+  }
+  .success-icon {
+    font-size: clamp(64px, 14vw, 96px);
+    line-height: 1; margin-bottom: 12px; display: block;
+    animation: bounceIcon .8s ease-in-out infinite alternate;
+  }
+  @keyframes bounceIcon {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.1) rotate(3deg); }
+  }
+  .success-title {
+    font-size: clamp(22px, 5vw, 32px);
+    font-weight: 900; color: #fff;
+    margin-bottom: 8px;
+    text-shadow: 0 3px 12px rgba(0,0,0,0.4);
+  }
+  .success-sub {
+    font-size: clamp(14px, 2.8vw, 18px);
+    color: var(--gold-2); font-weight: 700;
+    margin-bottom: 18px; line-height: 1.6;
+  }
+  .success-student {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 14px; padding: 14px 18px;
+    font-size: clamp(13px, 2.6vw, 15px);
+    color: #fff; line-height: 1.9;
+    margin-bottom: 20px; text-align: right;
+    white-space: pre-line;
+  }
+  .success-student b { color: var(--gold-2); font-weight: 800; }
+  .success-close-btn {
+    background: var(--gold); color: #0b2545;
+    font-weight: 900;
+    font-size: clamp(15px, 3vw, 18px);
+    padding: 14px 40px; border-radius: 14px;
+    border: none; cursor: pointer;
+    box-shadow: 0 8px 24px rgba(212,162,76,0.4);
+    min-width: 200px; min-height: 54px;
+    font-family: inherit;
+  }
+  .success-close-btn:hover { background: var(--gold-2); }
+
+  /* ============ Upload modal ============ */
+  .file-input-hidden {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); border: 0;
+  }
+  .file-drop-zone {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px;
+    padding: clamp(20px, 4vw, 32px) clamp(14px, 3vw, 20px);
+    border: 2px dashed rgba(212,162,76,0.5);
+    border-radius: 14px; background: rgba(255,255,255,0.05);
+    cursor: pointer; transition: all .2s;
+    margin-bottom: 16px; min-height: 120px;
+  }
+  .file-drop-zone:hover, .file-drop-zone.dragover {
+    border-color: var(--gold);
+    background: rgba(212,162,76,0.15);
+    transform: scale(1.02);
+  }
+  .file-drop-zone.has-file {
+    border-color: var(--ok); background: rgba(0,184,148,0.15);
+  }
+  .file-drop-icon { font-size: 36px; }
+  .file-drop-text {
+    color: var(--text);
+    font-size: clamp(12px, 2.4vw, 14px);
+    font-weight: 600; text-align: center;
+    line-height: 1.5; word-break: break-word;
+  }
+  .upload-progress {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; padding: 12px; margin-bottom: 12px;
+    color: var(--gold-2); font-weight: 700;
+    font-size: clamp(12px, 2.4vw, 14px);
+  }
+  .upload-progress.hidden { display: none; }
+  .progress-spinner {
+    width: 24px; height: 24px;
+    border: 3px solid rgba(255,255,255,0.15);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .upload-status {
+    min-height: 24px;
+    font-size: clamp(12px, 2.4vw, 14px);
+    font-weight: 700; text-align: center;
+    margin-bottom: 12px; line-height: 1.6;
+    white-space: pre-line;
+  }
+  .upload-status.success { color: #a8f0dc; }
+  .upload-status.error { color: #ff6b6b; }
+  .upload-status.info { color: var(--gold-2); }
+
+  /* ============ Admin: sections grid ============ */
+  .admin-info-bar {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 14px 20px;
+    display: flex; justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .admin-info-bar .info-item {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--text-dim);
+    font-size: clamp(12px, 2.4vw, 14px);
+    font-weight: 600;
+  }
+  .admin-info-bar .info-item b {
+    color: var(--gold-2); font-size: clamp(14px, 2.8vw, 18px);
+  }
+
+  .sections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: clamp(10px, 2vw, 16px);
+  }
+  .section-btn {
+    background: linear-gradient(160deg, rgba(212,162,76,0.2), rgba(212,162,76,0.05));
+    border: 2px solid rgba(212,162,76,0.4);
+    border-radius: 16px;
+    padding: clamp(16px, 3.5vw, 24px) clamp(10px, 2vw, 16px);
+    text-align: center;
+    cursor: pointer; font-family: inherit; color: #fff;
+    transition: all .25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .section-btn:hover {
+    transform: translateY(-4px) scale(1.03);
+    border-color: var(--gold);
+    box-shadow: 0 12px 30px rgba(212,162,76,0.35);
+    background: linear-gradient(160deg, rgba(212,162,76,0.3), rgba(212,162,76,0.1));
+  }
+  .section-btn:active { transform: scale(0.97); }
+  .section-btn .section-label {
+    font-size: clamp(16px, 3.2vw, 22px);
+    font-weight: 900;
+    color: var(--gold-2);
+    letter-spacing: 0.5px;
+  }
+  .section-btn .section-count {
+    font-size: clamp(10px, 2vw, 12px);
+    color: var(--text-dim);
+    background: rgba(0,0,0,0.25);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+
+  /* ============ Section members page ============ */
+  .section-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-box {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 16px 14px;
+    text-align: center;
+  }
+  .stat-box .stat-num {
+    font-size: clamp(24px, 5vw, 36px);
+    font-weight: 900;
+    color: var(--gold-2);
+    line-height: 1.1;
+  }
+  .stat-box .stat-label {
+    font-size: clamp(11px, 2.2vw, 13px);
+    color: var(--text-dim);
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .stat-box.called { background: rgba(0,184,148,0.15); border-color: rgba(0,184,148,0.5); }
+  .stat-box.called .stat-num { color: #a8f0dc; }
+  .stat-box.remaining { background: rgba(9,132,227,0.15); border-color: rgba(9,132,227,0.5); }
+  .stat-box.remaining .stat-num { color: #74c0fc; }
+
+  .members-tabs {
+    display: flex; gap: 8px; margin-bottom: 16px;
+    background: rgba(0,0,0,0.2);
+    padding: 6px; border-radius: 12px;
+    flex-wrap: wrap;
+  }
+  .members-tab {
+    flex: 1; padding: 12px 16px;
+    border: none; border-radius: 8px;
+    background: transparent; color: var(--text-dim);
+    font-family: inherit; font-weight: 700;
+    font-size: clamp(12px, 2.4vw, 14px);
+    cursor: pointer; transition: all .2s;
+    min-width: 120px;
+  }
+  .members-tab.active {
+    background: var(--gold); color: #0b2545;
+    box-shadow: 0 4px 12px rgba(212,162,76,0.4);
+  }
+  .members-tab:not(.active):hover {
+    background: rgba(255,255,255,0.08); color: #fff;
+  }
+
+  .members-list {
+    display: flex; flex-direction: column;
+    gap: 8px;
+    max-height: 55vh;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .members-list::-webkit-scrollbar { width: 8px; }
+  .members-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
+  .members-list::-webkit-scrollbar-thumb { background: rgba(212,162,76,0.5); border-radius: 4px; }
+
+  .member-item {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex; justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    transition: .2s;
+  }
+  .member-item:hover { background: rgba(255,255,255,0.14); }
+  .member-item .member-name {
+    font-weight: 700;
+    font-size: clamp(13px, 2.5vw, 15px);
+    flex: 1;
+    word-break: break-word;
+  }
+  .member-item .member-time {
+    font-size: clamp(10px, 2vw, 12px);
+    color: var(--text-dim);
+    background: rgba(0,0,0,0.25);
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .member-item.called {
+    background: rgba(0,184,148,0.15);
+    border-color: rgba(0,184,148,0.4);
+  }
+  .member-item.called .member-name { color: #a8f0dc; }
+  .member-item.remaining {
+    background: rgba(9,132,227,0.1);
+    border-color: rgba(9,132,227,0.3);
+  }
+
+  /* ============ Empty state ============ */
+  .empty-state {
+    text-align: center; padding: 40px 20px;
+    color: var(--text-dim);
+  }
+  .empty-state .icon {
+    font-size: 64px; margin-bottom: 12px;
+    opacity: 0.6;
+  }
+  .empty-state p {
+    font-size: clamp(13px, 2.5vw, 15px);
+    line-height: 1.6;
+  }
+
+  /* ============ Geo Gate ============ */
+  .geo-gate {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; z-index: 99999;
+    text-align: center;
+  }
+  .geo-gate.hidden { display: none; }
+  .geo-box {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--gold); border-radius: 20px;
+    padding: clamp(24px, 5vw, 40px) clamp(20px, 4vw, 36px);
+    max-width: 480px; width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .geo-icon {
+    font-size: clamp(48px, 10vw, 72px);
+    margin-bottom: 14px; display: block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .geo-icon.ok { animation: none; }
+  .geo-icon.err { animation: none; }
+  .geo-box h2 {
+    font-size: clamp(17px, 3.5vw, 22px);
+    margin-bottom: 10px;
+    color: var(--gold-2); font-weight: 800;
+  }
+  .geo-box p {
+    color: var(--text-dim);
+    font-size: clamp(13px, 2.5vw, 15px);
+    line-height: 1.7; margin-bottom: 18px;
+  }
+  .geo-box p small { display: block; margin-top: 6px; }
+  .geo-spinner {
+    width: 44px; height: 44px;
+    margin: 16px auto;
+    border: 4px solid rgba(255,255,255,0.15);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  .geo-spinner.hidden { display: none; }
+  .geo-coords {
+    margin-top: 14px;
+    font-size: clamp(11px, 2vw, 12px);
+    color: var(--text-dim);
+    font-family: 'Courier New', monospace;
+    direction: ltr;
+    word-break: break-all;
+    line-height: 1.6;
+    opacity: 0.7;
+    white-space: pre-line;
+  }
+
+  /* ============ + Button ============ */
+  .add-btn {
+    position: fixed;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    left: calc(16px + env(safe-area-inset-left));
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(212,162,76,0.15);
+    border: 1.5px solid rgba(212,162,76,0.45);
+    color: rgba(212,162,76,0.85);
+    font-size: 22px; font-weight: 300;
+    cursor: pointer; display: flex;
+    align-items: center; justify-content: center;
+    z-index: 9000; padding: 0; opacity: 0.55;
+    transition: all .2s;
+  }
+  .add-btn:hover {
+    background: rgba(212,162,76,0.3);
+    border-color: var(--gold); color: var(--gold);
+    opacity: 1; transform: scale(1.1) rotate(90deg);
+  }
+
+  /* ============ Footer ============ */
+  .footer {
+    text-align: center;
+    padding: clamp(12px, 2.5vw, 20px);
+    color: var(--text-dim);
+    font-size: clamp(10px, 1.9vw, 12px);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: auto; line-height: 1.7;
+  }
+
+  .hidden { display: none !important; }
+
+  /* ============ Call Notify Modal ============ */
+  .call-notify-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; z-index: 100002;
+    opacity: 0; transition: opacity .3s;
+  }
+  .call-notify-overlay.show { display: flex; opacity: 1; }
+  .call-notify-box {
+    background: linear-gradient(160deg, #0b3a2e, #14563f, #1e7a58);
+    border: 3px solid var(--gold);
+    border-radius: 26px;
+    padding: clamp(28px, 5vw, 48px) clamp(24px, 4vw, 42px);
+    width: 100%; max-width: 560px;
+    text-align: center;
+    box-shadow: 0 0 0 6px rgba(212,162,76,0.15), 0 30px 80px rgba(0,0,0,0.75), 0 0 80px rgba(0,184,148,0.4);
+    animation: popIn .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    margin: auto;
+  }
+  .call-notify-icon {
+    font-size: clamp(60px, 13vw, 90px);
+    line-height: 1; margin-bottom: 14px; display: block;
+    animation: ringBell 0.9s ease-in-out infinite alternate;
+  }
+  @keyframes ringBell {
+    0% { transform: rotate(-12deg) scale(1); }
+    100% { transform: rotate(12deg) scale(1.12); }
+  }
+  .call-notify-label {
+    font-size: clamp(14px, 2.8vw, 17px);
+    color: var(--gold-2); font-weight: 700;
+    margin-bottom: 8px; letter-spacing: 0.5px;
+  }
+  .call-notify-name {
+    font-size: clamp(22px, 5.5vw, 34px);
+    font-weight: 900; color: #fff;
+    line-height: 1.5; margin-bottom: 12px;
+    text-shadow: 0 4px 18px rgba(0,0,0,0.5);
+    word-break: break-word;
+  }
+  .call-notify-section {
+    display: inline-block;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.28);
+    color: #fff; padding: 8px 20px;
+    border-radius: 999px;
+    font-size: clamp(13px, 2.6vw, 16px);
+    font-weight: 700; margin-bottom: 22px;
+  }
+  .call-notify-actions {
+    display: flex; gap: 12px; justify-content: center;
+    flex-wrap: wrap;
+  }
+  .call-notify-btn {
+    padding: 14px 32px;
+    border: none; border-radius: 14px;
+    font-family: inherit; font-weight: 900;
+    font-size: clamp(14px, 2.8vw, 17px);
+    cursor: pointer;
+    min-width: 150px; min-height: 52px;
+    transition: transform .15s, background .2s;
+  }
+  .call-notify-btn:active { transform: scale(0.97); }
+  .call-notify-btn.speak { background: var(--info); color: #fff; }
+  .call-notify-btn.speak:hover { background: #0768b8; }
+  .call-notify-btn.close { background: var(--gold); color: #0b2545; }
+  .call-notify-btn.close:hover { background: var(--gold-2); }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 640px) {
+    .school-header {
+      flex-direction: column-reverse; align-items: stretch;
+      text-align: center; gap: 10px;
+    }
+    .school-header .brand {
+      justify-content: center; flex-direction: column;
+      text-align: center;
+    }
+    .year-ribbon { flex-direction: column-reverse; text-align: center; gap: 8px; }
+    .btn-row { flex-direction: column; }
+    .btn-row .btn { width: 100%; }
+    .result-item { flex-direction: column; align-items: stretch; gap: 8px; }
+    .result-item .section { text-align: center; }
+    .member-item { flex-direction: column; align-items: stretch; gap: 8px; }
+    .member-item .member-time { align-self: flex-start; }
+    .members-tab { flex: 1 1 100%; }
+  }
+  @media (max-width: 380px) {
+    .page-title h1 { font-size: 19px; gap: 6px; }
+    .card { border-radius: 14px; padding: 16px; }
+    .add-btn { width: 34px; height: 34px; font-size: 20px; bottom: 12px; left: 12px; }
+    .section-btn { padding: 14px 8px; }
+  }
+  @media (min-width: 1025px) { .container { max-width: 1050px; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ شاشة التحقق من الموقع ============ -->
+<div class="geo-gate hidden" id="geoGate">
+  <div class="geo-box">
+    <div class="geo-icon" id="geoIcon">📍</div>
+    <h2 id="geoTitle">جارٍ التحقق من موقعك...</h2>
+    <p id="geoMsg">يرجى السماح بالوصول إلى الموقع الجغرافي للمتابعة.</p>
+    <div class="geo-spinner" id="geoSpinner"></div>
+    <button class="btn btn-primary" id="geoRetryBtn" style="display:none;" onclick="checkLocation()">🔄 إعادة المحاولة</button>
+    <div class="geo-coords" id="geoCoords"></div>
+  </div>
+</div>
+
+<!-- ============ ترويسة المدرسة ============ -->
+<header class="school-header">
+  <div class="brand">
+    <div class="brand-logo">🏫</div>
+    <div class="brand-text">
+      <h2>مدرسة عبدالرحمن بن عوف الإعدادية للبنين</h2>
+      <p>Abdulrahman bin Awf Preparatory School for Boys</p>
+    </div>
+  </div>
+  <button class="header-back-btn hidden" id="backBtn" onclick="goHome()">🏠 الرئيسية</button>
+</header>
+
+<!-- ============ شريط العام الدراسي + المزامنة ============ -->
+<div class="year-ribbon">
+  <span class="year-badge">📅 العام الدراسي 2026–2027</span>
+  <span class="sync-status" id="syncStatus">
+    <span class="dot"></span>
+    <span id="syncStatusText">جاري الاتصال...</span>
+  </span>
+</div>
+
+<!-- ============================================================
+     PAGE 1: PARENT (الصفحة الرئيسية — البحث + الإدارة)
+     ============================================================ -->
+<div class="page active" id="pageParent">
+  <div class="page-title">
+    <h1><span class="icon">🎓</span> نظام خروج الطلاب</h1>
+    <p>ابحث باسم الطالب أو امسح رمز QR لاستدعائه</p>
+  </div>
+
+  <main class="container">
+    <div class="card">
+      <div class="status-bar">
+        <span class="status-dot-wrap"><span class="status-dot"></span> متصل بـ Telegram</span>
+      </div>
+
+      <input type="text" id="searchInput" class="input-field"
+             placeholder="🔍 ابحث باسم الطالب أو جزء من الاسم..."
+             autocomplete="off" spellcheck="false">
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="doSearch()">🔍 بحث</button>
+        <button class="btn btn-scan" id="scanBtn" onclick="toggleScan()">📷 مسح QR</button>
+        <button class="btn btn-admin" id="adminBtn" onclick="openAdminPassword()">⚙️ الإدارة</button>
+      </div>
+
+      <div id="reader"></div>
+      <div class="empty-msg" id="stats">📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR</div>
+    </div>
+  </main>
+</div>
+
+<!-- ============================================================
+     PAGE 2: ADMIN SECTIONS (صفحة الشعب)
+     ============================================================ -->
+<div class="page" id="pageAdmin">
+  <div class="page-title">
+    <h1><span class="icon">📚</span> الشعب الدراسية</h1>
+    <p>اختر الشعبة لعرض قائمة الطلاب ومتابعة الاستدعاءات</p>
+  </div>
+
+  <main class="container">
+    <div class="card">
+      <div class="admin-info-bar">
+        <div class="info-item">🏫 عدد الشعب: <b id="totalSections">0</b></div>
+        <div class="info-item">👥 إجمالي الطلاب: <b id="totalStudents">0</b></div>
+        <button class="btn btn-gold btn-sm" onclick="openUploadModal()">📥 تحديث البيانات</button>
+      </div>
+
+      <div class="sections-grid" id="sectionsGrid"></div>
+
+      <div class="empty-state hidden" id="adminEmpty">
+        <div class="icon">📭</div>
+        <p>لا توجد شعب مسجّلة حالياً.<br>يرجى رفع ملف Excel لتحميل البيانات.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============================================================
+     PAGE 3: SECTION DETAILS (تفاصيل الشعبة)
+     ============================================================ -->
+<div class="page" id="pageSection">
+  <div class="page-title">
+    <h1><span class="icon">📖</span> شعبة <span id="sectionTitleInline"></span></h1>
+    <p>متابعة الطلاب المستدعين والمتبقين في الشعبة</p>
+  </div>
+
+  <main class="container">
+    <div class="card">
+      <div class="section-stats">
+        <div class="stat-box">
+          <div class="stat-num" id="statTotal">0</div>
+          <div class="stat-label">إجمالي الطلاب</div>
+        </div>
+        <div class="stat-box called">
+          <div class="stat-num" id="statCalled">0</div>
+          <div class="stat-label">تم استدعاؤهم</div>
+        </div>
+        <div class="stat-box remaining">
+          <div class="stat-num" id="statRemaining">0</div>
+          <div class="stat-label">متبقّون</div>
+        </div>
+      </div>
+
+      <div class="members-tabs">
+        <button class="members-tab active" onclick="switchTab('remaining')" id="tabRemaining">⏳ المتبقّون</button>
+        <button class="members-tab" onclick="switchTab('called')" id="tabCalled">✅ تم استدعاؤهم</button>
+      </div>
+
+      <div class="members-list" id="membersList"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-gold" onclick="resetSectionCalls()">🔄 تصفير الاستدعاءات</button>
+        <button class="btn btn-danger" onclick="goBackToAdmin()">🔙 رجوع للشعب</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ Footer ============ -->
+<footer class="footer">
+  <button disabled class="btn btn-danger btn-sm">🔄 النظام والمحافظة على السلوك العام هو مظهر حضاري وأخلاقي.</button>
+  <div style="margin-top:8px;">مدرسة عبدالرحمن بن عوف الإعدادية للبنين &copy; العام الدراسي 2026–2027</div>
+</footer>
+
+<!-- ============ زر + السري ============ -->
+<button class="add-btn hidden" id="addBtn" onclick="openUploadModal()" title="تحديث البيانات">+</button>
+
+<!-- ============================================================
+     MODALS
+     ============================================================ -->
+
+<!-- 1. Admin Password -->
+<div class="password-overlay" id="adminPasswordModal">
+  <div class="password-box">
+    <div class="password-icon">🔐</div>
+    <h3 class="password-title">دخول الإدارة</h3>
+    <p class="password-desc">أدخل كلمة المرور للمتابعة</p>
+    <input type="password" id="adminPasswordInput" class="input-field"
+           placeholder="كلمة المرور..." autocomplete="off" spellcheck="false">
+    <div class="password-error" id="adminPasswordError"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" style="flex:1;" onclick="verifyAdminPassword()">✅ تحقق</button>
+      <button class="btn btn-danger" style="flex:1;" onclick="closeAdminPassword()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Results modal -->
+<div class="results-overlay" id="resultsOverlay">
+  <div class="results-box">
+    <div class="results-header">
+      <h3>🔍 اختر الطالب المطلوب خروجه <span class="results-count" id="resultsCount">0</span></h3>
+      <button class="results-close-icon" onclick="closeResultsModal()" title="إغلاق">×</button>
+    </div>
+    <div class="results-list" id="resultsList"></div>
+    <div class="results-footer">
+      <button class="btn btn-danger" onclick="closeResultsModal()">✖️ إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Success modal -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon">✅</div>
+    <h2 class="success-title">تم استدعاء الطالب</h2>
+    <p class="success-sub">الرجاء الانتظار وإفساح الطريق .. شاكرين حسن تعاونكم</p>
+    <div class="success-student" id="successStudent"></div>
+    <button class="success-close-btn" onclick="closeSuccess()">✖️ إغلاق</button>
+  </div>
+</div>
+
+<!-- 4. Upload modal -->
+<div class="upload-overlay" id="uploadOverlay">
+  <div class="upload-box">
+    <div class="upload-icon">📊</div>
+    <h3 class="upload-title">تحميل ملف بيانات الطلاب</h3>
+    <p class="upload-desc">
+      اختر ملف <b>Excel (.xlsx)</b> يحتوي على الأعمدة التالية:<br>
+      <code>الاسم</code> | <code>الشعبة</code> | <code>Channel_ID</code>
+    </p>
+
+    <input type="file" id="excelFileInput" accept=".xlsx,.xls" class="file-input-hidden">
+    <label for="excelFileInput" class="file-drop-zone" id="fileDropZone">
+      <div class="file-drop-icon">📁</div>
+      <div class="file-drop-text" id="fileDropText">اضغط لاختيار ملف Excel أو اسحبه هنا</div>
+    </label>
+
+    <div class="upload-progress hidden" id="uploadProgress">
+      <div class="progress-spinner"></div>
+      <span>جارٍ معالجة الملف...</span>
+    </div>
+
+    <div class="upload-status" id="uploadStatus"></div>
+
+    <button class="btn btn-danger btn-sm" style="margin-bottom:12px; width:100%;" onclick="resetStudentsData()">
+      🔄 استرجاع البيانات الأصلية
+    </button>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="confirmUploadBtn" style="flex:1;" onclick="processExcelFile()" disabled>📥 رفع وتحديث</button>
+      <button class="btn btn-danger" style="flex:1;" onclick="closeUploadModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- 5. Call Notification modal -->
+<div class="call-notify-overlay" id="callNotifyOverlay">
+  <div class="call-notify-box">
+    <div class="call-notify-icon">🔔</div>
+    <div class="call-notify-label">تم استدعاء الطالب</div>
+    <div class="call-notify-name" id="callNotifyName">—</div>
+    <div class="call-notify-section" id="callNotifySection">—</div>
+    <div class="call-notify-actions">
+      <button class="call-notify-btn speak" onclick="speakCurrentCall()">🔊 إعادة النطق</button>
+      <button class="call-notify-btn close" onclick="closeCallNotify()">✖️ إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   🔥 Firebase Config
+   ========================================================= */
+var firebaseConfig = {
+  apiKey: "AIzaSyDwo3sqIX1vLH9BQodnV4Y_7DdiyTgfJmk",
+  authDomain: "school-exit-8576e.firebaseapp.com",
+  databaseURL: "https://school-exit-8576e-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "school-exit-8576e",
+  storageBucket: "school-exit-8576e.firebasestorage.app",
+  messagingSenderId: "817009996681",
+  appId: "1:817009996681:web:e42248c65a144013f02758",
+  measurementId: "G-8YNR9C5H2T"
+};
+
+/* =========================================================
+   🔧 إعدادات عامة
+   ========================================================= */
+var DEFAULT_TOKEN = "8812887559:AAHenzlOj2f4nL1hciwmxfcr9fbGfMD9YGU";
+var ADMIN_PASSWORD = "20425.aba";
+
+var SCHOOL_LOCATION = { lat: 25.2847285, lng: 51.4093489 };
+var MAX_DISTANCE_METERS = 250;
+var GEO_OPTIONS = { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 };
+
+var LS_KEY = "tg_bot_token_allAba_override";
+var STORAGE_STUDENTS_KEY = "custom_students_data_v1";
+var STORAGE_CALLED_KEY = "custom_called_students_v1";
+var STORAGE_CALL_EVENT_KEY = "custom_call_event_v1";
+var TG_API = "https://api.telegram.org";
+
+/* =========================================================
+   🏷️ خريطة أسماء الشعب
+   ========================================================= */
+var SECTION_NAMES = {
+  "GRADE701":  "الصف السابع - شعبة 1",
+  "GRADE702":  "الصف السابع - شعبة 2",
+  "GRADE703":  "الصف السابع - شعبة 3",
+  "GRADE704":  "الصف السابع - شعبة 4",
+  "GRADE705":  "الصف السابع - شعبة 5",
+  "GRADE706":  "الصف السابع - شعبة 6",
+  "GRADE707":  "الصف السابع - شعبة 7",
+  "GRADE708":  "الصف السابع - شعبة 8",
+  "GRADE709":  "الصف السابع - شعبة 9",
+  "GRADE801":  "الصف الثامن - شعبة 1",
+  "GRADE802":  "الصف الثامن - شعبة 2",
+  "GRADE803":  "الصف الثامن - شعبة 3",
+  "GRADE804":  "الصف الثامن - شعبة 4",
+  "GRADE805":  "الصف الثامن - شعبة 5",
+  "GRADE806":  "الصف الثامن - شعبة 6",
+  "GRADE807":  "الصف الثامن - شعبة 7",
+  "GRADE808":  "الصف الثامن - شعبة 8",
+  "GRADE901":  "الصف التاسع - شعبة 1",
+  "GRADE902":  "الصف التاسع - شعبة 2",
+  "GRADE903":  "الصف التاسع - شعبة 3",
+  "GRADE904":  "الصف التاسع - شعبة 4",
+  "GRADE0905": "الصف التاسع - شعبة 5",
+  "GRADE0906": "الصف التاسع - شعبة 6",
+  "GRADE0907": "الصف التاسع - شعبة 7",
+  "GRADE0908": "الصف التاسع - شعبة 8"
+};
+
+function getSectionShortLabel(sectionKey) {
+  if (!sectionKey) return "غير محددة";
+  // إذا كانت بصيغة "الصف السابع - شعبة 1" نستخرج المختصر
+  var m = sectionKey.match(/شعبة\s*(\d+)/);
+  var gradeMatch = sectionKey.match(/(السابع|الثامن|التاسع)/);
+  if (m && gradeMatch) {
+    var gradeNum = gradeMatch[1] === "السابع" ? "07" : (gradeMatch[1] === "الثامن" ? "08" : "09");
+    return gradeNum + "/" + m[1];
+  }
+  // صيغة GRADE
+  var key = sectionKey.replace(/^@/, "").trim().toUpperCase();
+  var mm = key.match(/GRADE0?(\d)(\d{2})/);
+  if (mm) return "0" + mm[1] + "/" + parseInt(mm[2], 10);
+  return sectionKey;
+}
+
+function getSectionName(sectionId) {
+  var key = (sectionId || "").replace(/^@/, "").trim().toUpperCase();
+  return SECTION_NAMES[key] || sectionId || "غير محددة";
+}
+
+/* =========================================================
+   📌 بيانات الطلاب
+   ========================================================= */
+/* @STUDENTS_DATA_START@ */
+var STUDENTS = [];
+/* @STUDENTS_DATA_END@ */
+
+/* =========================================================
+   📌 الحالة العامة
+   ========================================================= */
+var token = localStorage.getItem(LS_KEY) || DEFAULT_TOKEN;
+var html5QrCode = null;
+var scanning = false;
+var selectedFile = null;
+var currentSection = null;
+var currentTab = "remaining";
+var currentCallName = "";
+var currentCallSection = "";
+var speechSupported = ("speechSynthesis" in window);
+var lastProcessedCallEvent = null;
+var callPollingInterval = null;
+
+var firebaseDB = null;
+var firebaseReady = false;
+
+/* =========================================================
+   🔥 تهيئة Firebase
+   ========================================================= */
+function initFirebase() {
+  try {
+    if (typeof firebase === "undefined") {
+      console.warn("Firebase SDK غير محمّل");
+      updateSyncStatus("offline", "Firebase غير محمّل");
+      return false;
+    }
+    if (firebase.apps && firebase.apps.length > 0) {
+      firebaseDB = firebase.database();
+      firebaseReady = true;
+      updateSyncStatus("online", "متصل (Firebase)");
+      return true;
+    }
+    firebase.initializeApp(firebaseConfig);
+    firebaseDB = firebase.database();
+    firebaseReady = true;
+    updateSyncStatus("online", "متصل (Firebase)");
+    console.log("✅ Firebase جاهز");
+
+    // استقبال أحداث الاستدعاء من الأجهزة الأخرى
+    firebaseDB.ref("callEvents").limitToLast(1).on("child_added", function(snapshot) {
+      var event = snapshot.val();
+      if (event) {
+        event._fbKey = snapshot.key;
+        handleRemoteCallEvent(event);
+      }
+    });
+
+    // استقبال تحديثات قائمة المستدعين
+    firebaseDB.ref("calledStudents").on("value", function(snapshot) {
+      var data = snapshot.val();
+      if (data && typeof data === "object") {
+        try {
+          localStorage.setItem(STORAGE_CALLED_KEY, JSON.stringify(data));
+          if (currentSection) renderSectionMembers();
+        } catch(e) {}
+      }
+    });
+
+    // استقبال تحديثات بيانات الطلاب
+    firebaseDB.ref("studentsData").on("value", function(snapshot) {
+      var data = snapshot.val();
+      if (data && Array.isArray(data) && data.length > 0) {
+        try {
+          STUDENTS.length = 0;
+          for (var i = 0; i < data.length; i++) STUDENTS.push(data[i]);
+          localStorage.setItem(STORAGE_STUDENTS_KEY, JSON.stringify(data));
+          if (document.getElementById("pageAdmin").classList.contains("active")) {
+            renderSections();
+          }
+        } catch(e) {}
+      }
+    });
+
+    cleanupOldEvents();
+    return true;
+  } catch (e) {
+    console.error("فشل تهيئة Firebase:", e);
+    updateSyncStatus("offline", "فشل الاتصال");
+    return false;
+  }
+}
+
+function cleanupOldEvents() {
+  if (!firebaseReady || !firebaseDB) return;
+  var oneHourAgo = Date.now() - (60 * 60 * 1000);
+  firebaseDB.ref("callEvents").orderByChild("timestamp").endAt(oneHourAgo).once("value")
+    .then(function(snap) {
+      snap.forEach(function(child) { child.ref.remove(); });
+    })
+    .catch(function() {});
+}
+
+function updateSyncStatus(state, text) {
+  var el = document.getElementById("syncStatus");
+  var txt = document.getElementById("syncStatusText");
+  if (!el || !txt) return;
+  el.classList.remove("online", "offline");
+  if (state === "online") el.classList.add("online");
+  else if (state === "offline") el.classList.add("offline");
+  txt.textContent = text;
+}
+
+/* =========================================================
+   📌 تحميل البيانات
+   ========================================================= */
+function loadCustomStudents() {
+  try {
+    var saved = localStorage.getItem(STORAGE_STUDENTS_KEY);
+    if (saved) {
+      var parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        STUDENTS.length = 0;
+        for (var i = 0; i < parsed.length; i++) STUDENTS.push(parsed[i]);
+        return true;
+      }
+    }
+  } catch (e) { console.warn("فشل تحميل البيانات:", e); }
+  return false;
+}
+loadCustomStudents();
+
+/* =========================================================
+   📌 إدارة الاستدعاءات
+   ========================================================= */
+function loadCalledStudents() {
+  try {
+    var saved = localStorage.getItem(STORAGE_CALLED_KEY);
+    if (saved) {
+      var parsed = JSON.parse(saved);
+      if (typeof parsed === "object" && parsed !== null) return parsed;
+    }
+  } catch (e) {}
+  return {};
+}
+
+function saveCalledStudents(data) {
+  try { localStorage.setItem(STORAGE_CALLED_KEY, JSON.stringify(data)); } catch (e) {}
+}
+
+function markStudentCalled(sectionId, studentName) {
+  var data = loadCalledStudents();
+  var key = (sectionId || "").toUpperCase();
+  if (!data[key]) data[key] = [];
+  var exists = false;
+  for (var i = 0; i < data[key].length; i++) {
+    if (data[key][i].n === studentName) { exists = true; break; }
+  }
+  if (!exists) {
+    data[key].push({
+      n: studentName,
+      time: new Date().toLocaleTimeString("ar-QA", { hour: '2-digit', minute: '2-digit' })
+    });
+    saveCalledStudents(data);
+    if (firebaseReady && firebaseDB) {
+      firebaseDB.ref("calledStudents").set(data).catch(function(e) {
+        console.warn("تعذّر حفظ المستدعين في Firebase:", e);
+      });
+    }
+  }
+}
+
+function getCalledInSection(sectionId) {
+  var data = loadCalledStudents();
+  var key = (sectionId || "").toUpperCase();
+  return data[key] || [];
+}
+
+function resetSectionCallsData(sectionId) {
+  var data = loadCalledStudents();
+  var key = (sectionId || "").toUpperCase();
+  delete data[key];
+  saveCalledStudents(data);
+  if (firebaseReady && firebaseDB) {
+    firebaseDB.ref("calledStudents").set(data).catch(function(){});
+  }
+}
+
+/* =========================================================
+   📌 التنقل
+   ========================================================= */
+function showPage(pageId) {
+  var pages = document.querySelectorAll(".page");
+  for (var i = 0; i < pages.length; i++) pages[i].classList.remove("active");
+  var target = document.getElementById(pageId);
+  if (target) target.classList.add("active");
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateBackButton(show) {
+  var btn = document.getElementById("backBtn");
+  if (show) btn.classList.remove("hidden");
+  else btn.classList.add("hidden");
+}
+
+function updateAddButton(show) {
+  var btn = document.getElementById("addBtn");
+  if (show) btn.classList.remove("hidden");
+  else btn.classList.add("hidden");
+}
+
+function goHome() {
+  stopScan();
+  currentSection = null;
+  showPage("pageParent");
+  updateBackButton(false);
+  updateAddButton(false);
+}
+
+function goBackToAdmin() {
+  stopScan();
+  currentSection = null;
+  showPage("pageAdmin");
+  renderSections();
+  updateBackButton(true);
+  updateAddButton(false);
+}
+
+/* =========================================================
+   📌 كلمة مرور الإدارة
+   ========================================================= */
+function openAdminPassword() {
+  document.getElementById("adminPasswordInput").value = "";
+  document.getElementById("adminPasswordError").textContent = "";
+  document.getElementById("adminPasswordModal").classList.add("show");
+  document.body.style.overflow = "hidden";
+  setTimeout(function() {
+    document.getElementById("adminPasswordInput").focus();
+  }, 200);
+}
+
+function closeAdminPassword() {
+  document.getElementById("adminPasswordModal").classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+function verifyAdminPassword() {
+  var input = document.getElementById("adminPasswordInput").value;
+  var errBox = document.getElementById("adminPasswordError");
+  if (input === ADMIN_PASSWORD) {
+    closeAdminPassword();
+    setTimeout(function() {
+      showPage("pageAdmin");
+      updateBackButton(true);
+      updateAddButton(true);
+      renderSections();
+    }, 300);
+  } else {
+    errBox.textContent = "❌ كلمة المرور غير صحيحة";
+    document.getElementById("adminPasswordInput").value = "";
+    document.getElementById("adminPasswordInput").focus();
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  var ap = document.getElementById("adminPasswordInput");
+  if (ap) {
+    ap.addEventListener("keydown", function(e) {
+      if (e.key === "Enter" || e.keyCode === 13) verifyAdminPassword();
+    });
+  }
+  var apm = document.getElementById("adminPasswordModal");
+  if (apm) {
+    apm.addEventListener("click", function(e) {
+      if (e.target === apm) closeAdminPassword();
+    });
+  }
+});
+
+/* =========================================================
+   📌 بناء قائمة الشعب
+   ========================================================= */
+function renderSections() {
+  var grid = document.getElementById("sectionsGrid");
+  var empty = document.getElementById("adminEmpty");
+  var totalSectionsEl = document.getElementById("totalSections");
+  var totalStudentsEl = document.getElementById("totalStudents");
+
+  if (!grid) return;
+  grid.innerHTML = "";
+
+  var sectionsMap = {};
+  STUDENTS.forEach(function(st) {
+    var key = (st.s || "").replace(/^@/, "").trim();
+    if (!key) key = "غير محددة";
+    if (!sectionsMap[key]) sectionsMap[key] = 0;
+    sectionsMap[key]++;
+  });
+
+  var keys = Object.keys(sectionsMap);
+  if (totalSectionsEl) totalSectionsEl.textContent = keys.length;
+  if (totalStudentsEl) totalStudentsEl.textContent = STUDENTS.length;
+
+  if (!keys.length) {
+    if (empty) empty.classList.remove("hidden");
+    return;
+  }
+  if (empty) empty.classList.add("hidden");
+
+  keys.sort(function(a, b) {
+    return getSectionShortLabel(a).localeCompare(getSectionShortLabel(b));
+  });
+
+  keys.forEach(function(sectionId) {
+    var count = sectionsMap[sectionId];
+    var label = getSectionShortLabel(sectionId);
+
+    var btn = document.createElement("button");
+    btn.className = "section-btn";
+    btn.innerHTML =
+      '<div class="section-label">' + label + '</div>' +
+      '<div class="section-count">' + count + ' طالب</div>';
+    btn.onclick = function() { openSection(sectionId); };
+    grid.appendChild(btn);
+  });
+}
+
+/* =========================================================
+   📌 صفحة الشعبة
+   ========================================================= */
+function openSection(sectionId) {
+  currentSection = sectionId;
+  currentTab = "remaining";
+
+  var shortLabel = getSectionShortLabel(sectionId);
+  var fullName = getSectionName(sectionId);
+
+  document.getElementById("sectionTitleInline").textContent = shortLabel;
+  document.querySelector("#pageSection .page-title p").textContent = fullName || sectionId;
+
+  document.getElementById("tabRemaining").classList.add("active");
+  document.getElementById("tabCalled").classList.remove("active");
+
+  showPage("pageSection");
+  updateBackButton(true);
+  updateAddButton(true);
+
+  renderSectionMembers();
+  checkPendingCallEventForSection(sectionId);
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  var tabR = document.getElementById("tabRemaining");
+  var tabC = document.getElementById("tabCalled");
+  if (tab === "remaining") {
+    tabR.classList.add("active");
+    tabC.classList.remove("active");
+  } else {
+    tabC.classList.add("active");
+    tabR.classList.remove("active");
+  }
+  renderSectionMembers();
+}
+
+function renderSectionMembers() {
+  if (!currentSection) return;
+
+  var sectionKey = currentSection.trim();
+
+  var allInSection = STUDENTS.filter(function(st) {
+    return (st.s || "").trim() === sectionKey;
+  });
+
+  var calledList = getCalledInSection(sectionKey);
+  var calledNamesMap = {};
+  calledList.forEach(function(c) { calledNamesMap[c.n] = c.time; });
+
+  var remainingList = allInSection.filter(function(st) {
+    return !calledNamesMap[st.n];
+  });
+
+  var calledDetailed = calledList.map(function(c) {
+    return { n: c.n, time: c.time };
+  });
+
+  document.getElementById("statTotal").textContent = allInSection.length;
+  document.getElementById("statCalled").textContent = calledDetailed.length;
+  document.getElementById("statRemaining").textContent = remainingList.length;
+
+  var list = document.getElementById("membersList");
+  list.innerHTML = "";
+
+  var dataToRender = (currentTab === "remaining") ? remainingList : calledDetailed;
+
+  if (!dataToRender.length) {
+    var msg = (currentTab === "remaining")
+      ? "🎉 تم استدعاء جميع الطلاب في هذه الشعبة"
+      : "لا يوجد طلاب مستدعَون بعد في هذه الشعبة";
+    list.innerHTML = '<div class="empty-msg">' + msg + '</div>';
+    return;
+  }
+
+  dataToRender.forEach(function(item) {
+    var div = document.createElement("div");
+    div.className = "member-item " + (currentTab === "called" ? "called" : "remaining");
+    var timeHtml = item.time ? '<span class="member-time">🕒 ' + item.time + '</span>' : '';
+    div.innerHTML =
+      '<span class="member-name">' + item.n + '</span>' +
+      timeHtml;
+    list.appendChild(div);
+  });
+}
+
+function resetSectionCalls() {
+  if (!currentSection) return;
+  if (!confirm("سيتم حذف سجل الاستدعاءات لهذه الشعبة.\nهل أنت متأكد؟")) return;
+  resetSectionCallsData(currentSection);
+  renderSectionMembers();
+  showToast("✅ تم تصفير الاستدعاءات للشعبة");
+}
+
+/* =========================================================
+   🔐 النظام الجغرافي
+   ========================================================= */
+function calculateDistance(lat1, lng1, lat2, lng2) {
+  var R = 6371000;
+  var toRad = function(d) { return d * Math.PI / 180; };
+  var dLat = toRad(lat2 - lat1);
+  var dLng = toRad(lng2 - lng1);
+  var a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+    Math.sin(dLng/2) * Math.sin(dLng/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return Math.round(R * c);
+}
+
+function setGeoState(icon, title, msg, color) {
+  color = color || "";
+  var gi = document.getElementById("geoIcon");
+  gi.textContent = icon;
+  gi.className = "geo-icon " + color;
+  document.getElementById("geoTitle").textContent = title;
+  document.getElementById("geoMsg").innerHTML = msg;
+}
+
+function checkLocation() {
+  var geoGate = document.getElementById("geoGate");
+  if (!geoGate) return;
+
+  var spinner = document.getElementById("geoSpinner");
+  var retry = document.getElementById("geoRetryBtn");
+  var coords = document.getElementById("geoCoords");
+
+  spinner.classList.remove("hidden");
+  retry.style.display = "none";
+  coords.textContent = "";
+  setGeoState("📍", "جارٍ التحقق من موقعك...",
+    "يرجى السماح بالوصول إلى الموقع الجغرافي للمتابعة.");
+
+  if (!navigator.geolocation) {
+    spinner.classList.add("hidden");
+    setGeoState("❌", "غير مدعوم", "متصفحك لا يدعم خدمة تحديد الموقع.", "err");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      var userLat = position.coords.latitude;
+      var userLng = position.coords.longitude;
+      var accuracy = Math.round(position.coords.accuracy);
+      var distance = calculateDistance(userLat, userLng, SCHOOL_LOCATION.lat, SCHOOL_LOCATION.lng);
+      coords.textContent =
+        "موقعك: " + userLat.toFixed(6) + ", " + userLng.toFixed(6) + " (±" + accuracy + "م)\n" +
+        "المسافة عن المدرسة: " + distance + " متر";
+      spinner.classList.add("hidden");
+      if (distance <= MAX_DISTANCE_METERS) {
+        setGeoState("✅", "تم التحقق بنجاح",
+          "أنت على بعد <b>" + distance + " متر</b> من المدرسة.", "ok");
+        setTimeout(function() {
+          geoGate.classList.add("hidden");
+          document.body.style.overflow = "";
+        }, 1200);
+      } else {
+        setGeoState("🚫", "خارج نطاق المدرسة",
+          "أنت على بعد <b>" + distance + " متر</b> من المدرسة.<br>" +
+          "يُسمح فقط داخل نطاق <b>" + MAX_DISTANCE_METERS + " متر</b>.", "err");
+        retry.style.display = "inline-flex";
+      }
+    },
+    function(error) {
+      spinner.classList.add("hidden");
+      var msg = "تعذّر تحديد موقعك. ";
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          msg = "🚫 تم رفض إذن الوصول إلى الموقع.<br>يجب السماح بالوصول للمتابعة.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          msg = "📡 معلومات الموقع غير متوفرة.";
+          break;
+        case error.TIMEOUT:
+          msg = "⏱️ انتهت مدة الانتظار.";
+          break;
+      }
+      setGeoState("❌", "خطأ في تحديد الموقع", msg, "err");
+      retry.style.display = "inline-flex";
+    },
+    GEO_OPTIONS
+  );
+}
+
+/* =========================================================
+   📌 البحث والاستدعاء
+   ========================================================= */
+function normalize(s) {
+  return (s || "").toString().trim().toLowerCase()
+    .replace(/[أإآٱا]/g, 'ا')
+    .replace(/[ىي]/g, 'ي')
+    .replace(/[ةه]/g, 'ه')
+    .replace(/[ًٌٍَُِّْـ]/g, '')
+    .replace(/\s+/g, ' ');
+}
+
+function doSearch() {
+  var si = document.getElementById("searchInput");
+  var q = normalize(si.value.trim());
+  if (!q) { showToast("أدخل اسماً للبحث", true); return; }
+
+  var matches = [];
+  for (var i = 0; i < STUDENTS.length; i++) {
+    if (normalize(STUDENTS[i].n).indexOf(q) !== -1) matches.push(STUDENTS[i]);
+  }
+
+  if (!matches.length) { showToast("❌ لا توجد نتائج مطابقة", true); return; }
+  showResultsModal(matches);
+}
+
+function showResultsModal(list) {
+  var resultsCount = document.getElementById("resultsCount");
+  var resultsList = document.getElementById("resultsList");
+  resultsCount.textContent = list.length;
+  resultsList.innerHTML = "";
+
+  list.forEach(function(item) {
+    var div = document.createElement("div");
+    div.className = "result-item";
+    div.innerHTML = '<span class="name">' + item.n + '</span>' +
+                    '<span class="section">' + getSectionShortLabel(item.s) + '</span>';
+    div.onclick = function() {
+      closeResultsModal();
+      selectStudent(item);
+    };
+    resultsList.appendChild(div);
+  });
+
+  document.getElementById("resultsOverlay").classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function closeResultsModal() {
+  document.getElementById("resultsOverlay").classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  var ro = document.getElementById("resultsOverlay");
+  if (ro) {
+    ro.addEventListener("click", function(e) {
+      if (e.target === ro) closeResultsModal();
+    });
+  }
+});
+
+async function selectStudent(student) {
+  showToast("⏳ يتم إرسال الاستدعاء...", false, true);
+
+  var sectionName = getSectionName(student.s);
+
+  var message =
+    "🔔 عزيزي المعلم يُرجى اخراج الطالب\n" +
+    "=========================\n" +
+    "👤 الاسم: " + student.n + "\n" +
+    "🏫 الشعبة: " + sectionName + "\n" +
+    "=========================\n" +
+    "🚪 يرجى التوجه إلى بوابة الخروج";
+
+  try {
+    var res = await fetch(TG_API + "/bot" + token + "/sendMessage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: student.c, text: message })
+    });
+    var json = await res.json();
+
+    if (json.ok) {
+      markStudentCalled(student.s, student.n);
+      broadcastCallEvent(student.n, student.s);
+
+      if (currentSection &&
+          currentSection.trim() === (student.s || "").trim()) {
+        renderSectionMembers();
+        showCallNotification(student.n, student.s);
+      }
+
+      document.getElementById("searchInput").value = "";
+      showToast("✅ تم إرسال الاستدعاء بنجاح");
+    } else {
+      console.error(json);
+      showToast("❌ " + (json.description || "فشل الإرسال"), true);
+    }
+  } catch (err) {
+    console.error(err);
+    showToast("تعذّر الاتصال بـ Telegram", true);
+  }
+}
+
+function closeSuccess() {
+  document.getElementById("successOverlay").classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+/* =========================================================
+   📌 QR Scanner
+   ========================================================= */
+async function toggleScan() {
+  if (scanning) { stopScan(); return; }
+  var readerDiv = document.getElementById("reader");
+  var scanBtn = document.getElementById("scanBtn");
+  readerDiv.style.display = "block";
+  scanBtn.textContent = "❌ إيقاف المسح";
+
+  html5QrCode = new Html5Qrcode("reader");
+  try {
+    await html5QrCode.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      onQrSuccess,
+      function() {}
+    );
+    scanning = true;
+  } catch (err) {
+    console.error(err);
+    showToast("تعذّر فتح الكاميرا. تأكد من HTTPS والصلاحيات.", true);
+    readerDiv.style.display = "none";
+    scanBtn.textContent = "📷 مسح QR";
+  }
+}
+
+async function stopScan() {
+  if (html5QrCode) {
+    try { await html5QrCode.stop(); html5QrCode.clear(); } catch(e){}
+  }
+  scanning = false;
+  var readerDiv = document.getElementById("reader");
+  var scanBtn = document.getElementById("scanBtn");
+  if (readerDiv) readerDiv.style.display = "none";
+  if (scanBtn) scanBtn.textContent = "📷 مسح QR";
+}
+
+function onQrSuccess(decodedText) {
+  stopScan();
+  var q = normalize(decodedText);
+  var found = null;
+  for (var i = 0; i < STUDENTS.length; i++) {
+    if (normalize(STUDENTS[i].n) === q) { found = STUDENTS[i]; break; }
+  }
+  if (!found) {
+    for (var j = 0; j < STUDENTS.length; j++) {
+      if (normalize(STUDENTS[j].n).indexOf(q) !== -1) { found = STUDENTS[j]; break; }
+    }
+  }
+  if (found) {
+    showToast("📷 " + found.n);
+    selectStudent(found);
+  } else {
+    showToast("❌ لم يُعثر على الطالب: " + decodedText, true);
+    document.getElementById("searchInput").value = decodedText;
+    doSearch();
+  }
+}
+
+/* =========================================================
+   📌 رفع ملف Excel
+   ========================================================= */
+function openUploadModal() {
+  selectedFile = null;
+  document.getElementById("excelFileInput").value = "";
+  document.getElementById("fileDropText").textContent = "اضغط لاختيار ملف Excel أو اسحبه هنا";
+  document.getElementById("fileDropZone").classList.remove("has-file");
+  document.getElementById("uploadStatus").textContent = "";
+  document.getElementById("uploadStatus").className = "upload-status";
+  document.getElementById("uploadProgress").classList.add("hidden");
+  document.getElementById("confirmUploadBtn").disabled = true;
+
+  document.getElementById("uploadOverlay").classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function closeUploadModal() {
+  document.getElementById("uploadOverlay").classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+function handleFileSelected(file) {
+  if (!file.name.match(/\.(xlsx|xls)$/i)) {
+    showUploadStatus("❌ يجب أن يكون الملف بصيغة Excel", "error");
+    return;
+  }
+  selectedFile = file;
+  var dropZone = document.getElementById("fileDropZone");
+  var dropText = document.getElementById("fileDropText");
+  dropZone.classList.add("has-file");
+  dropText.innerHTML = '✅ <b>' + file.name + '</b><br><small style="opacity:.7;">' +
+    (file.size/1024).toFixed(1) + ' KB</small>';
+  document.getElementById("confirmUploadBtn").disabled = false;
+  showUploadStatus("اضغط 'رفع وتحديث' لمعالجة الملف", "info");
+}
+
+function showUploadStatus(msg, type) {
+  type = type || "";
+  var box = document.getElementById("uploadStatus");
+  box.textContent = msg;
+  box.className = "upload-status " + type;
+}
+
+async function processExcelFile() {
+  if (!selectedFile) { showUploadStatus("❌ لم يتم اختيار ملف", "error"); return; }
+  if (typeof XLSX === "undefined") {
+    showUploadStatus("❌ مكتبة قراءة Excel لم تُحمّل.", "error"); return;
+  }
+
+  document.getElementById("uploadProgress").classList.remove("hidden");
+  document.getElementById("confirmUploadBtn").disabled = true;
+  showUploadStatus("", "");
+
+  try {
+    var data = await readFileAsArrayBuffer(selectedFile);
+    var workbook = XLSX.read(data, { type: "array" });
+    var sheet = workbook.Sheets[workbook.SheetNames[0]];
+    var rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+    if (!rows.length) throw new Error("الملف فارغ أو لا يحتوي على بيانات");
+
+    var firstRow = rows[0];
+    var keys = Object.keys(firstRow);
+    var nameKey = null, channelKey = null, sectionKey = null;
+    for (var i = 0; i < keys.length; i++) {
+      if (!nameKey && /اسم|الاسم|name/i.test(keys[i])) nameKey = keys[i];
+      if (!channelKey && /channel|قناة|معرف/i.test(keys[i])) channelKey = keys[i];
+      if (!sectionKey && /شعبة|section|صف/i.test(keys[i])) sectionKey = keys[i];
+    }
+    if (!nameKey || !channelKey) {
+      throw new Error("تعذّر العثور على الأعمدة المطلوبة (الاسم + Channel_ID)");
+    }
+
+    var newStudents = [];
+    var skipped = 0;
+
+    rows.forEach(function(row) {
+      var name = String(row[nameKey] || "").trim();
+      var channel = String(row[channelKey] || "").trim();
+      var sectionRaw = sectionKey ? String(row[sectionKey] || "").trim() : "";
+      if (!name || !channel) { skipped++; return; }
+      if (channel.charAt(0) !== "@" && channel.charAt(0) !== "-") channel = "@" + channel;
+
+      var sectionId = "";
+      if (sectionRaw && /^GRADE/i.test(sectionRaw)) sectionId = sectionRaw.toUpperCase();
+      else sectionId = channel.replace(/^@/, "").toUpperCase();
+
+      var sectionFormatted = sectionRaw || sectionId;
+      if (/^GRADE/i.test(sectionId)) sectionFormatted = getSectionName(sectionId);
+
+      newStudents.push({ n: name, s: sectionFormatted, c: channel });
+    });
+
+    if (!newStudents.length) throw new Error("لم يتم العثور على أي صف صالح");
+
+    STUDENTS.length = 0;
+    for (var k = 0; k < newStudents.length; k++) STUDENTS.push(newStudents[k]);
+
+    localStorage.setItem(STORAGE_STUDENTS_KEY, JSON.stringify(newStudents));
+
+    var uploadStats = {
+      total: newStudents.length,
+      skipped: skipped,
+      date: new Date().toLocaleString("ar-QA"),
+      fileName: selectedFile.name
+    };
+    localStorage.setItem("last_upload_stats", JSON.stringify(uploadStats));
+
+    // مزامنة مع Firebase
+    if (firebaseReady && firebaseDB) {
+      firebaseDB.ref("studentsData").set(newStudents).catch(function(e) {
+        console.warn("تعذّر حفظ الطلاب في Firebase:", e);
+      });
+    }
+
+    document.getElementById("uploadProgress").classList.add("hidden");
+
+    showUploadStatus(
+      "✅ تم التحديث بنجاح!\n" +
+      "📊 عدد الطلاب: " + newStudents.length + "\n" +
+      "⏭️ تم تخطي: " + skipped + " صف\n" +
+      "📅 " + uploadStats.date,
+      "success"
+    );
+
+    renderSections();
+    updateStats();
+
+    setTimeout(function() {
+      closeUploadModal();
+      showToast("✅ تم تحديث بيانات " + newStudents.length + " طالب");
+    }, 2500);
+
+  } catch (err) {
+    document.getElementById("uploadProgress").classList.add("hidden");
+    console.error(err);
+    showUploadStatus("❌ " + (err.message || "فشل معالجة الملف"), "error");
+    document.getElementById("confirmUploadBtn").disabled = false;
+  }
+}
+
+function readFileAsArrayBuffer(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function(e) { resolve(e.target.result); };
+    reader.onerror = function() { reject(new Error("تعذّر قراءة الملف")); };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function resetStudentsData() {
+  if (!confirm("سيتم حذف البيانات المحدّثة والعودة للبيانات الأصلية المدمجة.\nهل أنت متأكد؟")) return;
+  localStorage.removeItem(STORAGE_STUDENTS_KEY);
+  localStorage.removeItem("last_upload_stats");
+  localStorage.removeItem(STORAGE_CALLED_KEY);
+  localStorage.removeItem(STORAGE_CALL_EVENT_KEY);
+  showToast("✅ تم استرجاع البيانات الأصلية");
+  setTimeout(function() { location.reload(); }, 1500);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  var upOverlay = document.getElementById("uploadOverlay");
+  var fileInput = document.getElementById("excelFileInput");
+  var dropZone = document.getElementById("fileDropZone");
+
+  if (upOverlay) {
+    upOverlay.addEventListener("click", function(e) {
+      if (e.target === upOverlay) closeUploadModal();
+    });
+  }
+  if (fileInput) {
+    fileInput.addEventListener("change", function(e) {
+      if (e.target.files && e.target.files[0]) handleFileSelected(e.target.files[0]);
+    });
+  }
+  if (dropZone) {
+    ["dragenter", "dragover"].forEach(function(ev) {
+      dropZone.addEventListener(ev, function(e) {
+        e.preventDefault(); e.stopPropagation();
+        dropZone.classList.add("dragover");
+      });
+    });
+    ["dragleave", "drop"].forEach(function(ev) {
+      dropZone.addEventListener(ev, function(e) {
+        e.preventDefault(); e.stopPropagation();
+        dropZone.classList.remove("dragover");
+      });
+    });
+    dropZone.addEventListener("drop", function(e) {
+      var files = e.dataTransfer.files;
+      if (files && files[0]) handleFileSelected(files[0]);
+    });
+  }
+
+  var si = document.getElementById("searchInput");
+  if (si) {
+    si.addEventListener("keydown", function(e) {
+      if (e.key === "Enter" || e.keyCode === 13) doSearch();
+    });
+  }
+});
+
+/* =========================================================
+   📌 Escape لإغلاق النوافذ
+   ========================================================= */
+document.addEventListener("keydown", function(e) {
+  if (e.key !== "Escape" && e.keyCode !== 27) return;
+
+  var cno = document.getElementById("callNotifyOverlay");
+  if (cno && cno.classList.contains("show")) { closeCallNotify(); return; }
+
+  var po = document.getElementById("adminPasswordModal");
+  var uo = document.getElementById("uploadOverlay");
+  var so = document.getElementById("successOverlay");
+  var ro = document.getElementById("resultsOverlay");
+  if (po && po.classList.contains("show")) closeAdminPassword();
+  else if (uo && uo.classList.contains("show")) closeUploadModal();
+  else if (so && so.classList.contains("show")) closeSuccess();
+  else if (ro && ro.classList.contains("show")) closeResultsModal();
+});
+
+/* =========================================================
+   📌 الإحصائيات
+   ========================================================= */
+function updateStats() {
+  var statsEl = document.getElementById("stats");
+  if (!statsEl) return;
+  var lastStats = localStorage.getItem("last_upload_stats");
+  var suffix = "";
+  if (lastStats) {
+    try {
+      var s = JSON.parse(lastStats);
+      suffix = " — آخر تحديث: " + s.date + " (" + s.total + " طالب)";
+    } catch(e){}
+  }
+  statsEl.textContent = "📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR" + suffix;
+}
+
+/* =========================================================
+   🔊 النطق + المنبثق + المزامنة
+   ========================================================= */
+function speakArabic(text) {
+  if (!speechSupported) {
+    console.warn("Speech Synthesis غير مدعوم");
+    return;
+  }
+  try {
+    window.speechSynthesis.cancel();
+    var utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "ar-SA";
+    utterance.rate = 0.85;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+
+    var voices = window.speechSynthesis.getVoices();
+    var arabicVoice = null;
+    for (var i = 0; i < voices.length; i++) {
+      if (voices[i].lang && voices[i].lang.toLowerCase().indexOf("ar") === 0) {
+        arabicVoice = voices[i];
+        break;
+      }
+    }
+    if (arabicVoice) utterance.voice = arabicVoice;
+    window.speechSynthesis.speak(utterance);
+  } catch (e) {
+    console.warn("فشل النطق:", e);
+  }
+}
+
+function speakCurrentCall() {
+  if (currentCallName) speakArabic(currentCallName);
+}
+
+function broadcastCallEvent(studentName, sectionId) {
+  var event = {
+    id: Date.now() + "_" + Math.random().toString(36).slice(2, 8),
+    name: studentName,
+    section: sectionId,
+    timestamp: Date.now()
+  };
+
+  try {
+    localStorage.setItem(STORAGE_CALL_EVENT_KEY, JSON.stringify(event));
+    lastProcessedCallEvent = event;
+  } catch (e) {}
+
+  if (firebaseReady && firebaseDB) {
+    firebaseDB.ref("callEvents/" + event.id).set({
+      name: event.name,
+      section: event.section,
+      timestamp: event.timestamp
+    }).catch(function(e) {
+      console.warn("تعذّر إرسال الحدث لـ Firebase:", e);
+    });
+  }
+}
+
+function handleCallEvent(event) {
+  if (!event || !event.name || !event.section) return;
+  if (event.timestamp && (Date.now() - event.timestamp) > 60000) return;
+  if (lastProcessedCallEvent && lastProcessedCallEvent.id === event.id) return;
+  lastProcessedCallEvent = event;
+
+  var eventSection = (event.section || "").trim();
+
+  if (currentSection && currentSection.trim() === eventSection) {
+    renderSectionMembers();
+    showCallNotification(event.name, event.section);
+  }
+}
+
+function handleRemoteCallEvent(event) {
+  if (!event || !event.name || !event.section) return;
+  if (event.timestamp && (Date.now() - event.timestamp) > 120000) return;
+
+  var normalizedEvent = {
+    id: "fb_" + (event._fbKey || event.timestamp) + "_" + Math.random().toString(36).slice(2, 6),
+    name: event.name,
+    section: event.section,
+    timestamp: event.timestamp || Date.now()
+  };
+
+  if (lastProcessedCallEvent &&
+      lastProcessedCallEvent.name === normalizedEvent.name &&
+      lastProcessedCallEvent.section === normalizedEvent.section &&
+      Math.abs((lastProcessedCallEvent.timestamp || 0) - normalizedEvent.timestamp) < 5000) {
+    return;
+  }
+
+  lastProcessedCallEvent = normalizedEvent;
+
+  try {
+    localStorage.setItem(STORAGE_CALL_EVENT_KEY, JSON.stringify(normalizedEvent));
+  } catch(e) {}
+
+  if (currentSection &&
+      currentSection.trim() === (normalizedEvent.section || "").trim()) {
+    renderSectionMembers();
+    showCallNotification(normalizedEvent.name, normalizedEvent.section);
+  }
+}
+
+function checkPendingCallEventForSection(sectionId) {
+  try {
+    var raw = localStorage.getItem(STORAGE_CALL_EVENT_KEY);
+    if (!raw) return;
+    var event = JSON.parse(raw);
+    if (!event || !event.section) return;
+    if (event.timestamp && (Date.now() - event.timestamp) > 30000) return;
+
+    if (event.section.trim() === sectionId.trim()) {
+      setTimeout(function() {
+        showCallNotification(event.name, event.section);
+      }, 500);
+    }
+  } catch (e) {}
+}
+
+function showCallNotification(studentName, sectionId) {
+  currentCallName = studentName;
+  currentCallSection = sectionId;
+
+  var overlay = document.getElementById("callNotifyOverlay");
+  document.getElementById("callNotifyName").textContent = studentName;
+  document.getElementById("callNotifySection").textContent =
+    "🏫 " + getSectionName(sectionId) + " (" + getSectionShortLabel(sectionId) + ")";
+
+  overlay.classList.add("show");
+
+  setTimeout(function() {
+    speakArabic(studentName);
+  }, 300);
+}
+
+function closeCallNotify() {
+  var overlay = document.getElementById("callNotifyOverlay");
+  if (overlay) overlay.classList.remove("show");
+  if (speechSupported) {
+    try { window.speechSynthesis.cancel(); } catch(e){}
+  }
+  currentCallName = "";
+  currentCallSection = "";
+}
+
+window.addEventListener("storage", function(e) {
+  if (e.key === STORAGE_CALL_EVENT_KEY && e.newValue) {
+    try {
+      var event = JSON.parse(e.newValue);
+      handleCallEvent(event);
+    } catch (err) {}
+  }
+});
+
+function startCallPolling() {
+  if (callPollingInterval) return;
+  callPollingInterval = setInterval(function() {
+    try {
+      var raw = localStorage.getItem(STORAGE_CALL_EVENT_KEY);
+      if (!raw) return;
+      var event = JSON.parse(raw);
+      if (event && event.timestamp && (Date.now() - event.timestamp) < 30000) {
+        handleCallEvent(event);
+      }
+    } catch (e) {}
+  }, 3000);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  var overlay = document.getElementById("callNotifyOverlay");
+  if (overlay) {
+    overlay.addEventListener("click", function(e) {
+      if (e.target === overlay) closeCallNotify();
+    });
+  }
+  startCallPolling();
+});
+
+if (speechSupported) {
+  window.speechSynthesis.onvoiceschanged = function() {
+    window.speechSynthesis.getVoices();
+  };
+}
+
+/* =========================================================
+   📌 Toast
+   ========================================================= */
+var toastTimer;
+function showToast(msg, isError, isInfo) {
+  isError = isError || false;
+  isInfo = isInfo || false;
+  var toast = document.getElementById("toast");
+  clearTimeout(toastTimer);
+  toast.textContent = msg;
+  toast.className = isError ? "error" : (isInfo ? "info" : "");
+  toast.classList.add("show");
+  toastTimer = setTimeout(function() {
+    toast.classList.remove("show");
+    setTimeout(function() { toast.style.display = "none"; }, 300);
+  }, 4000);
+  toast.style.display = "block";
+}
+
+/* =========================================================
+   📌 Init
+   ========================================================= */
+(function init() {
+  function updateVH() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+  }
+  updateVH();
+  window.addEventListener('resize', updateVH);
+  window.addEventListener('orientationchange', function() { setTimeout(updateVH, 100); });
+
+  document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+
+  // شاشة التحقق من الموقع
+  document.body.style.overflow = "hidden";
+  var geoGate = document.getElementById("geoGate");
+  if (geoGate) geoGate.classList.remove("hidden");
+  checkLocation();
+
+  // Firebase
+  initFirebase();
+
+  // مزامنة أولية
+  setTimeout(function() {
+    if (firebaseReady && firebaseDB) {
+      firebaseDB.ref("calledStudents").once("value").then(function(snapshot) {
+        var data = snapshot.val();
+        if (data && typeof data === "object") {
+          try {
+            localStorage.setItem(STORAGE_CALLED_KEY, JSON.stringify(data));
+            if (currentSection) renderSectionMembers();
+          } catch(e) {}
+        }
+      }).catch(function() {});
+
+      firebaseDB.ref("studentsData").once("value").then(function(snapshot) {
+        var data = snapshot.val();
+        if (data && Array.isArray(data) && data.length > 0) {
+          try {
+            STUDENTS.length = 0;
+            for (var i = 0; i < data.length; i++) STUDENTS.push(data[i]);
+            localStorage.setItem(STORAGE_STUDENTS_KEY, JSON.stringify(data));
+          } catch(e) {}
+        }
+      }).catch(function() {});
+    }
+  }, 1500);
+
+  updateStats();
+})();
+</script>
+
+</body>
+</html>
