@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
+<html lang="ar" dir="rtl" style="--vh: 9.11px;"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0b3a2e">
@@ -14,7 +13,12 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
   :root {
     --navy: #0b2545; --navy-2: #13315c;
     --green-1: #0b3a2e; --green-2: #14563f; --green-3: #1e7a58;
@@ -25,7 +29,9 @@
     --card-bg: rgba(255,255,255,0.08); --card-border: rgba(255,255,255,0.14);
     --vh: 1vh;
   }
-  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; min-height: 100%; }
+  html {
+    -webkit-text-size-adjust: 100%; text-size-adjust: 100%; min-height: 100%;
+  }
   html, body {
     min-height: 100%;
     font-family: 'Segoe UI', Tahoma, 'Noto Naskh Arabic', 'Helvetica Neue', Arial, sans-serif;
@@ -39,11 +45,8 @@
   body {
     display: flex; flex-direction: column;
     min-height: 100vh; min-height: calc(var(--vh, 1vh) * 100);
-    padding-bottom: constant(safe-area-inset-bottom);
     padding-bottom: env(safe-area-inset-bottom);
   }
-
-  /* ============ Header ============ */
   .school-header {
     width: 100%;
     background: linear-gradient(180deg, var(--navy), var(--navy-2));
@@ -58,79 +61,47 @@
   .school-header .brand { display: flex; align-items: center; gap: 12px; }
   .school-header .brand-logo {
     width: clamp(40px, 8vw, 60px); height: clamp(40px, 8vw, 60px);
-    flex-shrink: 0; background: var(--gold); border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--gold); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-size: clamp(20px, 4vw, 30px);
     color: var(--navy); font-weight: 900;
     box-shadow: 0 4px 12px rgba(212,162,76,0.4);
   }
-  .school-header .brand-text h2 {
-    color: var(--gold-2); font-size: clamp(13px, 2.4vw, 17px);
-    font-weight: 800; margin-bottom: 2px;
-  }
-  .school-header .brand-text p {
-    color: rgba(255,255,255,0.7);
-    font-size: clamp(10px, 1.8vw, 12px);
-  }
-  .header-back-btn {
-    background: rgba(255,255,255,0.12);
-    border: 1.5px solid rgba(255,255,255,0.25);
-    color: #fff; padding: 8px 16px; border-radius: 10px;
-    font-size: clamp(12px, 2.2vw, 14px); font-weight: 700;
-    cursor: pointer; font-family: inherit;
-    display: inline-flex; align-items: center; gap: 6px;
-    transition: all .2s;
-  }
-  .header-back-btn:hover { background: rgba(255,255,255,0.25); }
-
-  /* ============ Year Ribbon ============ */
+  .school-header .brand-text h2 { color: var(--gold-2); font-size: clamp(13px, 2.4vw, 17px); font-weight: 800; margin-bottom: 2px; line-height: 1.3; }
+  .school-header .brand-text p { color: rgba(255,255,255,0.7); font-size: clamp(10px, 1.8vw, 12px); line-height: 1.3; }
   .year-ribbon {
     width: 100%;
     background: linear-gradient(90deg, var(--green-1), var(--green-2), var(--green-3));
     padding: 10px clamp(12px, 3vw, 32px);
+    padding-left: max(clamp(12px, 3vw, 32px), env(safe-area-inset-left));
+    padding-right: max(clamp(12px, 3vw, 32px), env(safe-area-inset-right));
     display: flex; justify-content: space-between; align-items: center;
     gap: 12px; flex-wrap: wrap;
     border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-  .year-ribbon .year-badge, .year-ribbon .sync-status {
+  .year-ribbon .year-badge {
     background: rgba(255,255,255,0.15);
     border: 1px solid rgba(255,255,255,0.25);
-    color: #fff; padding: 6px 14px; border-radius: 999px;
+    color: #ffffff; padding: 6px 14px; border-radius: 999px;
     font-size: clamp(11px, 2vw, 14px); font-weight: 700;
     white-space: nowrap;
     display: inline-flex; align-items: center; gap: 6px;
+    backdrop-filter: blur(6px);
   }
-  .year-ribbon .sync-status .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #999; display: inline-block;
-  }
-  .year-ribbon .sync-status.online .dot {
-    background: var(--ok); box-shadow: 0 0 8px var(--ok);
-    animation: blink 2s ease-in-out infinite;
-  }
-  .year-ribbon .sync-status.offline .dot { background: var(--err); }
-
-  /* ============ Pages ============ */
   .page { display: none; }
   .page.active { display: flex; flex-direction: column; flex: 1; }
-
-  /* ============ Page Title ============ */
-  .page-title {
-    text-align: center;
-    padding: clamp(18px, 4vw, 34px) 12px clamp(6px, 1.5vw, 12px);
-  }
+  #pageMain.active { display: flex; flex-direction: column; flex: 1; }
+  .page-title { text-align: center; padding: clamp(18px, 4vw, 34px) 12px clamp(6px, 1.5vw, 12px); }
   .page-title h1 {
-    font-size: clamp(22px, 5.5vw, 40px);
-    font-weight: 900; color: #fff;
+    font-size: clamp(22px, 5.5vw, 40px); font-weight: 900; color: #ffffff;
     text-shadow: 0 4px 18px rgba(0,0,0,0.4);
-    display: inline-flex; align-items: center; gap: 12px;
-    letter-spacing: 0.5px;
+    display: inline-flex; align-items: center;
+    gap: 12px; letter-spacing: 0.5px;
   }
   .page-title h1 .icon { display: inline-block; animation: pulse 2.5s ease-in-out infinite; }
   @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
   .page-title p { color: var(--text-dim); margin-top: 6px; font-size: clamp(12px, 2.4vw, 15px); }
-
-  /* ============ Container / Card ============ */
   .container {
     width: 100%; max-width: 1100px; margin: 0 auto;
     padding: clamp(16px, 3.5vw, 40px) clamp(12px, 3vw, 24px);
@@ -141,29 +112,26 @@
   }
   .card {
     background: var(--card-bg);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    border: 1px solid var(--card-border);
-    border-radius: 18px; padding: clamp(20px, 4vw, 36px);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--card-border); border-radius: 18px;
+    padding: clamp(20px, 4vw, 36px);
     box-shadow: 0 8px 30px rgba(0,0,0,0.35);
   }
-
-  /* ============ Inputs ============ */
   .input-field {
     width: 100%;
     padding: clamp(14px, 2.8vw, 18px) clamp(16px, 3vw, 22px);
     border-radius: 14px; border: 2px solid transparent;
-    font-size: clamp(15px, 3vw, 18px);
+    font-size: 16px; font-size: clamp(15px, 3vw, 18px);
     outline: none; background: rgba(255,255,255,0.95); color: #111;
-    font-family: inherit; min-height: 56px;
+    font-family: inherit;
     transition: border-color .2s, box-shadow .2s;
+    min-height: 56px;
     appearance: none;
   }
   .input-field:focus {
     border-color: var(--gold);
     box-shadow: 0 0 0 4px rgba(212,162,76,0.25);
   }
-
-  /* ============ Buttons ============ */
   .btn-row {
     display: flex; gap: 12px; margin-top: 18px;
     flex-wrap: wrap; justify-content: center;
@@ -171,13 +139,15 @@
   .btn {
     padding: clamp(12px, 2.6vw, 16px) clamp(20px, 4vw, 32px);
     border: none; border-radius: 12px;
-    font-size: clamp(14px, 2.8vw, 16px);
+    font-size: 16px; font-size: clamp(14px, 2.8vw, 16px);
     font-weight: 700; cursor: pointer;
     transition: transform .15s, background .2s, box-shadow .2s;
     font-family: inherit;
     display: inline-flex; align-items: center; justify-content: center;
     gap: 6px; white-space: nowrap;
-    user-select: none; min-height: 50px;
+    user-select: none;
+    min-height: 50px;
+    appearance: none;
     touch-action: manipulation;
   }
   .btn:active { transform: scale(0.97); }
@@ -188,21 +158,14 @@
   .btn-scan:hover { background: #0768b8; box-shadow: 0 4px 16px rgba(9,132,227,0.4); }
   .btn-danger { background: var(--err); color: #fff; }
   .btn-danger:hover { background: #b02427; }
-  .btn-gold { background: var(--gold); color: #0b2545; }
-  .btn-gold:hover { background: var(--gold-2); }
-  .btn-admin { background: linear-gradient(160deg, #d4a24c, #b8862f); color: #0b2545; }
-  .btn-admin:hover { background: linear-gradient(160deg, #f0c674, #d4a24c); box-shadow: 0 4px 16px rgba(212,162,76,0.5); }
   .btn-sm { padding: 7px 12px; font-size: clamp(11px, 2vw, 13px); border-radius: 9px; min-height: unset; }
-
-  /* ============ Status Bar ============ */
   .status-bar {
     display: flex; justify-content: space-between; align-items: center;
     gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
   }
   .status-dot-wrap {
     display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(0,184,148,0.15);
-    border: 1px solid rgba(0,184,148,0.35);
+    background: rgba(0,184,148,0.15); border: 1px solid rgba(0,184,148,0.35);
     color: #a8f0dc; padding: 6px 12px; border-radius: 999px;
     font-size: clamp(11px, 2vw, 13px); font-weight: 700;
   }
@@ -213,34 +176,27 @@
     animation: blink 2s ease-in-out infinite;
   }
   @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
-
-  .empty-msg {
-    text-align: center; padding: 18px;
-    color: var(--text-dim);
-    font-size: clamp(12px, 2.4vw, 14px);
-  }
-
-  /* ============ QR Reader ============ */
+  .empty-msg { text-align: center; padding: 18px; color: var(--text-dim); font-size: clamp(12px, 2.4vw, 14px); }
   #reader {
     width: 100%; max-width: 480px; margin: 14px auto 0;
     border-radius: 14px; overflow: hidden;
     border: 2px solid var(--gold); background: #000; display: none;
   }
   #reader video { border-radius: 12px; width: 100% !important; height: auto !important; }
-
-  /* ============ Toast ============ */
   #toast {
     position: fixed;
     bottom: calc(24px + env(safe-area-inset-bottom));
     left: 50%; transform: translateX(-50%) translateY(20px);
     background: var(--ok); color: #fff;
     padding: clamp(12px, 2.6vw, 16px) clamp(18px, 3.5vw, 26px);
-    border-radius: 14px; font-size: clamp(13px, 2.6vw, 15px);
-    font-weight: 700; display: none;
+    border-radius: 14px;
+    font-size: clamp(13px, 2.6vw, 15px); font-weight: 700;
+    display: none;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     z-index: 9999; max-width: calc(100vw - 32px);
     text-align: center; line-height: 1.5;
-    opacity: 0; transition: opacity .25s, transform .25s;
+    opacity: 0;
+    transition: opacity .25s, transform .25s;
   }
   #toast.show {
     display: block; opacity: 1;
@@ -248,219 +204,275 @@
   }
   #toast.error { background: var(--err); }
   #toast.info { background: var(--info); }
-
-  /* ============ Modals (shared) ============ */
-  .modal-overlay, .results-overlay, .success-overlay, .password-overlay, .upload-overlay, .section-members-overlay {
-    position: fixed; inset: 0;
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 16px; z-index: 10000; opacity: 0;
+    transition: opacity .2s;
+  }
+  .modal-overlay.show { display: flex; opacity: 1; }
+  .modal-box {
+    background: linear-gradient(160deg, var(--navy), var(--navy-2));
+    border: 1px solid var(--gold); border-radius: 18px;
+    padding: clamp(20px, 4vw, 28px);
+    width: 100%; max-width: 440px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .modal-box h3 { font-size: clamp(16px, 3vw, 20px); margin-bottom: 12px; color: var(--gold-2); display: flex; align-items: center; gap: 8px; }
+  .modal-box p { color: var(--text-dim); font-size: clamp(12px, 2.2vw, 14px); margin-bottom: 14px; line-height: 1.7; }
+  .geo-gate {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; z-index: 99999; text-align: center;
+  }
+  .geo-gate.hidden { display: none; }
+  .geo-box {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--gold); border-radius: 20px;
+    padding: clamp(24px, 5vw, 40px) clamp(20px, 4vw, 36px);
+    max-width: 480px; width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .geo-icon {
+    font-size: clamp(48px, 10vw, 72px); margin-bottom: 14px; display: block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .geo-icon.ok { animation: none; }
+  .geo-icon.err { animation: none; }
+  .geo-box h2 { font-size: clamp(17px, 3.5vw, 22px); margin-bottom: 10px; color: var(--gold-2); font-weight: 800; }
+  .geo-box p { color: var(--text-dim); font-size: clamp(13px, 2.5vw, 15px); line-height: 1.7; margin-bottom: 18px; }
+  .geo-box p small { display: block; margin-top: 6px; }
+  .geo-spinner {
+    width: 44px; height: 44px; margin: 16px auto;
+    border: 4px solid rgba(255,255,255,0.15);
+    border-top-color: var(--gold); border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  .geo-spinner.hidden { display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .geo-coords {
+    margin-top: 14px;
+    font-size: clamp(11px, 2vw, 12px);
+    color: var(--text-dim);
+    font-family: 'Courier New', monospace;
+    direction: ltr; word-break: break-all; line-height: 1.6;
+    opacity: 0.7; white-space: pre-line;
+  }
+  .results-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    display: none; align-items: center; justify-content: center;
-    padding: 20px; z-index: 100000;
-    opacity: 0; transition: opacity .25s;
-    overflow-y: auto;
+    backdrop-filter: blur(12px);
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 20px; z-index: 100000; opacity: 0;
+    transition: opacity .25s;
   }
-  .modal-overlay.show, .results-overlay.show, .success-overlay.show,
-  .password-overlay.show, .upload-overlay.show, .section-members-overlay.show {
-    display: flex; opacity: 1;
-  }
-  .modal-box, .results-box, .password-box, .upload-box, .section-members-box {
+  .results-overlay.show { display: flex; opacity: 1; }
+  .results-box {
     background: linear-gradient(160deg, #0b2545, #13315c, #0b3a2e);
     border: 2px solid var(--gold); border-radius: 22px;
     padding: clamp(20px, 4vw, 32px);
-    width: 100%; max-width: 720px;
-    max-height: 90vh; max-height: 90dvh;
+    width: 100%; max-width: 720px; max-height: 90vh; max-height: 90dvh;
     display: flex; flex-direction: column;
     box-shadow: 0 0 0 6px rgba(212,162,76,0.1), 0 30px 80px rgba(0,0,0,0.75);
-    animation: popIn .35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    margin: auto;
+    animation: successPop .35s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  .password-box, .upload-box { max-width: 480px; text-align: center; }
-  @keyframes popIn {
-    0% { transform: scale(0.85) translateY(20px); opacity: 0; }
-    100% { transform: scale(1) translateY(0); opacity: 1; }
-  }
-
-  /* ============ Password ============ */
-  .password-icon, .upload-icon {
-    font-size: clamp(44px, 10vw, 64px);
-    line-height: 1; margin-bottom: 12px; display: block;
-  }
-  .password-title, .upload-title {
-    font-size: clamp(18px, 4vw, 22px);
-    color: var(--gold-2); font-weight: 900;
-    margin-bottom: 8px;
-  }
-  .password-desc, .upload-desc {
-    color: var(--text-dim);
-    font-size: clamp(12px, 2.4vw, 14px);
-    margin-bottom: 18px; line-height: 1.7;
-  }
-  .upload-desc code {
-    background: rgba(0,0,0,0.3); color: var(--gold-2);
-    padding: 2px 6px; border-radius: 4px;
-    font-size: 0.9em; direction: ltr;
-    display: inline-block;
-  }
-  .password-error {
-    color: #ff6b6b;
-    font-size: clamp(12px, 2.2vw, 13px);
-    font-weight: 700; min-height: 20px;
-    margin: 4px 0; text-align: center;
-  }
-
-  /* ============ Results / Section header ============ */
-  .results-header, .section-members-header {
+  .results-header {
     display: flex; justify-content: space-between; align-items: center;
     gap: 12px; padding-bottom: 16px; margin-bottom: 14px;
     border-bottom: 2px solid rgba(212,162,76,0.35);
     flex-wrap: wrap;
   }
-  .results-header h3, .section-members-header h3 {
-    font-size: clamp(16px, 3vw, 20px);
-    color: var(--gold-2); font-weight: 900;
-    display: flex; align-items: center; gap: 8px;
-    flex-wrap: wrap;
-  }
-  .results-count {
-    background: rgba(0,184,148,0.25);
-    color: #d4fff1; padding: 4px 12px;
-    border-radius: 999px;
-    font-size: clamp(12px, 2.2vw, 14px);
-    font-weight: 700;
+  .results-header h3 { font-size: clamp(16px, 3vw, 20px); color: var(--gold-2); font-weight: 900; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .results-header .results-count {
+    background: rgba(0,184,148,0.25); color: #d4fff1;
+    padding: 4px 12px; border-radius: 999px;
+    font-size: clamp(12px, 2.2vw, 14px); font-weight: 700;
     border: 1px solid rgba(0,184,148,0.5);
   }
   .results-close-icon {
-    background: var(--err); color: #fff;
-    border: none; width: 40px; height: 40px;
-    border-radius: 50%; cursor: pointer;
-    font-size: 22px; font-weight: 900;
+    background: var(--err); color: #fff; border: none;
+    width: 40px; height: 40px; border-radius: 50%;
+    cursor: pointer; font-size: 22px; font-weight: 900;
     display: inline-flex; align-items: center; justify-content: center;
-    flex-shrink: 0; line-height: 1;
     transition: transform .15s, background .2s;
+    flex-shrink: 0; line-height: 1;
+    appearance: none;
+    touch-action: manipulation;
   }
   .results-close-icon:hover { background: #b02427; transform: rotate(90deg); }
   .results-list {
     flex: 1; overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     display: flex; flex-direction: column;
     gap: 10px; padding-left: 6px; padding-right: 2px;
   }
+  .results-list::-webkit-scrollbar { width: 8px; }
+  .results-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
+  .results-list::-webkit-scrollbar-thumb { background: rgba(212,162,76,0.5); border-radius: 4px; }
   .result-item {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12);
     padding: clamp(14px, 2.8vw, 18px) clamp(16px, 3.2vw, 22px);
     border-radius: 14px; cursor: pointer;
     display: flex; justify-content: space-between; align-items: center;
-    gap: 12px; transition: .18s;
+    gap: 12px;
+    transition: background .18s, transform .18s, border-color .18s;
     min-height: 62px;
+    touch-action: manipulation;
   }
-  .result-item:hover {
-    background: rgba(212,162,76,0.18);
-    border-color: var(--gold);
-    transform: translateX(-6px);
-  }
-  .result-item .name {
-    font-weight: 700;
-    font-size: clamp(14px, 2.6vw, 16px);
-    flex: 1; word-break: break-word;
-  }
+  .result-item:hover { background: rgba(212,162,76,0.18); border-color: var(--gold); transform: translateX(-6px); }
+  .result-item:active { transform: scale(0.98); }
+  .result-item .name { font-weight: 700; font-size: clamp(14px, 2.6vw, 16px); flex: 1; word-break: break-word; color: #ffffff; }
   .result-item .section {
     font-size: clamp(12px, 2.1vw, 14px);
-    background: rgba(0,184,148,0.28);
-    border: 1px solid rgba(0,184,148,0.55);
-    color: #d4fff1; padding: 6px 14px;
-    border-radius: 10px; white-space: nowrap;
-    font-weight: 700;
+    background: rgba(0,184,148,0.28); border: 1px solid rgba(0,184,148,0.55);
+    color: #d4fff1; padding: 6px 14px; border-radius: 10px;
+    white-space: nowrap; font-weight: 700;
   }
-  .results-footer {
-    padding-top: 14px; margin-top: 14px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    text-align: center;
+  .results-footer { padding-top: 14px; margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; }
+  .success-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(12px);
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 20px; z-index: 100001; opacity: 0;
+    transition: opacity .25s;
   }
-
-  /* ============ Success modal ============ */
-  .success-overlay { z-index: 100001; }
+  .success-overlay.show { display: flex; opacity: 1; }
   .success-box {
     background: linear-gradient(160deg, #0b3a2e, #14563f, #1e7a58);
     border: 3px solid var(--gold); border-radius: 24px;
     padding: clamp(28px, 5vw, 48px) clamp(24px, 4vw, 40px);
     width: 100%; max-width: 540px; text-align: center;
     box-shadow: 0 0 0 6px rgba(212,162,76,0.15), 0 30px 80px rgba(0,0,0,0.7), 0 0 80px rgba(0,184,148,0.35);
-    animation: popIn .4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative; margin: auto;
+    animation: successPop .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes successPop {
+    0%   { transform: scale(0.7) translateY(30px); opacity: 0; }
+    60%  { transform: scale(1.03) translateY(-4px); opacity: 1; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
   }
   .success-icon {
-    font-size: clamp(64px, 14vw, 96px);
-    line-height: 1; margin-bottom: 12px; display: block;
-    animation: bounceIcon .8s ease-in-out infinite alternate;
+    font-size: clamp(64px, 14vw, 96px); line-height: 1; margin-bottom: 12px;
+    display: block;
+    animation: successBounce .8s ease-in-out infinite alternate;
+    filter: drop-shadow(0 6px 20px rgba(0,184,148,0.6));
   }
-  @keyframes bounceIcon {
-    0% { transform: scale(1) rotate(0deg); }
-    100% { transform: scale(1.1) rotate(3deg); }
-  }
-  .success-title {
-    font-size: clamp(22px, 5vw, 32px);
-    font-weight: 900; color: #fff;
-    margin-bottom: 8px;
-    text-shadow: 0 3px 12px rgba(0,0,0,0.4);
-  }
-  .success-sub {
-    font-size: clamp(14px, 2.8vw, 18px);
-    color: var(--gold-2); font-weight: 700;
-    margin-bottom: 18px; line-height: 1.6;
-  }
+  @keyframes successBounce { 0% { transform: scale(1) rotate(0deg); } 100% { transform: scale(1.1) rotate(3deg); } }
+  .success-title { font-size: clamp(22px, 5vw, 32px); font-weight: 900; color: #ffffff; margin-bottom: 8px; text-shadow: 0 3px 12px rgba(0,0,0,0.4); letter-spacing: 0.5px; }
+  .success-sub { font-size: clamp(14px, 2.8vw, 18px); color: var(--gold-2); font-weight: 700; margin-bottom: 18px; letter-spacing: 0.3px; line-height: 1.6; }
   .success-student {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22);
     border-radius: 14px; padding: 14px 18px;
-    font-size: clamp(13px, 2.6vw, 15px);
-    color: #fff; line-height: 1.9;
-    margin-bottom: 20px; text-align: right;
-    white-space: pre-line;
+    font-size: clamp(13px, 2.6vw, 15px); color: #ffffff;
+    line-height: 1.9; margin-bottom: 20px; text-align: right; white-space: pre-line;
   }
   .success-student b { color: var(--gold-2); font-weight: 800; }
   .success-close-btn {
     background: var(--gold); color: #0b2545;
-    font-weight: 900;
-    font-size: clamp(15px, 3vw, 18px);
-    padding: 14px 40px; border-radius: 14px;
-    border: none; cursor: pointer;
+    font-weight: 900; font-size: clamp(15px, 3vw, 18px);
+    padding: 14px 40px; border-radius: 14px; border: none; cursor: pointer;
     box-shadow: 0 8px 24px rgba(212,162,76,0.4);
-    min-width: 200px; min-height: 54px;
-    font-family: inherit;
+    transition: transform .15s, background .2s, box-shadow .2s;
+    font-family: inherit; min-width: 200px;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px; min-height: 54px;
+    appearance: none;
+    touch-action: manipulation;
   }
-  .success-close-btn:hover { background: var(--gold-2); }
-
-  /* ============ Upload modal ============ */
-  .file-input-hidden {
-    position: absolute; width: 1px; height: 1px;
-    padding: 0; margin: -1px; overflow: hidden;
-    clip: rect(0,0,0,0); border: 0;
+  .success-close-btn:hover { background: var(--gold-2); box-shadow: 0 10px 30px rgba(212,162,76,0.6); transform: translateY(-2px); }
+  .success-close-btn:active { transform: scale(0.97); }
+  .footer {
+    text-align: center;
+    padding: clamp(12px, 2.5vw, 20px);
+    color: var(--text-dim);
+    font-size: clamp(10px, 1.9vw, 12px);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: auto; line-height: 1.7;
   }
+  .add-btn {
+    position: fixed;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    left: calc(16px + env(safe-area-inset-left));
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(212,162,76,0.15);
+    border: 1.5px solid rgba(212,162,76,0.45);
+    color: rgba(212,162,76,0.85);
+    font-size: 22px; font-weight: 300; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    line-height: 1; z-index: 9000;
+    transition: all .2s;
+    padding: 0;
+    user-select: none;
+    opacity: 0.55;
+    appearance: none;
+    touch-action: manipulation;
+  }
+  .add-btn:hover {
+    background: rgba(212,162,76,0.3); border-color: var(--gold);
+    color: var(--gold); opacity: 1;
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 4px 16px rgba(212,162,76,0.5);
+  }
+  .add-btn:active { transform: scale(0.95); }
+  .password-overlay, .upload-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(12px);
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 20px; z-index: 100002; opacity: 0;
+    transition: opacity .25s;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+  .password-overlay.show, .upload-overlay.show { display: flex; opacity: 1; }
+  .password-box, .upload-box {
+    background: linear-gradient(160deg, #0b2545, #13315c);
+    border: 2px solid var(--gold); border-radius: 22px;
+    padding: clamp(24px, 5vw, 36px);
+    width: 100%; max-width: 480px;
+    box-shadow: 0 0 0 6px rgba(212,162,76,0.1), 0 30px 80px rgba(0,0,0,0.75);
+    animation: successPop .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: center; margin: auto;
+  }
+  .password-icon, .upload-icon {
+    font-size: clamp(44px, 10vw, 64px); line-height: 1; margin-bottom: 12px;
+    display: block;
+    filter: drop-shadow(0 4px 12px rgba(212,162,76,0.4));
+  }
+  .password-title, .upload-title { font-size: clamp(18px, 4vw, 22px); color: var(--gold-2); font-weight: 900; margin-bottom: 8px; }
+  .password-desc, .upload-desc { color: var(--text-dim); font-size: clamp(12px, 2.4vw, 14px); margin-bottom: 18px; line-height: 1.7; text-align: center; }
+  .upload-desc code {
+    background: rgba(0,0,0,0.3); color: var(--gold-2);
+    padding: 2px 6px; border-radius: 4px; font-size: 0.9em;
+    direction: ltr; display: inline-block;
+  }
+  .password-error { color: #ff6b6b; font-size: clamp(12px, 2.2vw, 13px); font-weight: 700; min-height: 20px; margin: 4px 0; text-align: center; }
+  .file-input-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
   .file-drop-zone {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 8px;
     padding: clamp(20px, 4vw, 32px) clamp(14px, 3vw, 20px);
-    border: 2px dashed rgba(212,162,76,0.5);
-    border-radius: 14px; background: rgba(255,255,255,0.05);
-    cursor: pointer; transition: all .2s;
+    border: 2px dashed rgba(212,162,76,0.5); border-radius: 14px;
+    background: rgba(255,255,255,0.05); cursor: pointer;
+    transition: all .2s;
     margin-bottom: 16px; min-height: 120px;
+    touch-action: manipulation;
   }
   .file-drop-zone:hover, .file-drop-zone.dragover {
-    border-color: var(--gold);
-    background: rgba(212,162,76,0.15);
+    border-color: var(--gold); background: rgba(212,162,76,0.15);
     transform: scale(1.02);
   }
-  .file-drop-zone.has-file {
-    border-color: var(--ok); background: rgba(0,184,148,0.15);
-  }
+  .file-drop-zone.has-file { border-color: var(--ok); background: rgba(0,184,148,0.15); }
   .file-drop-icon { font-size: 36px; }
-  .file-drop-text {
-    color: var(--text);
-    font-size: clamp(12px, 2.4vw, 14px);
-    font-weight: 600; text-align: center;
-    line-height: 1.5; word-break: break-word;
-  }
+  .file-drop-text { color: var(--text); font-size: clamp(12px, 2.4vw, 14px); font-weight: 600; text-align: center; line-height: 1.5; word-break: break-word; }
   .upload-progress {
     display: flex; align-items: center; justify-content: center;
     gap: 12px; padding: 12px; margin-bottom: 12px;
@@ -471,44 +483,68 @@
   .progress-spinner {
     width: 24px; height: 24px;
     border: 3px solid rgba(255,255,255,0.15);
-    border-top-color: var(--gold);
-    border-radius: 50%;
+    border-top-color: var(--gold); border-radius: 50%;
     animation: spin 0.9s linear infinite;
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
   .upload-status {
-    min-height: 24px;
-    font-size: clamp(12px, 2.4vw, 14px);
-    font-weight: 700; text-align: center;
-    margin-bottom: 12px; line-height: 1.6;
-    white-space: pre-line;
+    min-height: 24px; font-size: clamp(12px, 2.4vw, 14px); font-weight: 700;
+    text-align: center; margin-bottom: 12px; line-height: 1.6; white-space: pre-line;
   }
   .upload-status.success { color: #a8f0dc; }
   .upload-status.error { color: #ff6b6b; }
   .upload-status.info { color: var(--gold-2); }
-
-  /* ============ Admin: sections grid ============ */
+  .hidden { display: none !important; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-8px); }
+    80% { transform: translateX(8px); }
+  }
+  /* ============ Admin Card Button ============ */
+  .admin-card-btn {
+    margin-top: 14px;
+    padding: 16px 24px;
+    background: linear-gradient(160deg, rgba(212,162,76,0.25), rgba(212,162,76,0.08));
+    border: 2px solid rgba(212,162,76,0.5);
+    border-radius: 16px;
+    color: #fff;
+    font-family: inherit;
+    font-weight: 900;
+    font-size: clamp(15px, 3vw, 18px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all .25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    width: 100%;
+    min-height: 60px;
+    touch-action: manipulation;
+  }
+  .admin-card-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: var(--gold);
+    box-shadow: 0 12px 30px rgba(212,162,76,0.4);
+    background: linear-gradient(160deg, rgba(212,162,76,0.35), rgba(212,162,76,0.15));
+  }
+  .admin-card-btn:active { transform: scale(0.97); }
+  /* ============ Admin Sections Grid ============ */
   .admin-info-bar {
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 14px;
     padding: 14px 20px;
     display: flex; justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
+    align-items: center; flex-wrap: wrap;
+    gap: 10px; margin-bottom: 20px;
   }
   .admin-info-bar .info-item {
     display: inline-flex; align-items: center; gap: 8px;
     color: var(--text-dim);
-    font-size: clamp(12px, 2.4vw, 14px);
-    font-weight: 600;
+    font-size: clamp(12px, 2.4vw, 14px); font-weight: 600;
   }
-  .admin-info-bar .info-item b {
-    color: var(--gold-2); font-size: clamp(14px, 2.8vw, 18px);
-  }
-
+  .admin-info-bar .info-item b { color: var(--gold-2); font-size: clamp(14px, 2.8vw, 18px); }
   .sections-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -524,63 +560,47 @@
     transition: all .25s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
+    gap: 8px; min-height: 90px;
+    touch-action: manipulation;
   }
   .section-btn:hover {
     transform: translateY(-4px) scale(1.03);
     border-color: var(--gold);
     box-shadow: 0 12px 30px rgba(212,162,76,0.35);
-    background: linear-gradient(160deg, rgba(212,162,76,0.3), rgba(212,162,76,0.1));
   }
   .section-btn:active { transform: scale(0.97); }
-  .section-btn .section-label {
-    font-size: clamp(16px, 3.2vw, 22px);
-    font-weight: 900;
-    color: var(--gold-2);
-    letter-spacing: 0.5px;
-  }
+  .section-btn .section-label { font-size: clamp(16px, 3.2vw, 22px); font-weight: 900; color: var(--gold-2); }
   .section-btn .section-count {
-    font-size: clamp(10px, 2vw, 12px);
-    color: var(--text-dim);
+    font-size: clamp(10px, 2vw, 12px); color: var(--text-dim);
     background: rgba(0,0,0,0.25);
-    padding: 3px 10px;
-    border-radius: 999px;
-    font-weight: 700;
+    padding: 3px 10px; border-radius: 999px; font-weight: 700;
   }
-
-  /* ============ Section members page ============ */
+  /* ============ Section Stats ============ */
   .section-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 12px; margin-bottom: 20px;
   }
   .stat-box {
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 14px;
-    padding: 16px 14px;
+    border-radius: 14px; padding: 16px 14px;
     text-align: center;
   }
   .stat-box .stat-num {
     font-size: clamp(24px, 5vw, 36px);
-    font-weight: 900;
-    color: var(--gold-2);
+    font-weight: 900; color: var(--gold-2);
     line-height: 1.1;
   }
   .stat-box .stat-label {
     font-size: clamp(11px, 2.2vw, 13px);
-    color: var(--text-dim);
-    margin-top: 4px;
-    font-weight: 600;
+    color: var(--text-dim); margin-top: 4px; font-weight: 600;
   }
   .stat-box.called { background: rgba(0,184,148,0.15); border-color: rgba(0,184,148,0.5); }
   .stat-box.called .stat-num { color: #a8f0dc; }
   .stat-box.remaining { background: rgba(9,132,227,0.15); border-color: rgba(9,132,227,0.5); }
   .stat-box.remaining .stat-num { color: #74c0fc; }
-
+  /* ============ Members Tabs & List ============ */
   .members-tabs {
     display: flex; gap: 8px; margin-bottom: 16px;
     background: rgba(0,0,0,0.2);
@@ -595,169 +615,45 @@
     font-size: clamp(12px, 2.4vw, 14px);
     cursor: pointer; transition: all .2s;
     min-width: 120px;
+    touch-action: manipulation;
   }
-  .members-tab.active {
-    background: var(--gold); color: #0b2545;
-    box-shadow: 0 4px 12px rgba(212,162,76,0.4);
-  }
-  .members-tab:not(.active):hover {
-    background: rgba(255,255,255,0.08); color: #fff;
-  }
-
+  .members-tab.active { background: var(--gold); color: #0b2545; box-shadow: 0 4px 12px rgba(212,162,76,0.4); }
+  .members-tab:not(.active):hover { background: rgba(255,255,255,0.08); color: #fff; }
   .members-list {
     display: flex; flex-direction: column;
-    gap: 8px;
-    max-height: 55vh;
-    overflow-y: auto;
-    padding-right: 4px;
+    gap: 8px; max-height: 55vh;
+    overflow-y: auto; padding-right: 4px;
+    -webkit-overflow-scrolling: touch;
   }
-  .members-list::-webkit-scrollbar { width: 8px; }
-  .members-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
-  .members-list::-webkit-scrollbar-thumb { background: rgba(212,162,76,0.5); border-radius: 4px; }
-
   .member-item {
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 12px;
     padding: 12px 16px;
     display: flex; justify-content: space-between;
-    align-items: center;
-    gap: 12px;
+    align-items: center; gap: 12px;
     transition: .2s;
   }
-  .member-item:hover { background: rgba(255,255,255,0.14); }
   .member-item .member-name {
     font-weight: 700;
     font-size: clamp(13px, 2.5vw, 15px);
-    flex: 1;
-    word-break: break-word;
+    flex: 1; word-break: break-word;
   }
   .member-item .member-time {
     font-size: clamp(10px, 2vw, 12px);
     color: var(--text-dim);
     background: rgba(0,0,0,0.25);
-    padding: 3px 10px;
-    border-radius: 999px;
+    padding: 3px 10px; border-radius: 999px;
     white-space: nowrap;
   }
-  .member-item.called {
-    background: rgba(0,184,148,0.15);
-    border-color: rgba(0,184,148,0.4);
-  }
+  .member-item.called { background: rgba(0,184,148,0.15); border-color: rgba(0,184,148,0.4); }
   .member-item.called .member-name { color: #a8f0dc; }
-  .member-item.remaining {
-    background: rgba(9,132,227,0.1);
-    border-color: rgba(9,132,227,0.3);
-  }
-
-  /* ============ Empty state ============ */
-  .empty-state {
-    text-align: center; padding: 40px 20px;
-    color: var(--text-dim);
-  }
-  .empty-state .icon {
-    font-size: 64px; margin-bottom: 12px;
-    opacity: 0.6;
-  }
-  .empty-state p {
-    font-size: clamp(13px, 2.5vw, 15px);
-    line-height: 1.6;
-  }
-
-  /* ============ Geo Gate ============ */
-  .geo-gate {
-    position: fixed; inset: 0;
-    background: linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px; z-index: 99999;
-    text-align: center;
-  }
-  .geo-gate.hidden { display: none; }
-  .geo-box {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    border: 1px solid var(--gold); border-radius: 20px;
-    padding: clamp(24px, 5vw, 40px) clamp(20px, 4vw, 36px);
-    max-width: 480px; width: 100%;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  }
-  .geo-icon {
-    font-size: clamp(48px, 10vw, 72px);
-    margin-bottom: 14px; display: block;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  .geo-icon.ok { animation: none; }
-  .geo-icon.err { animation: none; }
-  .geo-box h2 {
-    font-size: clamp(17px, 3.5vw, 22px);
-    margin-bottom: 10px;
-    color: var(--gold-2); font-weight: 800;
-  }
-  .geo-box p {
-    color: var(--text-dim);
-    font-size: clamp(13px, 2.5vw, 15px);
-    line-height: 1.7; margin-bottom: 18px;
-  }
-  .geo-box p small { display: block; margin-top: 6px; }
-  .geo-spinner {
-    width: 44px; height: 44px;
-    margin: 16px auto;
-    border: 4px solid rgba(255,255,255,0.15);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-  }
-  .geo-spinner.hidden { display: none; }
-  .geo-coords {
-    margin-top: 14px;
-    font-size: clamp(11px, 2vw, 12px);
-    color: var(--text-dim);
-    font-family: 'Courier New', monospace;
-    direction: ltr;
-    word-break: break-all;
-    line-height: 1.6;
-    opacity: 0.7;
-    white-space: pre-line;
-  }
-
-  /* ============ + Button ============ */
-  .add-btn {
-    position: fixed;
-    bottom: calc(16px + env(safe-area-inset-bottom));
-    left: calc(16px + env(safe-area-inset-left));
-    width: 38px; height: 38px; border-radius: 50%;
-    background: rgba(212,162,76,0.15);
-    border: 1.5px solid rgba(212,162,76,0.45);
-    color: rgba(212,162,76,0.85);
-    font-size: 22px; font-weight: 300;
-    cursor: pointer; display: flex;
-    align-items: center; justify-content: center;
-    z-index: 9000; padding: 0; opacity: 0.55;
-    transition: all .2s;
-  }
-  .add-btn:hover {
-    background: rgba(212,162,76,0.3);
-    border-color: var(--gold); color: var(--gold);
-    opacity: 1; transform: scale(1.1) rotate(90deg);
-  }
-
-  /* ============ Footer ============ */
-  .footer {
-    text-align: center;
-    padding: clamp(12px, 2.5vw, 20px);
-    color: var(--text-dim);
-    font-size: clamp(10px, 1.9vw, 12px);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    margin-top: auto; line-height: 1.7;
-  }
-
-  .hidden { display: none !important; }
-
+  .member-item.remaining { background: rgba(9,132,227,0.1); border-color: rgba(9,132,227,0.3); }
   /* ============ Call Notify Modal ============ */
   .call-notify-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
     display: none; align-items: center; justify-content: center;
     padding: 20px; z-index: 100002;
     opacity: 0; transition: opacity .3s;
@@ -768,26 +664,18 @@
     border: 3px solid var(--gold);
     border-radius: 26px;
     padding: clamp(28px, 5vw, 48px) clamp(24px, 4vw, 42px);
-    width: 100%; max-width: 560px;
-    text-align: center;
+    width: 100%; max-width: 560px; text-align: center;
     box-shadow: 0 0 0 6px rgba(212,162,76,0.15), 0 30px 80px rgba(0,0,0,0.75), 0 0 80px rgba(0,184,148,0.4);
-    animation: popIn .4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-    margin: auto;
+    animation: successPop .4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   .call-notify-icon {
     font-size: clamp(60px, 13vw, 90px);
     line-height: 1; margin-bottom: 14px; display: block;
-    animation: ringBell 0.9s ease-in-out infinite alternate;
-  }
-  @keyframes ringBell {
-    0% { transform: rotate(-12deg) scale(1); }
-    100% { transform: rotate(12deg) scale(1.12); }
+    animation: successBounce .9s ease-in-out infinite alternate;
   }
   .call-notify-label {
     font-size: clamp(14px, 2.8vw, 17px);
-    color: var(--gold-2); font-weight: 700;
-    margin-bottom: 8px; letter-spacing: 0.5px;
+    color: var(--gold-2); font-weight: 700; margin-bottom: 8px;
   }
   .call-notify-name {
     font-size: clamp(22px, 5.5vw, 34px);
@@ -805,35 +693,42 @@
     font-size: clamp(13px, 2.6vw, 16px);
     font-weight: 700; margin-bottom: 22px;
   }
-  .call-notify-actions {
-    display: flex; gap: 12px; justify-content: center;
-    flex-wrap: wrap;
-  }
+  .call-notify-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
   .call-notify-btn {
     padding: 14px 32px;
     border: none; border-radius: 14px;
     font-family: inherit; font-weight: 900;
     font-size: clamp(14px, 2.8vw, 17px);
-    cursor: pointer;
-    min-width: 150px; min-height: 52px;
+    cursor: pointer; min-width: 150px; min-height: 52px;
     transition: transform .15s, background .2s;
+    touch-action: manipulation;
   }
   .call-notify-btn:active { transform: scale(0.97); }
   .call-notify-btn.speak { background: var(--info); color: #fff; }
   .call-notify-btn.speak:hover { background: #0768b8; }
   .call-notify-btn.close { background: var(--gold); color: #0b2545; }
   .call-notify-btn.close:hover { background: var(--gold-2); }
-
+  /* ============ Header Back Button ============ */
+  .header-back-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    color: #fff; padding: 8px 16px; border-radius: 10px;
+    font-size: clamp(12px, 2.2vw, 14px); font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: all .2s;
+    touch-action: manipulation;
+  }
+  .header-back-btn:hover { background: rgba(255,255,255,0.25); }
   /* ============ Responsive ============ */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .container { max-width: 100%; padding-left: 24px; padding-right: 24px; }
+    .results-box { max-width: 680px; }
+    .card { padding: 28px; }
+  }
   @media (max-width: 640px) {
-    .school-header {
-      flex-direction: column-reverse; align-items: stretch;
-      text-align: center; gap: 10px;
-    }
-    .school-header .brand {
-      justify-content: center; flex-direction: column;
-      text-align: center;
-    }
+    .school-header { flex-direction: column-reverse; align-items: stretch; text-align: center; gap: 10px; }
+    .school-header .brand { justify-content: center; flex-direction: column; text-align: center; }
     .year-ribbon { flex-direction: column-reverse; text-align: center; gap: 8px; }
     .btn-row { flex-direction: column; }
     .btn-row .btn { width: 100%; }
@@ -842,20 +737,53 @@
     .member-item { flex-direction: column; align-items: stretch; gap: 8px; }
     .member-item .member-time { align-self: flex-start; }
     .members-tab { flex: 1 1 100%; }
+    .results-box { max-height: 92vh; max-height: 92dvh; padding: 18px 14px; border-radius: 18px; }
+    .results-header h3 { font-size: 15px; }
+    .results-close-icon { width: 36px; height: 36px; font-size: 20px; }
+    .success-box { padding: 24px 18px; border-radius: 18px; }
+    .password-box, .upload-box { border-radius: 18px; }
   }
   @media (max-width: 380px) {
     .page-title h1 { font-size: 19px; gap: 6px; }
     .card { border-radius: 14px; padding: 16px; }
     .add-btn { width: 34px; height: 34px; font-size: 20px; bottom: 12px; left: 12px; }
-    .section-btn { padding: 14px 8px; }
+    .year-ribbon .year-badge { font-size: 11px; padding: 5px 10px; }
+    .success-title { font-size: 20px; }
+    .success-sub { font-size: 13px; }
   }
-  @media (min-width: 1025px) { .container { max-width: 1050px; } }
+  @media (min-width: 1025px) {
+    .container { max-width: 1050px; }
+    .input-field { min-height: 64px; font-size: 18px; }
+  }
+  @media (min-width: 1600px) {
+    .container { max-width: 1200px; }
+    .school-header { padding: 18px 60px; }
+    .year-ribbon { padding: 12px 60px; }
+  }
+  @media (max-height: 500px) and (orientation: landscape) {
+    .page-title { padding: 12px 12px 6px; }
+    .page-title h1 { font-size: 20px; }
+    .page-title p { display: none; }
+    .school-header { padding: 8px 16px; }
+    .year-ribbon { padding: 6px 16px; }
+    .success-box, .password-box, .upload-box, .results-box, .geo-box { max-height: 92vh; overflow-y: auto; padding: 16px 20px; }
+    .success-icon { font-size: 48px; margin-bottom: 6px; }
+    .success-title { font-size: 20px; }
+  }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
+  }
+  @media (prefers-contrast: more) {
+    .card, .results-box, .success-box, .password-box, .upload-box, .geo-box { border-width: 3px; }
+  }
+  @media print {
+    .add-btn, #toast, .results-overlay, .success-overlay,
+    .password-overlay, .upload-overlay { display: none !important; }
   }
 </style>
 </head>
@@ -864,12 +792,15 @@
 <!-- ============ شاشة التحقق من الموقع ============ -->
 <div class="geo-gate hidden" id="geoGate">
   <div class="geo-box">
-    <div class="geo-icon" id="geoIcon">📍</div>
-    <h2 id="geoTitle">جارٍ التحقق من موقعك...</h2>
-    <p id="geoMsg">يرجى السماح بالوصول إلى الموقع الجغرافي للمتابعة.</p>
-    <div class="geo-spinner" id="geoSpinner"></div>
-    <button class="btn btn-primary" id="geoRetryBtn" style="display:none;" onclick="checkLocation()">🔄 إعادة المحاولة</button>
-    <div class="geo-coords" id="geoCoords"></div>
+    <div class="geo-icon ok" id="geoIcon">✅</div>
+    <h2 id="geoTitle">تم التحقق بنجاح</h2>
+    <p id="geoMsg">أنت على بعد <b>147 متر</b> من المدرسة. جارٍ فتح النظام...</p>
+    <div class="geo-spinner hidden" id="geoSpinner"></div>
+    <button class="btn btn-primary" id="geoRetryBtn" style="display:none;" onclick="checkLocation()">
+      🔄 إعادة المحاولة
+    </button>
+    <div class="geo-coords" id="geoCoords">موقعك: 25.284304, 51.407963 (±200م)
+المسافة عن المدرسة: 147 متر</div>
   </div>
 </div>
 
@@ -882,152 +813,126 @@
       <p>Abdulrahman bin Awf Preparatory School for Boys</p>
     </div>
   </div>
-  <button class="header-back-btn hidden" id="backBtn" onclick="goHome()">🏠 الرئيسية</button>
 </header>
 
-<!-- ============ شريط العام الدراسي + المزامنة ============ -->
+<!-- ============ شريط العام الدراسي + حالة المزامنة ============ -->
 <div class="year-ribbon">
   <span class="year-badge">📅 العام الدراسي 2026–2027</span>
-  <span class="sync-status" id="syncStatus">
-    <span class="dot"></span>
+  <span class="year-badge" id="syncStatusBadge" style="display:none;">
     <span id="syncStatusText">جاري الاتصال...</span>
   </span>
 </div>
 
 <!-- ============================================================
-     PAGE 1: PARENT (الصفحة الرئيسية — البحث + الإدارة)
+     PAGE 1: MAIN (الصفحة الرئيسية)
      ============================================================ -->
-<div class="page active" id="pageParent">
-  <div class="page-title">
-    <h1><span class="icon">🎓</span> نظام خروج الطلاب</h1>
-    <p>ابحث باسم الطالب أو امسح رمز QR لاستدعائه</p>
-  </div>
-
-  <main class="container">
-    <div class="card">
-      <div class="status-bar">
-        <span class="status-dot-wrap"><span class="status-dot"></span> متصل بـ Telegram</span>
-      </div>
-
-      <input type="text" id="searchInput" class="input-field"
-             placeholder="🔍 ابحث باسم الطالب أو جزء من الاسم..."
-             autocomplete="off" spellcheck="false">
-
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="doSearch()">🔍 بحث</button>
-        <button class="btn btn-scan" id="scanBtn" onclick="toggleScan()">📷 مسح QR</button>
-        <button class="btn btn-admin" id="adminBtn" onclick="openAdminPassword()">⚙️ الإدارة</button>
-      </div>
-
-      <div id="reader"></div>
-      <div class="empty-msg" id="stats">📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR</div>
+<main class="container page active" id="pageMain">
+  <div class="card" id="mainCard">
+    <div class="status-bar">
+      <span class="status-dot-wrap"><span class="status-dot"></span> متصل بـ Telegram</span>
     </div>
-  </main>
-</div>
+
+    <input type="text" id="searchInput" class="input-field" placeholder="🔍 ابحث باسم الطالب أو جزء من الاسم..." autocomplete="off" spellcheck="false" autocapitalize="off">
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="doSearch()">🔍 بحث</button>
+      <button class="btn btn-scan" id="scanBtn" onclick="toggleScan()">📷 مسح QR</button>
+    </div>
+
+    <!-- ✅ زر الإدارة -->
+    <button class="admin-card-btn" onclick="openAdminPassword()">
+      ⚙️ الإدارة — متابعة الشعب والطلاب
+    </button>
+
+    <div id="reader"></div>
+    <div class="empty-msg" id="stats">📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR</div>
+  </div>
+</main>
 
 <!-- ============================================================
-     PAGE 2: ADMIN SECTIONS (صفحة الشعب)
+     PAGE 2: ADMIN SECTIONS (الشعب الدراسية)
      ============================================================ -->
-<div class="page" id="pageAdmin">
-  <div class="page-title">
-    <h1><span class="icon">📚</span> الشعب الدراسية</h1>
-    <p>اختر الشعبة لعرض قائمة الطلاب ومتابعة الاستدعاءات</p>
-  </div>
-
-  <main class="container">
-    <div class="card">
-      <div class="admin-info-bar">
-        <div class="info-item">🏫 عدد الشعب: <b id="totalSections">0</b></div>
-        <div class="info-item">👥 إجمالي الطلاب: <b id="totalStudents">0</b></div>
-        <button class="btn btn-gold btn-sm" onclick="openUploadModal()">📥 تحديث البيانات</button>
-      </div>
-
-      <div class="sections-grid" id="sectionsGrid"></div>
-
-      <div class="empty-state hidden" id="adminEmpty">
-        <div class="icon">📭</div>
-        <p>لا توجد شعب مسجّلة حالياً.<br>يرجى رفع ملف Excel لتحميل البيانات.</p>
-      </div>
+<main class="container page" id="pageAdmin">
+  <div class="card">
+    <div class="admin-info-bar">
+      <div class="info-item">🏫 عدد الشعب: <b id="totalSections">0</b></div>
+      <div class="info-item">👥 إجمالي الطلاب: <b id="totalStudents">0</b></div>
+      <button class="btn btn-danger btn-sm" onclick="goBackToMain()">🔙 رجوع</button>
     </div>
-  </main>
-</div>
+    <div class="sections-grid" id="sectionsGrid"></div>
+    <div class="empty-msg hidden" id="adminEmpty">لا توجد شعب مسجّلة حالياً.</div>
+  </div>
+</main>
 
 <!-- ============================================================
      PAGE 3: SECTION DETAILS (تفاصيل الشعبة)
      ============================================================ -->
-<div class="page" id="pageSection">
-  <div class="page-title">
-    <h1><span class="icon">📖</span> شعبة <span id="sectionTitleInline"></span></h1>
-    <p>متابعة الطلاب المستدعين والمتبقين في الشعبة</p>
-  </div>
+<main class="container page" id="pageSection">
+  <div class="card">
+    <div class="page-title" style="padding: 0 0 14px 0;">
+      <h1 style="font-size: clamp(20px, 4.5vw, 30px);">📖 شعبة <span id="sectionTitleInline"></span></h1>
+      <p id="sectionSubtitle" style="color: var(--text-dim); margin-top: 4px; font-size: clamp(11px, 2.2vw, 13px);"></p>
+    </div>
 
-  <main class="container">
-    <div class="card">
-      <div class="section-stats">
-        <div class="stat-box">
-          <div class="stat-num" id="statTotal">0</div>
-          <div class="stat-label">إجمالي الطلاب</div>
-        </div>
-        <div class="stat-box called">
-          <div class="stat-num" id="statCalled">0</div>
-          <div class="stat-label">تم استدعاؤهم</div>
-        </div>
-        <div class="stat-box remaining">
-          <div class="stat-num" id="statRemaining">0</div>
-          <div class="stat-label">متبقّون</div>
-        </div>
+    <div class="section-stats">
+      <div class="stat-box">
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-label">إجمالي الطلاب</div>
       </div>
-
-      <div class="members-tabs">
-        <button class="members-tab active" onclick="switchTab('remaining')" id="tabRemaining">⏳ المتبقّون</button>
-        <button class="members-tab" onclick="switchTab('called')" id="tabCalled">✅ تم استدعاؤهم</button>
+      <div class="stat-box called">
+        <div class="stat-num" id="statCalled">0</div>
+        <div class="stat-label">تم استدعاؤهم</div>
       </div>
-
-      <div class="members-list" id="membersList"></div>
-
-      <div class="btn-row">
-        <button class="btn btn-gold" onclick="resetSectionCalls()">🔄 تصفير الاستدعاءات</button>
-        <button class="btn btn-danger" onclick="goBackToAdmin()">🔙 رجوع للشعب</button>
+      <div class="stat-box remaining">
+        <div class="stat-num" id="statRemaining">0</div>
+        <div class="stat-label">متبقّون</div>
       </div>
     </div>
-  </main>
-</div>
 
-<!-- ============ Footer ============ -->
+    <div class="members-tabs">
+      <button class="members-tab active" onclick="switchTab('remaining')" id="tabRemaining">⏳ المتبقّون</button>
+      <button class="members-tab" onclick="switchTab('called')" id="tabCalled">✅ تم استدعاؤهم</button>
+    </div>
+
+    <div class="members-list" id="membersList"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-danger" onclick="resetSectionCalls()">🔄 تصفير الاستدعاءات</button>
+      <button class="btn btn-danger" onclick="goBackToAdmin()">🔙 رجوع للشعب</button>
+    </div>
+  </div>
+</main>
+
+<!-- ============ التذييل ============ -->
 <footer class="footer">
-  <button disabled class="btn btn-danger btn-sm">🔄 النظام والمحافظة على السلوك العام هو مظهر حضاري وأخلاقي.</button>
-  <div style="margin-top:8px;">مدرسة عبدالرحمن بن عوف الإعدادية للبنين &copy; العام الدراسي 2026–2027</div>
+  <button disabled="" class="btn btn-danger btn-sm">🔄 النظام والمحافظة على السلوك العام هو مظهر حضاري وأخلاقي.</button>
+  <div style="margin-top:8px;">مدرسة عبدالرحمن بن عوف الإعدادية للبنين © العام الدراسي 2026–2027</div>
 </footer>
 
 <!-- ============ زر + السري ============ -->
-<button class="add-btn hidden" id="addBtn" onclick="openUploadModal()" title="تحديث البيانات">+</button>
-
-<!-- ============================================================
-     MODALS
-     ============================================================ -->
-
-<!-- 1. Admin Password -->
-<div class="password-overlay" id="adminPasswordModal">
-  <div class="password-box">
-    <div class="password-icon">🔐</div>
-    <h3 class="password-title">دخول الإدارة</h3>
-    <p class="password-desc">أدخل كلمة المرور للمتابعة</p>
-    <input type="password" id="adminPasswordInput" class="input-field"
-           placeholder="كلمة المرور..." autocomplete="off" spellcheck="false">
-    <div class="password-error" id="adminPasswordError"></div>
+<button class="add-btn" id="addBtn" onclick="openPasswordModal()" title="إضافة/تحديث البيانات" aria-label="تحديث البيانات">+</button>
+<!-- ============ نافذة تغيير التوكن ============ -->
+<div class="modal-overlay" id="tokenModal">
+  <div class="modal-box">
+    <h3>🔄 تغيير توكن بوت تيليجرام</h3>
+    <p>
+      الصق التوكن الجديد الذي حصلت عليه من <b>@BotFather</b>.
+      سيُحفظ في هذا المتصفح فقط.
+    </p>
+    <input type="password" id="newTokenInput" class="input-field" placeholder="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" autocomplete="off" spellcheck="false">
     <div class="btn-row">
-      <button class="btn btn-primary" style="flex:1;" onclick="verifyAdminPassword()">✅ تحقق</button>
-      <button class="btn btn-danger" style="flex:1;" onclick="closeAdminPassword()">إلغاء</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="saveNewToken()">💾 حفظ</button>
+      <button class="btn btn-danger" style="flex:1;" onclick="closeTokenModal()">إلغاء</button>
     </div>
   </div>
 </div>
 
-<!-- 2. Results modal -->
+<!-- ============ نافذة نتائج البحث ============ -->
 <div class="results-overlay" id="resultsOverlay">
   <div class="results-box">
     <div class="results-header">
       <h3>🔍 اختر الطالب المطلوب خروجه <span class="results-count" id="resultsCount">0</span></h3>
-      <button class="results-close-icon" onclick="closeResultsModal()" title="إغلاق">×</button>
+      <button class="results-close-icon" onclick="closeResultsModal()" title="إغلاق" aria-label="إغلاق">×</button>
     </div>
     <div class="results-list" id="resultsList"></div>
     <div class="results-footer">
@@ -1036,7 +941,7 @@
   </div>
 </div>
 
-<!-- 3. Success modal -->
+<!-- ============ نافذة النجاح ============ -->
 <div class="success-overlay" id="successOverlay">
   <div class="success-box">
     <div class="success-icon">✅</div>
@@ -1047,28 +952,43 @@
   </div>
 </div>
 
-<!-- 4. Upload modal -->
+<!-- ============ نافذة كلمة المرور (رفع البيانات) ============ -->
+<div class="password-overlay" id="passwordOverlay">
+  <div class="password-box">
+    <div class="password-icon">🔐</div>
+    <h3 class="password-title">تحديث بيانات الطلاب</h3>
+    <p class="password-desc">أدخل كلمة المرور للمتابعة</p>
+    <input type="password" id="passwordInput" class="input-field" placeholder="كلمة المرور..." autocomplete="off" spellcheck="false">
+    <div class="password-error" id="passwordError"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" style="flex:1;" onclick="verifyPassword()">✅ تحقق</button>
+      <button class="btn btn-danger" style="flex:1;" onclick="closePasswordModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ نافذة رفع Excel ============ -->
 <div class="upload-overlay" id="uploadOverlay">
   <div class="upload-box">
     <div class="upload-icon">📊</div>
     <h3 class="upload-title">تحميل ملف بيانات الطلاب</h3>
     <p class="upload-desc">
       اختر ملف <b>Excel (.xlsx)</b> يحتوي على الأعمدة التالية:<br>
-      <code>الاسم</code> | <code>الشعبة</code> | <code>Channel_ID</code>
+      <code>الاسم</code> &nbsp;|&nbsp; <code>الشعبة</code> &nbsp;|&nbsp; <code>Channel_ID</code>
     </p>
 
-    <input type="file" id="excelFileInput" accept=".xlsx,.xls" class="file-input-hidden">
-    <label for="excelFileInput" class="file-drop-zone" id="fileDropZone">
+    <input type="file" id="excelFileInput" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" class="file-input-hidden">
+    <label for="excelFileInput" class="file-drop-zone has-file" id="fileDropZone">
       <div class="file-drop-icon">📁</div>
       <div class="file-drop-text" id="fileDropText">اضغط لاختيار ملف Excel أو اسحبه هنا</div>
     </label>
 
     <div class="upload-progress hidden" id="uploadProgress">
       <div class="progress-spinner"></div>
-      <span>جارٍ معالجة الملف...</span>
+      <span id="progressText">جارٍ معالجة الملف...</span>
     </div>
 
-    <div class="upload-status" id="uploadStatus"></div>
+    <div class="upload-status success" id="uploadStatus"></div>
 
     <button class="btn btn-danger btn-sm" style="margin-bottom:12px; width:100%;" onclick="resetStudentsData()">
       🔄 استرجاع البيانات الأصلية
@@ -1081,7 +1001,22 @@
   </div>
 </div>
 
-<!-- 5. Call Notification modal -->
+<!-- ============ نافذة كلمة مرور الإدارة ============ -->
+<div class="password-overlay" id="adminPasswordOverlay">
+  <div class="password-box">
+    <div class="password-icon">🔐</div>
+    <h3 class="password-title">دخول الإدارة</h3>
+    <p class="password-desc">أدخل كلمة المرور للمتابعة</p>
+    <input type="password" id="adminPasswordInput" class="input-field" placeholder="كلمة المرور..." autocomplete="off" spellcheck="false">
+    <div class="password-error" id="adminPasswordError"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" style="flex:1;" onclick="verifyAdminPassword()">✅ تحقق</button>
+      <button class="btn btn-danger" style="flex:1;" onclick="closeAdminPassword()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ نافذة المنبثق عند استدعاء طالب ============ -->
 <div class="call-notify-overlay" id="callNotifyOverlay">
   <div class="call-notify-box">
     <div class="call-notify-icon">🔔</div>
@@ -1099,7 +1034,7 @@
 
 <script>
 /* =========================================================
-   🔥 Firebase Config
+   🔥 إعداد Firebase
    ========================================================= */
 var firebaseConfig = {
   apiKey: "AIzaSyDwo3sqIX1vLH9BQodnV4Y_7DdiyTgfJmk",
@@ -1111,22 +1046,53 @@ var firebaseConfig = {
   appId: "1:817009996681:web:e42248c65a144013f02758",
   measurementId: "G-8YNR9C5H2T"
 };
-
-/* =========================================================
-   🔧 إعدادات عامة
-   ========================================================= */
-var DEFAULT_TOKEN = "8812887559:AAHenzlOj2f4nL1hciwmxfcr9fbGfMD9YGU";
-var ADMIN_PASSWORD = "20425.aba";
-
-var SCHOOL_LOCATION = { lat: 25.2847285, lng: 51.4093489 };
-var MAX_DISTANCE_METERS = 250;
-var GEO_OPTIONS = { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 };
-
-var LS_KEY = "tg_bot_token_allAba_override";
-var STORAGE_STUDENTS_KEY = "custom_students_data_v1";
+var firebaseDB = null;
+var firebaseReady = false;
+var ADMIN_PAGE_PASSWORD = "20425@aba";
 var STORAGE_CALLED_KEY = "custom_called_students_v1";
 var STORAGE_CALL_EVENT_KEY = "custom_call_event_v1";
-var TG_API = "https://api.telegram.org";
+var currentSection = null;
+var currentTab = "remaining";
+var currentCallName = "";
+var currentCallSection = "";
+var speechSupported = ("speechSynthesis" in window);
+var lastProcessedCallEvent = null;
+var callPollingInterval = null;
+
+/* =========================================================
+   🔧 إعدادات توافق المتصفحات
+   ========================================================= */
+(function setVH() {
+  function updateVH() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+  }
+  updateVH();
+  window.addEventListener('resize', updateVH);
+  window.addEventListener('orientationchange', function() {
+    setTimeout(updateVH, 100);
+  });
+})();
+
+document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+
+/* =========================================================
+   🔑 التوكن المدمج
+   ========================================================= */
+var DEFAULT_TOKEN = "8812887559:AAHenzlOj2f4nL1hciwmxfcr9fbGfMD9YGU";
+
+/* =========================================================
+   📍 إعدادات الموقع الجغرافي
+   ========================================================= */
+var SCHOOL_LOCATION = {
+  lat: 25.2847285,
+  lng: 51.4093489
+};
+var MAX_DISTANCE_METERS = 250;
+var GEO_OPTIONS = {
+  enableHighAccuracy: true,
+  timeout: 15000,
+  maximumAge: 0
+};
 
 /* =========================================================
    🏷️ خريطة أسماء الشعب
@@ -1159,140 +1125,54 @@ var SECTION_NAMES = {
   "GRADE0908": "الصف التاسع - شعبة 8"
 };
 
-function getSectionShortLabel(sectionKey) {
-  if (!sectionKey) return "غير محددة";
-  // إذا كانت بصيغة "الصف السابع - شعبة 1" نستخرج المختصر
-  var m = sectionKey.match(/شعبة\s*(\d+)/);
-  var gradeMatch = sectionKey.match(/(السابع|الثامن|التاسع)/);
-  if (m && gradeMatch) {
-    var gradeNum = gradeMatch[1] === "السابع" ? "07" : (gradeMatch[1] === "الثامن" ? "08" : "09");
-    return gradeNum + "/" + m[1];
-  }
-  // صيغة GRADE
-  var key = sectionKey.replace(/^@/, "").trim().toUpperCase();
-  var mm = key.match(/GRADE0?(\d)(\d{2})/);
-  if (mm) return "0" + mm[1] + "/" + parseInt(mm[2], 10);
-  return sectionKey;
-}
-
-function getSectionName(sectionId) {
-  var key = (sectionId || "").replace(/^@/, "").trim().toUpperCase();
-  return SECTION_NAMES[key] || sectionId || "غير محددة";
+function getSectionName(channelId) {
+  var key = (channelId || "").replace(/^@/, "").trim().toUpperCase();
+  return SECTION_NAMES[key] || channelId || "غير محددة";
 }
 
 /* =========================================================
-   📌 بيانات الطلاب
+   📌 بيانات الطلاب المُدمجة
    ========================================================= */
 /* @STUDENTS_DATA_START@ */
-var STUDENTS = [];
+var STUDENTS = [{"n":"ابوبكر مصعب عمر احمد","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"خالد سالم على الشبحه الفهيده","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"خالد سعد محمد الزعبي","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"راشد حمد مردف على الاكرف","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"راشد فيصل ضحوى الحسينى الشمرى","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"سمير حسين سمير حسين","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"طارق سيد ربيع عبدالفتاح جنيدي","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"عبدالكريم محمد عبدالقادر الصومالي","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"عبدالله فهد عبدالله فرهود المعاضيد","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"كريم علي محمد البشير","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"محمد الحسينى محمود عبدالمحسن احمد","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"محمد انس احمد ابراهيم","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"محمد جارالله راشد العذبه المرى","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"محمد حمد على البكرى اليافعى","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"محمد راشد محمد سويحيت المرى","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"محمد راكان محمد ال عتيق المري","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"محمد سالم محمد أبوربيع","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"محمد صالح راشد البحيح المرى","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"مشعل منيف حمد منيف الهاجرى","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"ناصر سعيد جاسم المريزيق المرى","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"نايف يحيى على حسن الحبابى","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"هادي ناصر محمد ال سلطان الهاجرى","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"وائل محمد صالح الكربي","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"يوسف احمد الكريفع","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"يوسف محمد رمضان","s":"الصف السابع - شعبة 1","c":"@GRADE701"},{"n":"اسر هيثم ابراهيم احمد شطا","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"الوليد محمد عبدالعال خطاب","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"امجد عامر عوض احمد","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"جارالله على جارالله مسرع القحطانى","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"حمد يوسف","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"راشد سالم على الخطلاء السنيد","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"راشد سالم محمد سالم عفيفه","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"ساهم محمد عظيم دورا خان","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"سعيد محمد فضل بافضل","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"صبيح سالم محمد الصبيح المرى","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"عبدالرحمن فضل محسن صالح طريش","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"عبدالرحمن فياض احمد ياسين","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"عبدالمحسن على راشد الشيبه المرى","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"عبيد خالد عبيد عبدالهادى الدوسرى","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"علي حسين على مبارك الفراج","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"علي حمد طالب المحنا المرى","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"علي خالد على البكرى اليافعى","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"علي ناصر على البطحا المرى","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"مبارك عبدالهادى مبارك ال ملحان الاحبابى","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"محمد حمد طالب المحنا المرى","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"محمد سعد محمد البادى المعاضيد","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"محمد عبدالله عيد بلال العبدالله","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"منتصر احمد عمر احمد","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"مهدي جعفر","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"نايف محمد غسل الشريفي","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"نايف مسلم صالح النابت المرى","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"نور خالد أحمد محمد حسين","s":"الصف السابع - شعبة 2","c":"@GRADE702"},{"n":"جابر يوسف عايد عيسى ذياب","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"جاسم عبدالقيوم رحمت  خان","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"حزام سلمان حزام ناجى السبيعى","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"حسن فهد حسن فهد القحطانى","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"خالد محمود محمد محمد شطا","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"سالم ابراهيم اكبر جان","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"سيف أمجد فخرى محمود الدوس","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"صالح سلمان الخلف","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"طلال هيثم رجا الحنيفات","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"ظافر فائز سعد الدوسري","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"عبدالله حمود عبدالله قحيصان الهاجرى","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"عبدالهادي عتيق منيخر البريدى المرى","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"علي سالم جابر لزيوح البحيح","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"علي عبدالله ناصر ال فهيد الهاجرى","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"علي ناصر على ناصر الفضاله","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"عمر راشد محمد الصعاق المرى","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"فهد عبدالله مبارك البوسعيد الخيارين","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"كنان حسن محمود بدر","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"ماهر حسين اسماعيل","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"محمد السيد محمد عبدالمقصود العزازي","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"محمد جاسم احمد على البلوشى","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"محمد ناصر راشد العذبه المرى","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"مشاري عبداللطيف عبدالعزيز عبدالرحمن البقيشى","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"مشعل محمد الاحمد الحسين","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"ياسين محمد سيد حسن سليم","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"يوسف تائب خالد هنداوي","s":"الصف السابع - شعبة 3","c":"@GRADE703"},{"n":"بندر خالد راشد صالح اباالزمات","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"جاسم عبدالعزيز محمد رحيم","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"حمد بخيت حمد بخيت المرى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"زيشان عمران","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"سعيد حمد على الفهيد الهاجرى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"سلمان خالد احمد لطف الثلاياء","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"طالب جاسم طالب المريزيق المرى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"عبدالعزيز فهد جارالله مسرع القحطانى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"عبدالله ظافر فايز الشكرى الدوسرى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"عبدالله فيصل سعد ال شعيل المري","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"عبدالله ماجد عبدالله الدوسري","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"عبدالهادي عبدالفاروق عبدالرشيد","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"علي محمد رشدى عطيه عاشور","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"فهد محمد عايظ على الحنزاب","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"فيصل عبدالله راشد سالم الكلبانى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"فيصل على جابر على الحنزاب","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"مالك مجدى محمد السيد موسى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"مبارك عبدالرحمن على المنيفى الهاجرى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"محمد صالح محمد زين اليزيدي","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"محمد عمر محمد اكبر","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"مسفر سلمان","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"مسفر مشلح مسفر  الشكره","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"منصور فالح حسن عايض القحطانى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"منصور محمد حمد ابوعرقوه المرى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"مؤمن ابراهيم عبدالقادر ابراهيم","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"ناصر منصور عبدالله قحيصان الهاجرى","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"ياسين عادل عبدالجواد العبد على","s":"الصف السابع - شعبة 4","c":"@GRADE704"},{"n":"ادم يحيى مختار الامام مطاوع","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"ادهم مصطفى عبدالرازق عبدالحافظ شعيب","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"تركي سمير عويلى المقاطى العتيبى","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"تميم سعيد مرزوق القحطاني","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"تميم سمير عويلى المقاطى العتيبى","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"جاسم نادر صقر عبدالله خليفه","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"حمد حامد","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"حمد سهيل طناف سهيل الكثيرى","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"حمد محمد راشد المرى","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"حمدان حسن","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"ريان محمد حديد","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"سالم عبدالله حمد سالم النابت","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"سلطان سعيد عتيق سعيد البسطى","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"عبدالرحيم عبدالله علي النظام","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"عبدالعزيز علي العذاب","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"عبدالله الدسوقي سليمان محمد ابراهيم","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"عبدالله صالح احمد عبدالله باسهل","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"علي حمد ناصر شابل المرى","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"عمر اياد احمد عبيد","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"غانم محمد عبدالوحيد نور البلوشى","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"فيصل جمال ناجى عباد العجى","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"محمد احمد عبدالرحمن محمد","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"محمد عبدالله محمد راشد روضه","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"محمد علي حسن احمد","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"مسفر حمد سعد ال سعد الكعبى","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"منصور عبدالرحمن مصطفى خان","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"يحيى زكريا","s":"الصف السابع - شعبة 5","c":"@GRADE705"},{"n":"ابراهيم فيصل سالم","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"احمد جميل","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"الطيب بشير عبيد محمد","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"تميم عبدالله طالب جابر المرى","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"خالد عادل أحمد منصر العجى","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"خليفة عبدالهادي مسعود العوير المري","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"راشد محمد عوض محمد","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"زيد محمد هادف انديله الحسناء","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"سعد حويدر رجا حويدر الهاجرى","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"سعود عبدالله عبدالهادى بن نيفه النابت","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"سعيد حمد سعيد المريزيق المرى","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"سلطان صالح مسعد سعيد احمد","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"طلحه مشتاق","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"عبدالرحمن محمد العلي","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"عبدالصمد حسين عبدى مختار","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"عبدالله خليل عبدالله حويكم الهنائي","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"عبدالله سنان محمد عبدالجبار حسن","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"عبدالله عامر محمد محمد علي","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"عبدالله معتصم عبدالله الرشدان","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"عمر محمد المحيمدالفنتش","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"فيصل حمد عبدالله حمد الحنزاب","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"محمد صوهيب","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"محمد محسن حسين مبارك الفراج","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"محمد منصور ابراهيم","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"همام مجتبى الصادق عبدالرحيم","s":"الصف السابع - شعبة 6","c":"@GRADE706"},{"n":"تميم جابر خميس مبارك الحنزاب","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"جاسم حمود عبداللة علي اليهرى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"جاسم سعود سعيد احمد","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"جاسم محمد على الغفرانى المرى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"جواد عبدالفتاح محمد الجابري","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"خالد راشد خالد صالح القاشوطى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"خالد واثق عباس يوسف عبدالرحمن","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"خلف حسن خلف الفريجى الرويلى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"سعيد على سعيد الغفران المرى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"عبدالرحمن عبدالله عادل فقير احمد","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"عبدالرحمن عبدالله محمد عبدالله الدوسرى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"عبدالعزيز غازي الدهام","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"عبدالله محمد طخطيخ العنزي","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"عبدالله ناصر على المريزيق المرى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"عمار محمد السيد محمد السيد","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"عمر كمال حسن محمد سعيد","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"عمر محمد عبدالكريم علي الخالدي","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"غانم صالح هادي ال منصور","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"فالح على فالح مبارك الهاجرى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"فهد سلطان زارين خيال زارين","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"فهد عبدالرحمن على صالح جغمان","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"فهد عبدالله محمد عبدالله الدوسرى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"محمد عبدالوهاب محمد الدوري","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"محمد يوسف احمد","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"نايف جذنان محمد ال زايد الهاجرى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"نايف فهد محمد صالح باشراحيل","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"ورثان ناصر عبدالله ربيعه المالكى","s":"الصف السابع - شعبة 7","c":"@GRADE707"},{"n":"ابراهيم غسان ابراهيم على الطاهر","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"احمد عمرو محمد حسين مصطفى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"آدم عبدالحميد محمود على محمود","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"العباس عادل احمد ابراهيم","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"حمد عبدالله سالم نقدان المرى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"حمد عبدالهادى حمد جلاب المرى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"خباب ناصر قسم الله يعقوب","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"راشد عبدالعزيز راشد المريزيق المرى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"ريحان زادها","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"زيد بن الطاهر","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"سحيم عبدالرحمن محمد الرومى المرى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"سعود محمد جابر نقادان المرى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"عبدالعزيز محمد رحم دين دين","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"عبدالله خالد راقي العتيبي","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"عبدالله راشد على المريزيق المرى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"علي حمد محمد البحيح المرى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"علي مبارك على عبدالهادى المرى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"فهد نصر محمد شايع العجى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"مبارك حمد مبارك فهد الدوسرى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"محمد احمد مصطفى محمد احمد","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"محمد حسن محمد حسن الصافى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"محمد خالد محمد ابالزمات المرى","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"محمد عادل شير","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"مشعل فهد على صالح جغمان","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"نواف ابراهيم الدخرى محمد","s":"الصف السابع - شعبة 8","c":"@GRADE708"},{"n":"واصل احمد سليمان أحمدالحبر","s":"الصف السابع - شعبة 9","c":"@GRADE709"},{"n":"احمد عبدالرؤوف محمدعيد  المحمد","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"احمد وليد","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"ادم عبده ناجي عبده اسماعيل","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"الامين حذيفة الامين الطائف","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"جمال محمد عثمان حسين","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"حسن يوسف حسن احمد","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"حسين مهدى حمد ال ناصر القحطانى","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"راشد جارالله راشد العذبه المرى","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"راشد محمد راشد المريزيق المرى","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"راشد محمد راشد فهيد الودعانى","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"رباح حسام رباح كامل كرت","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"سعود نديم","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"سعيد عبدالله مبارك البوسعيد الخيارين","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"عاصم نزار احمد العمري","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"عبدالله خالد محمد الرومى المرى","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"عبدالله عمر صديق","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"عبدالله محمد عبدالله سلوم","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"عمر ابراهيم عمر محمد كمال ابو حسين","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"عمر شايف عبدالله ملاح","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"عمر على محمود طلبه عامر","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"فهيد سالم على فهيد المرى","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"قصي محمد الحريري","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"محمد ابوبكر عبدالرحيم داؤود محمد","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"محمد خالد محمد ال سلطان الهاجرى","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"محمد على محمد شفيع الفهيده","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"محمد عماد عبدالجليل محمد","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"ناصر محمد عبدالله محمد","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"همدان محمد حمد المري","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"يوسف مقبل محمد الحجاجي","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"يوسف يحيى مختار الامام مطاوع","s":"الصف الثامن - شعبة 1","c":"@GRADE801"},{"n":"احمد عبدالرحمن احمد محمد عبدالرحمن","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"جابر على جابر هوبش المرى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"جابر ممتاز قول عثمان","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"حسن محمد حسن سعود الحبابى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"حمد سالم على احمد الشامسى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"حمد محمد حمد هوبش المرى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"خالد مبارك محمد مبارك الجهمى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"راشد محمد حمد على الهاجرى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"زيد جول","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"سالم حمد حسين سالم السفران","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"سالم فيصل على التمتام الغيثانى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"سعد عبدالله محمد مبارك النابت","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"سعيد سالم حمد سعيد القوز","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"سليمان خالد أحمد صالح هادي","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"عبدالرحمن محمد رحم دين","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"عبدالعزيز ماهر فوزي كامل كرت","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"عبدالكريم معيض الذيب","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"عبدالله احمد عبدالله فارح","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"عبدالله باسم العبدالله","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"عبدالله محمد دشان محمد القحطانى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"علي احمد قاسم فاضل احمد","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"علي حسام فهمي مرعي","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"علي خالد على الفهيد الهاجرى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"علي زقلان برويز","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"عمار ياسر الامين الطائف","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"فيصل مجيد نايف هايس الشمرى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"محمد اسامه مصطفى حسين مصطفى","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"محمد عبدالكريم بن المكي زيتوني","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"نواف فيصل محمد سعيد باغزال","s":"الصف الثامن - شعبة 2","c":"@GRADE802"},{"n":"ابو بكر راوف","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"احسان خان","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"اسامه محمود احمد فؤاد منصور","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"حشر محمد حشر هادى الهاجرى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"حمد سالم على عبدالله الحول","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"حمد محمد حمد الشمري","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"خليفه وهيب أحمد سعيد الوهيبي","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"راشد على عبدالله المريزيق المرى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"زايد مشعل ناصر الحمرانى الهاجرى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"سعود محمد صالح التريبانى الشمرى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"صالح حمد صالح الغيثانى المرى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"طارق عادل شير","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"طه محمد طه عبدالله","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"عبد الهادي محمد عبدالهادى العشير المرى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"عبدالعزيز متعب سعيد القحيز المرى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"عبدالله عبدالرحمن امانت جول زمان خان","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"علي كمال على كامل خلف","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"عمر خضر عمر محمد","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"عمر محمد عبدالوهاب  علي","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"عمير حمد راشد عمير المرى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"محمد الامين محمد الحسن محمد","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"محمد حمد راشد المريزيق المرى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"محمد علي حزام نديله المري","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"محمد علي راشد حمد المري","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"محمد هشام احمد صالح اليافعى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"مطلق مسفر مطلق الحزيمى العتيبى","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"يس محمدالريح كمال نبيل","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"يوسف سمير خان","s":"الصف الثامن - شعبة 3","c":"@GRADE803"},{"n":"احمد اجمر حاجى جولزار شاه","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"أحمد عبداللة اسماعيل ادريس","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"الوليد مامون نبيه محمود ابوهاشم","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"جاسم حمد حسين مبارك الفراج","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"حمد فهد عبدالله محمد العامرى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"حمد محمد جاسم","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"حمد مسفر معيض محمد الاحبابى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"راشد عبدالكريم غالب عبده عزالدين","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"راشد محمد عبدالله المريزيق المرى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"صالح على حمد النابت المرى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"عبدالعزيز محمد عبدالله المبارك","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"عبدالله عبدالرحمن عبدالله محمد العذبه","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"عبدالله فالح عبدالله المخظبه الهاجرى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"عبدالله محمد عبدالله المريزيق المرى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"عبدالله هلوش عبدالله الرمالى الشمرى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"علي محمد امين الدودو","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"عمر احمد علي احمد الشيبه","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"فيصل احمد وحيد بخش","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"ماجد مبارك ماجد العلى العبدالله","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"ماهر منيرالزمان عبدالمجيد","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"محمد خالد سالم محمد الهاجرى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"مسفر محمد مسفر عبدالعزيز الهاجرى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"مشعل حمد منصر القايد الغياثين","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"مصطفى محمد فؤاد علي ابراهيم","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"منصور وسمي ناصر مضحى الظفيرى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"نواف سالم عبدالله المخظبه الهاجرى","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"يزيد حسين محمد عبدالغني احمد","s":"الصف الثامن - شعبة 4","c":"@GRADE804"},{"n":"احمود حمد السعيد","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"ادم نضال عبدالله حسبان","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"الفاتح حسين سمير حسين","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"تميم داوود رحمن  زمان خان","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"جاسم غفران احمد","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"حازم احمد محمد عبدالكريم","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"حمد راشد على الشيبه المرى","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"راشد حمد على راشد المري","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"راشد سفر راشد ال تواه الهاجرى","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"راشد على راشد حمد المري","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"سعد حمد محمد حبانا المرى","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"سعود سالم محمد قاسم العنزى","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"طلال صالح حمدى حمادى الظاهر","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"عايض مبارك مترك جراب الاحبابى","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"عبدالرحمن احمد جمعه الدوس","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"عبدالعزيز ناصر خان","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"عبدالله سعد فاهد سالم الهاجرى","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"عبدالله ناهل احمد سليمان ابوعدوان","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"عمر محمود حسين ابراهيم علي","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"عمر نصرالدين عمر ابراهيم الجعلي","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"كريم محمد العبيد بلوله احمد","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"محمد اياد بديع عبايدي","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"محمد حمد سعد ال سعد الكعبى","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"محمد عبيداللة محمد اشرف","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"محمد فضل عبدالباقي الزعيل العبد","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"محمد مسعودالرحمن عبدالجنان","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"وسيم طه سعيد كرت","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"يوسف محمدالريح كمال نبيل","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"يوسف وديع محمد على المشرقي","s":"الصف الثامن - شعبة 5","c":"@GRADE805"},{"n":"ابراهيم رائد فوزي كرت","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"ابوبكر انعام الله خان ممتازخان فتح خان احمد","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"احمد زبير","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"احمد عيسى موسى مراد","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"اواب محمد احمد علي محمد","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"ايوب محمد امين الدودو","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"بندر ظافر فايز الشكرى الدوسرى","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"تميم خالد محمد صالح عبده","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"تميم عبدالرحمن محمد جادالله عارف","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"جبران سليمان جبران مسعود القحطانى","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"خالد بدر عبدالرحمن ابراهيم المانع","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"راشد حمد راشد سالم المرى","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"سالم فلاح سالم المري","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"سالم محمد ناصر الحفيظ المرى","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"شاهين سعد محمد البادى المعاضيد","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"عبدالرحمن عبدالمنان","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"عبدالرحمن محمد السيد عبداللطيف المحلاوى","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"عبدالله حمد","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"عبدالله حمد محمد ال حثيث القحطانى","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"عمر محمد السيد محمد حسين","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"مبخوت سعيد مبخوت محمد جابر","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"محمد ابوبكر عبدالحميد صالح محمد","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"محمد حمد محمد راشد الاسود","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"محمد راشد محمد الصعاق المرى","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"محمد سعد محمد الهاجري","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"محمد على سعيد على حيدان","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"محمد هشام عبدالرحمن أحمد","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"محمد وائل محمود عباس ادريس","s":"الصف الثامن - شعبة 6","c":"@GRADE806"},{"n":"ابراهيم عمرو سيد اسماعيل الجابرى","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"احمد حامد محمد","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"احمد خالد عثمان عبدالله بالعرج","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"أحمد عبدالله احمد الباشا الجماعي","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"البراء الشطي","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"حسن طلحه","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"حسن عايض حسن سعود الحبابى","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"حسين سامى حسين احمد","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"حمد جمال ناجي عباد العجي","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"حمزه احمد","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"خالد عمر عبدالله محمد علي","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"زاهر سامي صديق عبدالرحيم","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"سعد محمد سالم محمد الهاجرى","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"سعود جميل قايد احمد الطيرى","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"عبدالرحمن فضل الله عوض عمر","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"عبدالعزيز عبيد احمد الطارش","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"عبدالله جاويدخان حكيم خان  بياوخان","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"على راشد على عليان المرى","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"علي ابراهيم عبدالله احمد الحمادى","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"فالح مبارك فالح مبارك الهاجرى","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"فهد خالد طالب الدينى","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"مازن عماد حافظ عبيدعلى مراحى","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"محمد ابوبكر محمد ابوبكر على","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"محمد سعود عبدالله شويرب الصخابره","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"محمد عبدالحفيظ محجوب عبدالحفيظ","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"نواف حمد سالم ال وارد المرى","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"يزن حاتم حسن احمد كرت","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"يوسف شريف احمد محمود محمد","s":"الصف الثامن - شعبة 7","c":"@GRADE807"},{"n":"ابراهيم هشام صلاح الدين بشرى حامد","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"اواب محمد ابوعاقله محمد النور","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"براك صالح براك حصين المرى","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"بشير النعيم بشير النعيم","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"تركي نايف مال الله بشير المهندي","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"خالد محمد غلام رسول عزيزخان","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"خالد يحيى قاسم محمد الخلاقى","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"داهم عبدالله داهم المظفرى الهاجرى","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"راشد عبدالله خالد ال زابن الدوسرى","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"زين محمد يوسف منصور","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"سالم حمد على سعيد حديد","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"سيد عزيز شاه سيد شاه","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"عبدالرحمن بدر محمد المحيميد الفنتش","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"عبدالله صدام الجضيع","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"عدنان محمد عمران","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"عمر مصطفى ابوعاقله يوسف","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"فرج يوسف جوهر فرج العبدالله","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"كريم تامر نبيل محمد عبدالباقى","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"مبارك سعد منيخر سعد الوذين","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"محمد ابراهيم صالح ربيعه الزراع","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"محمد احمد محمد بركات","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"محمد المعز احمد محمد","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"محمد راوف","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"محمد فيصل عبدالله فيصل الدوسرى","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"محمود مير محمد محمد بخش","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"مسفر محمد مسفر هادى العجمى","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"مهدي عايض مهدي آل مفرح","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"نواف فهد ناصر المظفرى الهاجرى","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"نوح اسلم شير","s":"الصف الثامن - شعبة 8","c":"@GRADE808"},{"n":"احمد جبران الجرادى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"اسامه ابوسفيان مصطفي الجاك","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"أمير حسن محمود بدر","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"أمير علي جزاع المواجده","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"تركى فهد بنيان علوان الشمرى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"حسين على سعيد على حيدان","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"خليفه حمد بداح محمد الهاجرى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"رايان محمد فايق صادق","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"سيف عبدالسلام سيف مثنى ثابت","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"طلال غانم مناور الدليهان الشمرى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"طلال متعب غيدان الحثيث الاحبابى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"ظافر منصور ظافر مسعود الأحبابي","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"عبدالرحمن حسين عبدي","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"عبدالله حمد على الفهيد الهاجرى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"على عبدالعزيز سعيد منصر الحجاجى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"عمر خالد حسين","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"عمر نهرو جمال بك","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"عيسى مشلش عيسى ال سند المسيفرى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"فهد مهند محسن محمد","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"مالك محمود احمد على عبداللطيف","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"محمد اسلام السيد احمد عبدالحميد","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"محمد حسن محمد مبخوت الصيعرى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"محمد خالد حسين العموش","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"محمد سالم حمد سالم النابت","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"محمد فهد على صالح جغمان","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"محمد مبارك حمد ال معيض الحبابى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"محمد وليد علي منصور","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"محمود ابوالقاسم البشير الحسين بوش","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"محمود محمدعلى الحاج صالح","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"ناصر محمد صالح الحميرى اليافعى","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"نايف عبدالرحمن امانت جول زمان خان","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"يونس محمد يونس عوض  الله","s":"الصف التاسع - شعبة 1","c":"@GRADE901"},{"n":"ابراهيم تامر عمر سيد احمد","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"أحمد عبدالرحمن احمد على السلامه","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"احمد محمد احمد عطيه عاشور","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"احمد محمد عبدالرزاق المدلول","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"احمد مهد ديريه","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"احمدالله عبيدالله","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"ادم هشام السيد ابراهيم محمود","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"بندر عبدالله فالح عبدالله الديحانى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"تميم عادل خصيف  مبارك","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"تميم محمد موسى درغام","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"خالد فهد خالد المهيني","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"سعد على براك حصين المرى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"سلطان سعود سلطان السند الهاجرى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"سيد غلام سرور","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"صالح سالم على السنارى المرى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"عبدالله فهيد راشد ال رشدان الفهيدى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"عبدالله محمد سالم محمد الهاجرى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"عبدالمحسن منصور على الفهيد الهاجرى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"على حمد على سعيد ملهيه","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"على سعيد على محمد نوره","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"على ناصر محمد المخظبه الهاجرى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"علي محمد الريح عطا سنهورى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"عمار ياسر محمد محمود عبدالمولى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"عمر زايد عثمان زايد احمد","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"فهد احمد فهد عطيه العسيرى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"فيصل محمد سعيد منصر الحجاجى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"محمد على راشد الشيبه المرى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"محمد نزار سعيد حمد","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"محمد نعيم محمد سعيد العبدالله","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"ناصر وسمي ناصر مضحى الظفيرى","s":"الصف التاسع - شعبة 2","c":"@GRADE902"},{"n":"ابراهيم عمار هلال العطوى حموده","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"اسامه اسلام الصياصنه","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"اسامه عبدالكريم غالب عبده عزالدين","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"حمد خالد حمد جمعان النعيمى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"حمد محمد هديب الجربوعى المرى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"راشد حمد راشد ال سلطان الهاجري","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"راشد حنيف فهد حنيف الدوسرى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"راشد سعود راشد الصعاق المرى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"زايد صالح حمد هزاع العذبه","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"ساجدالرحمن مصطفى كمال","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"سعد محمد احمد ابوعيده","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"سلطان حسن خلف الفريجى الرويلى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"عبدالرحمن عبدالله احمد عبدالله باسهل","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"عبدالرحمن متعب راشد الصعاق المرى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"عبدالرحمن هانى محمود حسن خليل","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"عبدالعزيز عمر الاحمد","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"عبدالله متعب راشد الصعاق المرى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"عبدالمجيد فقيرى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"على ابراهيم على صالح جغمان","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"على سعود راشد شفيع الفهيده","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"عوني محمد عوني مصطفى دلول","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"فيصل يوسف محمود محمد المرزوقى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"محمد اسد محمد مشتاق","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"محمد عبدالله قاسم محمد الخلاقى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"محمد متعب راشد الصعاق المرى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"محمد ناصر قسم الله يعقوب العجب","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"مصعب محمد الريح عطا سنهورى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"ناصر محمد ناصر ال جهويل المرى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"نايف جاسم محمد ميرين البلوشي","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"نايف على راشد العذبه المرى","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"نصيب خميس نصيب غنيم جوهر","s":"الصف التاسع - شعبة 3","c":"@GRADE903"},{"n":"ابراهيم عبدالرحمن حسن المالكى الجهنى","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"احمد العيدو","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"احمد جبر عبدالمعطى جبر يوسف","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"ادم احمد فاروق احمد ادم","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"امين مهيد السمانى محمد الحسن","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"حجي ابراهيم عمر محمد","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"حمد محمد سعيد حمد سالم","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"خالد محمد طخطيخ العنزي","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"راشد مبارك سعيد حصوان المرى","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"راشد محمد راشد المري","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"سحيم حمد منصر القايد الغياثين","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"سعيد حمد سعيد الفهيد الهاجرى","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"صالح سعيد صالح الغيثانى المرى","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"عبد العال محمد علي محمد","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"عبدالرحمن ابوبكرالصديق محمد اشرف","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"عبدالرحمن حمود الرمضان","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"عبدالعزيز عبدالله احمد عبدالله باسهل","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"عبدالله محمد على الشيبه المرى","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"عمر احمد ابوالهوايل محمود ابوالهوايل","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"عيسى عبدالله عيسى جاسم الحداد","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"فارس محمد حسين على حسين","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"فهد رائد ابراهيم عبدالجواد","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"محمد حمد صالح الغيثانى المرى","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"محمد سالم جابر محمد الغواص","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"محمد سعيد على البحيح المرى","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"محمد عادل","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"محمد عبدالله ناصر خان","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"محمد عبدالهادي علي عوير المري","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"مؤمن احمد فزع السمانى محمد","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"نواف محمد عوض سعيد الجعيدى","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"هزاع حسن مسفر حسن الكربى","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"يوسف خلدون مصطفى العثمان العاصى","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"يوسف عمر حسن","s":"الصف التاسع - شعبة 4","c":"@GRADE904"},{"n":"احمد خضر احمد السعدى اليافعى","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"احمد صالح جميل صالح المشيفري","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"احمد وائل محمود عباس ادريس","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"الياس عبدالله فتحى عبدالله محمود","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"امير محمد المحيمدالفنتش","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"انس عمار احمد يوسف محمد","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"اياد محمد مندوه حلمي جاب الله","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"بشير محمد بشير على عثمان","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"حسن عبيد احمد حسن الطارش","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"حمد سالم عبدالله المرى","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"حمزه محمد واكد الدقس","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"خالد عبدالله متعب المنخس المرى","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"راشد سالم راشد سالم ابوشهاب","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"رجا حويدر رجا حويدر الهاجرى","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"سعيد سالم حمد سالم العذبه","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"طلحه روفين دزين","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"عبدالرحمن سمير بدر خميس غصوب","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"عبدالرحمن فرحان ادان","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"عبدالعزيز بنجشنبه بلوجى","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"عبدالله محمد مراد محمد","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"عمر ياسر الخلف","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"فهد مهدى عبيد ال ناصر القحطانى","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"فهد نضال احمد ابراهيم ابوعيده","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"فهيد حمد على فهيد المرى","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"مبارك سعد عبدالهادى صرير الهاجرى","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"مبارك مهدى مبارك ال معيض الحبابى","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"محمد حمد على سعيد حديد","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"محمد سالم حمد سعيد القوز","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"محمد طارق نعمان قاسم العزعزى","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"محمد قصى يوسف الشيخ","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"مروان خالد عثمان حواية الله","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"مشعل غازي الدهام","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"يوسف مصطفى عزيز حسن عبدالعزيز","s":"الصف التاسع - شعبة 5","c":"@GRADE0905"},{"n":"احمد جميل احمد","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"أحمد محمد مجتبى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"احمد محمد محسن محمد البكري","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"احمد وهيب احمد سعيد الوهيبي","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"ادم حسن","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"اريان سيراج محمد","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"ايمن صبري عمر كجوك","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"بخيت عبدالله بخيت البريدى المرى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"بخيت عبدالله محمد البريدى المرى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"تويم محمد تويم محمد المرى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"جاسم أحمد ابراهيم محمد عزام","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"حمد مهدى حمد ال ناصر القحطانى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"راشد رايس خان","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"راشد فهيد على الحسناء المرى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"سعود سمير محمد أيوب","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"سلمان حسن اسماعيل خليفه ياقوت","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"سلمان عويس صديق محمد علي","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"صالح على محمد حمد المرى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"صقر عبدالرحمن طخطيخ العنزي","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"عبدالحكيم عامر محمد محمد على","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"عبدالرحمن نعيم احمد","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"عبدالعزيز فائز سعيد يوسف احمد","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"عبدالله محسن محمد سعيد ابوصلعه","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"عبدالله محمد حسان السيد رمضان","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"عبدالله ناصر فلاح عبدالله الدوسرى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"عبدالله ناصر كامل السيد المكاوى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"مازن محمود يوسف محمود يوسف","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"محمد انعام الله خان ممتازخان فتح خان احمد","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"محمد سالم على الخطلاء السنيد","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"محمد صبحى عطيه محمود اسماعيل","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"محمد عبدالرزاق احمد عبدالرزاق المريخى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"مسفر حسن محمد زهره القحطانى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"مؤيد محمد البدرى محمود مصطفى","s":"الصف التاسع - شعبة 6","c":"@GRADE0906"},{"n":"اواب ابراهيم محجوب احمد","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"حبيب الله عبدالله","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"حمد عبدالله محمد حمران المرى","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"حمزه خالد احمد على ابوزيد","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"راشد حمد حسين محسن المرقب","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"سالم حمد جابر دجران المرى","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"سالم فهد حسين سالم السفران","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"سعود محمد رشدى عطيه عاشور","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"سلمان سلطان سالم راشد العلوي","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"سيف علي الحصيه","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"صالح حمد صالح حسين الجرحب","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"صالح مسلم صالح النابت المرى","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"عبد الملك سمير بنبلقاسم","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"عبدالحكيم اسماعيل","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"عبدالمحسن سلطان محسن راشد نديله","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"عدنان محمد كريم يار محمد","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"على راشد سالم راشد العذبى","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"على محمد جابر محمد العذبه","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"عمر اسامه احمد طه امام","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"عمر مصعب خضر عبدالله تايه","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"محمد بنيان محمد شبيب الدوسرى","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"محمد جابر على راشد عليان","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"محمد عايض محمد حنزاب العذبه","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"محمد عمر بابكر احمد","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"محمد وهاب عابد","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"مروان محمود عبدالعليم محمد سيف الدين","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"مصطفى تامر مصطفى السيد الدالى","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"منذر احمد فزع السمانى محمد","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"ناصر بشير احمد رضا محمد","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"نايف عبدالرحمن على صالح جغمان","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"يزن سيف سعد العجيلي","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"يوسف اسامه محمد توفيق عبدالجواد","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"يونس جمعه دورزاده","s":"الصف التاسع - شعبة 7","c":"@GRADE0907"},{"n":"احمد ابراهيم ابراهيم علي محمد","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"احمد خالد فريق محمود الريماوى","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"احمد محمد شحده ابوعنزه","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"ادم ايمن عيد حلمى محمد","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"حمد ناصر راضى الفهيد الهاجرى","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"راشد هزاع راشد العذبه المرى","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"زايد على ناصر سويد الهاجرى","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"سالم حافظ مصطفى","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"سالم فيصل سعد ال شعيل المري","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"سلطان محمد حمد على الهاجرى","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"سليمان سعد العبدالله","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"سمير منصور","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"عامر مروان علي","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"عبد الصمد محمد عبدالله الزبيري","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"عبدالرحمن عمرو ادريس زكى سليم","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"عبدالعزيز عصام حامد عامر","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"عبدالله عبدالعزيز عبدالله ال فريان","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"عبدالهادي احمد الخليفه","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"على حسين سيف السفران المرى","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"عمر عامر عصمه علي البلوشي","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"عمر محمد الريح عطا سنهورى","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"فاضل عبدالله راشد حمد العذبى","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"مبارك عبدالله مبارك البوسعيد الخيارين","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"محمد خليل ديب شعبان دلول","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"محمد سالم فرج حمد عزران","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"محمد لياس فادى الحمدان","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"محمد مبارك محمد مبارك الكربى","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"محمد نبيل امين الزراف","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"محمد نبيل عبدالله ادم دحيش","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"منذر احمد محمد محمد الجاز","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"ناصر فليان ناصر السبيعي","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"},{"n":"يوسف احمد محمد عبدالمنعم قطب","s":"الصف التاسع - شعبة 8","c":"@GRADE0908"}];
 /* @STUDENTS_DATA_END@ */
 
 /* =========================================================
-   📌 الحالة العامة
+   إعدادات عامة
    ========================================================= */
-var token = localStorage.getItem(LS_KEY) || DEFAULT_TOKEN;
+var LS_KEY = "tg_bot_token_allAba_override";
+var STORAGE_STUDENTS_KEY = "custom_students_data_v1";
+var ADMIN_PASSWORD = "20425.aba";
+var TG_API = "https://api.telegram.org";
+
 var html5QrCode = null;
 var scanning = false;
+var token = localStorage.getItem(LS_KEY) || DEFAULT_TOKEN;
 var selectedFile = null;
-var currentSection = null;
-var currentTab = "remaining";
-var currentCallName = "";
-var currentCallSection = "";
-var speechSupported = ("speechSynthesis" in window);
-var lastProcessedCallEvent = null;
-var callPollingInterval = null;
 
-var firebaseDB = null;
-var firebaseReady = false;
+var searchInput = document.getElementById("searchInput");
+var scanBtn     = document.getElementById("scanBtn");
+var readerDiv   = document.getElementById("reader");
+var toast       = document.getElementById("toast");
+var stats       = document.getElementById("stats");
 
-/* =========================================================
-   🔥 تهيئة Firebase
-   ========================================================= */
-function initFirebase() {
-  try {
-    if (typeof firebase === "undefined") {
-      console.warn("Firebase SDK غير محمّل");
-      updateSyncStatus("offline", "Firebase غير محمّل");
-      return false;
-    }
-    if (firebase.apps && firebase.apps.length > 0) {
-      firebaseDB = firebase.database();
-      firebaseReady = true;
-      updateSyncStatus("online", "متصل (Firebase)");
-      return true;
-    }
-    firebase.initializeApp(firebaseConfig);
-    firebaseDB = firebase.database();
-    firebaseReady = true;
-    updateSyncStatus("online", "متصل (Firebase)");
-    console.log("✅ Firebase جاهز");
+var tokenModal    = document.getElementById("tokenModal");
+var newTokenInput = document.getElementById("newTokenInput");
 
-    // استقبال أحداث الاستدعاء من الأجهزة الأخرى
-    firebaseDB.ref("callEvents").limitToLast(1).on("child_added", function(snapshot) {
-      var event = snapshot.val();
-      if (event) {
-        event._fbKey = snapshot.key;
-        handleRemoteCallEvent(event);
-      }
-    });
+var resultsOverlay = document.getElementById("resultsOverlay");
+var resultsList    = document.getElementById("resultsList");
+var resultsCount   = document.getElementById("resultsCount");
 
-    // استقبال تحديثات قائمة المستدعين
-    firebaseDB.ref("calledStudents").on("value", function(snapshot) {
-      var data = snapshot.val();
-      if (data && typeof data === "object") {
-        try {
-          localStorage.setItem(STORAGE_CALLED_KEY, JSON.stringify(data));
-          if (currentSection) renderSectionMembers();
-        } catch(e) {}
-      }
-    });
-
-    // استقبال تحديثات بيانات الطلاب
-    firebaseDB.ref("studentsData").on("value", function(snapshot) {
-      var data = snapshot.val();
-      if (data && Array.isArray(data) && data.length > 0) {
-        try {
-          STUDENTS.length = 0;
-          for (var i = 0; i < data.length; i++) STUDENTS.push(data[i]);
-          localStorage.setItem(STORAGE_STUDENTS_KEY, JSON.stringify(data));
-          if (document.getElementById("pageAdmin").classList.contains("active")) {
-            renderSections();
-          }
-        } catch(e) {}
-      }
-    });
-
-    cleanupOldEvents();
-    return true;
-  } catch (e) {
-    console.error("فشل تهيئة Firebase:", e);
-    updateSyncStatus("offline", "فشل الاتصال");
-    return false;
-  }
-}
-
-function cleanupOldEvents() {
-  if (!firebaseReady || !firebaseDB) return;
-  var oneHourAgo = Date.now() - (60 * 60 * 1000);
-  firebaseDB.ref("callEvents").orderByChild("timestamp").endAt(oneHourAgo).once("value")
-    .then(function(snap) {
-      snap.forEach(function(child) { child.ref.remove(); });
-    })
-    .catch(function() {});
-}
-
-function updateSyncStatus(state, text) {
-  var el = document.getElementById("syncStatus");
-  var txt = document.getElementById("syncStatusText");
-  if (!el || !txt) return;
-  el.classList.remove("online", "offline");
-  if (state === "online") el.classList.add("online");
-  else if (state === "offline") el.classList.add("offline");
-  txt.textContent = text;
-}
+var geoGate    = document.getElementById("geoGate");
+var geoIcon    = document.getElementById("geoIcon");
+var geoTitle   = document.getElementById("geoTitle");
+var geoMsg     = document.getElementById("geoMsg");
+var geoSpinner = document.getElementById("geoSpinner");
+var geoRetry   = document.getElementById("geoRetryBtn");
+var geoCoords  = document.getElementById("geoCoords");
 
 /* =========================================================
-   📌 تحميل البيانات
+   تحميل البيانات المخصصة من localStorage
    ========================================================= */
 function loadCustomStudents() {
   try {
@@ -1305,10 +1185,888 @@ function loadCustomStudents() {
         return true;
       }
     }
-  } catch (e) { console.warn("فشل تحميل البيانات:", e); }
+  } catch (e) {
+    if (window.console && console.warn) console.warn("فشل تحميل البيانات المخصصة:", e);
+  }
   return false;
 }
 loadCustomStudents();
+
+/* =========================================================
+   📍 حساب المسافة (صيغة Haversine)
+   ========================================================= */
+function calculateDistance(lat1, lng1, lat2, lng2) {
+  var R = 6371000;
+  var toRad = function(d) { return d * Math.PI / 180; };
+  var dLat = toRad(lat2 - lat1);
+  var dLng = toRad(lng2 - lng1);
+  var a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+    Math.sin(dLng/2) * Math.sin(dLng/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return Math.round(R * c);
+}
+
+function setGeoState(icon, title, msg, color) {
+  color = color || "";
+  geoIcon.textContent = icon;
+  geoIcon.className = "geo-icon " + color;
+  geoTitle.textContent = title;
+  geoMsg.innerHTML = msg;
+}
+
+function openSystem() {
+  geoGate.classList.add("hidden");
+  document.body.style.overflow = "";
+  updateStats();
+  setTimeout(function() {
+    try { searchInput.focus(); } catch(e){}
+  }, 200);
+}
+
+function updateStats() {
+  if (!stats) return;
+  var lastStats = localStorage.getItem("last_upload_stats");
+  var suffix = "";
+  if (lastStats) {
+    try {
+      var s = JSON.parse(lastStats);
+      suffix = " — آخر تحديث: " + s.date + " (" + s.total + " طالب)";
+    } catch(e){}
+  }
+  stats.textContent = "📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR" + suffix;
+}
+
+/* ============ التحقق من الموقع ============ */
+function checkLocation() {
+  geoSpinner.classList.remove("hidden");
+  geoRetry.style.display = "none";
+  geoCoords.textContent = "";
+  setGeoState("📍", "جارٍ التحقق من موقعك...",
+    "يرجى السماح بالوصول إلى الموقع الجغرافي للمتابعة.");
+
+  if (!navigator.geolocation) {
+    geoSpinner.classList.add("hidden");
+    setGeoState("❌", "غير مدعوم",
+      "متصفحك لا يدعم خدمة تحديد الموقع. جرب متصفحاً حديثاً مثل Chrome أو Safari.", "err");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      var userLat = position.coords.latitude;
+      var userLng = position.coords.longitude;
+      var accuracy = Math.round(position.coords.accuracy);
+      var distance = calculateDistance(
+        userLat, userLng,
+        SCHOOL_LOCATION.lat, SCHOOL_LOCATION.lng
+      );
+
+      geoCoords.textContent =
+        "موقعك: " + userLat.toFixed(6) + ", " + userLng.toFixed(6) + " (±" + accuracy + "م)\n" +
+        "المسافة عن المدرسة: " + distance + " متر";
+
+      geoSpinner.classList.add("hidden");
+
+      if (distance <= MAX_DISTANCE_METERS) {
+        setGeoState("✅", "تم التحقق بنجاح",
+          "أنت على بعد <b>" + distance + " متر</b> من المدرسة. جارٍ فتح النظام...", "ok");
+        setTimeout(openSystem, 1200);
+      } else {
+        setGeoState("🚫", "خارج نطاق المدرسة",
+          "أنت على بعد <b>" + distance + " متر</b> من المدرسة.<br>" +
+          "يُسمح باستخدام النظام فقط داخل نطاق <b>" + MAX_DISTANCE_METERS + " متر</b> من المدرسة.",
+          "err");
+        geoRetry.style.display = "inline-flex";
+      }
+    },
+    function(error) {
+      geoSpinner.classList.add("hidden");
+      var msg = "تعذّر تحديد موقعك. ";
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          msg = "🚫 تم رفض إذن الوصول إلى الموقع.<br>يجب السماح بالوصول للمتابعة." +
+                "<small>افتح إعدادات المتصفح → أذونات الموقع → اسمح لهذا الموقع</small>";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          msg = "📡 معلومات الموقع غير متوفرة. تأكد من تشغيل GPS/الإنترنت.";
+          break;
+        case error.TIMEOUT:
+          msg = "⏱️ انتهت مدة الانتظار. جرب مرة أخرى في مكان مفتوح.";
+          break;
+      }
+      setGeoState("❌", "خطأ في تحديد الموقع", msg, "err");
+      geoRetry.style.display = "inline-flex";
+    },
+    GEO_OPTIONS
+  );
+}
+
+(function runGeoGate() {
+  document.body.style.overflow = "hidden";
+  checkLocation();
+})();
+
+/* ============ Modal: تغيير التوكن ============ */
+function openTokenModal() {
+  newTokenInput.value = "";
+  tokenModal.classList.add("show");
+  setTimeout(function() { newTokenInput.focus(); }, 100);
+}
+function closeTokenModal() {
+  tokenModal.classList.remove("show");
+}
+function saveNewToken() {
+  var t = newTokenInput.value.trim();
+  if (!t) {
+    localStorage.removeItem(LS_KEY);
+    token = DEFAULT_TOKEN;
+    closeTokenModal();
+    showToast("✅ تم استرجاع التوكن الافتراضي");
+    return;
+  }
+  if (!/^\d+:[A-Za-z0-9_-]+$/.test(t)) {
+    showToast("❌ صيغة التوكن غير صحيحة", true); return;
+  }
+  fetch(TG_API + "/bot" + t + "/getMe")
+    .then(function(r) { return r.json(); })
+    .then(function(j) {
+      if (j.ok) {
+        token = t;
+        localStorage.setItem(LS_KEY, t);
+        closeTokenModal();
+        showToast("✅ تم حفظ التوكن الجديد بنجاح");
+      } else {
+        showToast("❌ توكن غير صالح", true);
+      }
+    })
+    .catch(function() { showToast("تعذّر الاتصال بـ Telegram", true); });
+}
+
+tokenModal.addEventListener("click", function(e) {
+  if (e.target === tokenModal) closeTokenModal();
+});
+
+/* ============ Normalization ============ */
+function normalize(s) {
+  return (s || "").toString().trim().toLowerCase()
+    .replace(/[أإآٱا]/g, 'ا')
+    .replace(/[ىي]/g, 'ي')
+    .replace(/[ةه]/g, 'ه')
+    .replace(/[ًٌٍَُِّْـ]/g, '')
+    .replace(/\s+/g, ' ');
+}
+
+/* ============ البحث ============ */
+searchInput.addEventListener("keydown", function(e) {
+  if (e.key === "Enter" || e.keyCode === 13) doSearch();
+});
+
+function doSearch() {
+  var q = normalize(searchInput.value.trim());
+  if (!q) { showToast("أدخل اسماً للبحث", true); return; }
+
+  var matches = [];
+  for (var i = 0; i < STUDENTS.length; i++) {
+    if (normalize(STUDENTS[i].n).indexOf(q) !== -1) matches.push(STUDENTS[i]);
+  }
+
+  if (!matches.length) {
+    showToast("❌ لا توجد نتائج مطابقة", true);
+    return;
+  }
+  showResultsModal(matches);
+}
+
+function showResultsModal(list) {
+  resultsCount.textContent = list.length;
+  resultsList.innerHTML = "";
+
+  list.forEach(function(item) {
+    var div = document.createElement("div");
+    div.className = "result-item";
+    div.innerHTML = '<span class="name">' + item.n + '</span>' +
+                    '<span class="section">' + item.s + '</span>';
+    div.onclick = function() {
+      closeResultsModal();
+      selectStudent(item);
+    };
+    resultsList.appendChild(div);
+  });
+
+  resultsOverlay.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function closeResultsModal() {
+  resultsOverlay.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+resultsOverlay.addEventListener("click", function(e) {
+  if (e.target === resultsOverlay) closeResultsModal();
+});
+
+/* ============ إرسال الاستدعاء ============ */
+async function selectStudent(student) {
+  showToast("⏳ يتم إرسال الاستدعاء...", false, true);
+
+  var sectionName = student.s;
+  if (/^GRADE/i.test(sectionName) || sectionName.indexOf("@") === 0) {
+    sectionName = getSectionName(sectionName);
+  }
+
+  var message =
+    "🔔 عزيزي المعلم يُرجى اخراج الطالب\n" +
+    "=========================\n" +
+    "👤 الاسم: " + student.n + "\n" +
+    "🏫 الشعبة: " + sectionName + "\n" +
+    "=========================\n" +
+    "🚪 يرجى التوجه إلى بوابة الخروج";
+
+  try {
+    var res = await fetch(TG_API + "/bot" + token + "/sendMessage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: student.c, text: message })
+    });
+    var json = await res.json();
+
+    if (json.ok) {
+      // ✅ سجّل الاستدعاء في Firebase + حدث المزامنة
+      try {
+        markStudentCalled(student.s, student.n);
+        broadcastCallEvent(student.n, student.s);
+      } catch(e) { if (window.console) console.warn("تعذّر حفظ الاستدعاء:", e); }
+
+      // ✅ إذا كانت شعبة الطالب مفتوحة في صفحة الإدارة → أظهر المنبثق
+      if (typeof currentSection !== "undefined" && currentSection &&
+          currentSection.toUpperCase() === student.s.toUpperCase()) {
+        renderSectionMembers();
+        showCallNotification(student.n, student.s);
+      }
+
+      showSuccessPopup(student.n, sectionName);
+      searchInput.value = "";
+    } else {
+      if (window.console && console.error) console.error(json);
+      showToast("❌ " + (json.description || "فشل الإرسال"), true);
+    }
+  } catch (err) {
+    if (window.console && console.error) console.error(err);
+    showToast("تعذّر الاتصال بـ Telegram", true);
+  }
+}
+
+/* ============ نافذة النجاح الثابتة ============ */
+function showSuccessPopup(studentName, sectionName) {
+  var overlay = document.getElementById("successOverlay");
+  var studentBox = document.getElementById("successStudent");
+
+  studentBox.innerHTML = "<b>👤 الاسم:</b> " + studentName + "\n<b>🏫 الشعبة:</b> " + sectionName;
+
+  overlay.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function closeSuccess() {
+  var overlay = document.getElementById("successOverlay");
+  overlay.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+/* ============ QR Scanner ============ */
+async function toggleScan() {
+  if (scanning) { stopScan(); return; }
+  readerDiv.style.display = "block";
+  scanBtn.textContent = "❌ إيقاف المسح";
+
+  html5QrCode = new Html5Qrcode("reader");
+  try {
+    await html5QrCode.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      onQrSuccess,
+      function() {}
+    );
+    scanning = true;
+  } catch (err) {
+    if (window.console && console.error) console.error(err);
+    showToast("تعذّر فتح الكاميرا. تأكد من HTTPS والصلاحيات.", true);
+    readerDiv.style.display = "none";
+    scanBtn.textContent = "📷 مسح QR";
+  }
+}
+
+async function stopScan() {
+  if (html5QrCode) {
+    try { await html5QrCode.stop(); html5QrCode.clear(); } catch(e){}
+  }
+  scanning = false;
+  readerDiv.style.display = "none";
+  scanBtn.textContent = "📷 مسح QR";
+}
+
+function onQrSuccess(decodedText) {
+  stopScan();
+  var q = normalize(decodedText);
+
+  var found = null;
+  for (var i = 0; i < STUDENTS.length; i++) {
+    if (normalize(STUDENTS[i].n) === q) { found = STUDENTS[i]; break; }
+  }
+  if (!found) {
+    for (var j = 0; j < STUDENTS.length; j++) {
+      if (normalize(STUDENTS[j].n).indexOf(q) !== -1) { found = STUDENTS[j]; break; }
+    }
+  }
+
+  if (found) {
+    showToast("📷 " + found.n);
+    selectStudent(found);
+  } else {
+    showToast("❌ لم يُعثر على الطالب: " + decodedText, true);
+    searchInput.value = decodedText;
+    doSearch();
+  }
+}
+
+/* =========================================================
+   🔐 نظام تحديث البيانات عبر Excel
+   ========================================================= */
+function openPasswordModal() {
+  document.getElementById("passwordInput").value = "";
+  document.getElementById("passwordError").textContent = "";
+  document.getElementById("passwordOverlay").classList.add("show");
+  document.body.style.overflow = "hidden";
+  setTimeout(function() {
+    document.getElementById("passwordInput").focus();
+  }, 150);
+}
+
+function closePasswordModal() {
+  document.getElementById("passwordOverlay").classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+function verifyPassword() {
+  var input = document.getElementById("passwordInput").value;
+  var errorBox = document.getElementById("passwordError");
+
+  if (input === ADMIN_PASSWORD) {
+    closePasswordModal();
+    setTimeout(openUploadModal, 300);
+  } else {
+    errorBox.textContent = "❌ كلمة المرور غير صحيحة";
+    document.getElementById("passwordInput").value = "";
+    document.getElementById("passwordInput").focus();
+    var box = document.querySelector(".password-box");
+    box.style.animation = "none";
+    setTimeout(function() { box.style.animation = "shake 0.4s"; }, 10);
+  }
+}
+
+function openUploadModal() {
+  selectedFile = null;
+  document.getElementById("excelFileInput").value = "";
+  document.getElementById("fileDropText").textContent = "اضغط لاختيار ملف Excel أو اسحبه هنا";
+  document.getElementById("fileDropZone").classList.remove("has-file");
+  document.getElementById("uploadStatus").textContent = "";
+  document.getElementById("uploadStatus").className = "upload-status";
+  document.getElementById("uploadProgress").classList.add("hidden");
+  document.getElementById("confirmUploadBtn").disabled = true;
+
+  document.getElementById("uploadOverlay").classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function closeUploadModal() {
+  document.getElementById("uploadOverlay").classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+function handleFileSelected(file) {
+  if (!file.name.match(/\.(xlsx|xls)$/i)) {
+    showUploadStatus("❌ يجب أن يكون الملف بصيغة Excel (.xlsx أو .xls)", "error");
+    return;
+  }
+  selectedFile = file;
+  var dropZone = document.getElementById("fileDropZone");
+  var dropText = document.getElementById("fileDropText");
+  dropZone.classList.add("has-file");
+  dropText.innerHTML = '✅ <b>' + file.name + '</b><br><small style="opacity:.7;">' + (file.size/1024).toFixed(1) + ' KB</small>';
+  document.getElementById("confirmUploadBtn").disabled = false;
+  showUploadStatus("اضغط 'رفع وتحديث' لمعالجة الملف", "info");
+}
+
+function showUploadStatus(msg, type) {
+  type = type || "";
+  var box = document.getElementById("uploadStatus");
+  box.textContent = msg;
+  box.className = "upload-status " + type;
+}
+
+async function processExcelFile() {
+  if (!selectedFile) {
+    showUploadStatus("❌ لم يتم اختيار ملف", "error");
+    return;
+  }
+
+  if (typeof XLSX === "undefined") {
+    showUploadStatus("❌ مكتبة قراءة Excel لم تُحمّل. تحقق من الإنترنت.", "error");
+    return;
+  }
+
+  document.getElementById("uploadProgress").classList.remove("hidden");
+  document.getElementById("confirmUploadBtn").disabled = true;
+  showUploadStatus("", "");
+
+  try {
+    var data = await readFileAsArrayBuffer(selectedFile);
+    var workbook = XLSX.read(data, { type: "array" });
+    var firstSheetName = workbook.SheetNames[0];
+    var worksheet = workbook.Sheets[firstSheetName];
+    var rows = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+    if (!rows.length) {
+      throw new Error("الملف فارغ أو لا يحتوي على بيانات");
+    }
+
+    var firstRow = rows[0];
+    var keys = Object.keys(firstRow);
+    var nameKey = null, channelKey = null, sectionKey = null;
+
+    for (var i = 0; i < keys.length; i++) {
+      if (!nameKey && /اسم|الاسم|name/i.test(keys[i])) nameKey = keys[i];
+      if (!channelKey && /channel|قناة|معرف/i.test(keys[i])) channelKey = keys[i];
+      if (!sectionKey && /شعبة|section|صف/i.test(keys[i])) sectionKey = keys[i];
+    }
+
+    if (!nameKey || !channelKey) {
+      throw new Error(
+        "تعذّر العثور على الأعمدة المطلوبة.\n" +
+        "تأكد من وجود عمود للاسم وعمود Channel_ID"
+      );
+    }
+
+    var newStudents = [];
+    var skipped = 0;
+
+    rows.forEach(function(row) {
+      var name = String(row[nameKey] || "").trim();
+      var channel = String(row[channelKey] || "").trim();
+      var sectionRaw = sectionKey ? String(row[sectionKey] || "").trim() : "";
+
+      if (!name || !channel) { skipped++; return; }
+
+      if (channel.charAt(0) !== "@" && channel.charAt(0) !== "-") {
+        channel = "@" + channel;
+      }
+
+      var sectionId = "";
+      if (sectionRaw && /^GRADE/i.test(sectionRaw)) {
+        sectionId = sectionRaw.toUpperCase();
+      } else {
+        sectionId = channel.replace(/^@/, "").toUpperCase();
+      }
+
+      var sectionFormatted = sectionRaw || sectionId;
+      if (/^GRADE/i.test(sectionId)) {
+        sectionFormatted = getSectionName(sectionId);
+      }
+
+      newStudents.push({
+        n: name,
+        s: sectionFormatted,
+        c: channel
+      });
+    });
+
+    if (!newStudents.length) {
+      throw new Error("لم يتم العثور على أي صف صالح في الملف");
+    }
+
+    STUDENTS.length = 0;
+    for (var k = 0; k < newStudents.length; k++) STUDENTS.push(newStudents[k]);
+
+    localStorage.setItem(STORAGE_STUDENTS_KEY, JSON.stringify(newStudents));
+
+    var uploadStats = {
+      total: newStudents.length,
+      skipped: skipped,
+      date: new Date().toLocaleString("ar-QA"),
+      fileName: selectedFile.name
+    };
+    localStorage.setItem("last_upload_stats", JSON.stringify(uploadStats));
+
+    document.getElementById("uploadProgress").classList.add("hidden");
+
+    showUploadStatus(
+      "✅ تم التحديث بنجاح!\n" +
+      "📊 عدد الطلاب: " + newStudents.length + "\n" +
+      "⏭️ تم تخطي: " + skipped + " صف (بيانات ناقصة)\n" +
+      "📅 " + uploadStats.date + "\n\n" +
+      "⬇️ جارٍ تنزيل index.html الجديد تلقائياً...",
+      "success"
+    );
+
+    updateStats();
+
+    setTimeout(function() {
+      downloadUpdatedHTMLFile(newStudents);
+    }, 500);
+
+    setTimeout(function() {
+      closeUploadModal();
+      showToast("✅ تم التحديث وتنزيل index.html — جاهز للرفع");
+    }, 3500);
+
+  } catch (err) {
+    document.getElementById("uploadProgress").classList.add("hidden");
+    if (window.console && console.error) console.error(err);
+    showUploadStatus("❌ " + (err.message || "فشل معالجة الملف"), "error");
+    document.getElementById("confirmUploadBtn").disabled = false;
+  }
+}
+
+function readFileAsArrayBuffer(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function(e) { resolve(e.target.result); };
+    reader.onerror = function() { reject(new Error("تعذّر قراءة الملف")); };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function resetStudentsData() {
+  if (!confirm("سيتم حذف البيانات المحدّثة والعودة للبيانات الأصلية المدمجة.\nهل أنت متأكد؟")) return;
+  localStorage.removeItem(STORAGE_STUDENTS_KEY);
+  localStorage.removeItem("last_upload_stats");
+  showToast("✅ تم استرجاع البيانات الأصلية. أعد تحميل الصفحة.");
+  setTimeout(function() { location.reload(); }, 1500);
+}
+
+/* =========================================================
+   📥 توليد نسخة نظيفة من index.html مع البيانات الجديدة
+   ========================================================= */
+function downloadUpdatedHTMLFile(studentsList) {
+  try {
+    if (!studentsList || !studentsList.length) {
+      showToast("⚠️ لا توجد بيانات للتنزيل", true);
+      return;
+    }
+
+    var doctype = "<!DOCTYPE html>\n";
+    var currentHTML = document.documentElement.outerHTML;
+    if (currentHTML.indexOf('<!DOCTYPE') !== 0) {
+      currentHTML = doctype + currentHTML;
+    }
+
+    var cleanHTML = currentHTML;
+
+    cleanHTML = cleanHTML.replace(
+      /(<div[^>]+class=")([^"]*?)(\s+show\s*)([^"]*?"[^>]*>)/g,
+      function(match, p1, p2, p3, p4) {
+        if (/modal-overlay|success-overlay|results-overlay|password-overlay|upload-overlay|call-notify-overlay/.test(match)) {
+          return p1 + p2 + p4;
+        }
+        return match;
+      }
+    );
+
+    cleanHTML = cleanHTML.replace(
+      /(<div[^>]+(?:id="(?:tokenModal|resultsOverlay|successOverlay|passwordOverlay|uploadOverlay|adminPasswordOverlay|callNotifyOverlay)"|class="[^"]*?(?:modal-overlay|success-overlay|results-overlay|password-overlay|upload-overlay|call-notify-overlay)[^"]*?")[^>]*?)\s+style="[^"]*?display\s*:\s*block[^"]*?"/g,
+      '$1'
+    );
+
+    cleanHTML = cleanHTML.replace(
+      /(<button[^>]+id="confirmUploadBtn"[^>]*?)(?:\s+disabled(?:\s*=\s*"[^"]*")?)?(\s*>)/g,
+      '$1 disabled$2'
+    );
+
+    cleanHTML = cleanHTML.replace(/(<input[^>]+id="searchInput"[^>]*?)\s+value="[^"]*"/g, '$1');
+    cleanHTML = cleanHTML.replace(/(<input[^>]+id="passwordInput"[^>]*?)\s+value="[^"]*"/g, '$1');
+    cleanHTML = cleanHTML.replace(/(<input[^>]+id="newTokenInput"[^>]*?)\s+value="[^"]*"/g, '$1');
+    cleanHTML = cleanHTML.replace(/(<input[^>]+id="adminPasswordInput"[^>]*?)\s+value="[^"]*"/g, '$1');
+
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="resultsList"[^>]*>)[\s\S]*?(<\/div>)/g, '$1$2');
+    cleanHTML = cleanHTML.replace(/(<span[^>]+id="resultsCount"[^>]*>)[\s\S]*?(<\/span>)/g, '$10$2');
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="successStudent"[^>]*>)[\s\S]*?(<\/div>)/g, '$1$2');
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="passwordError"[^>]*>)[\s\S]*?(<\/div>)/g, '$1$2');
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="adminPasswordError"[^>]*>)[\s\S]*?(<\/div>)/g, '$1$2');
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="uploadStatus"[^>]*>)[\s\S]*?(<\/div>)/g, '$1$2');
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="callNotifyName"[^>]*>)[\s\S]*?(<\/div>)/g, '$1—$2');
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="callNotifySection"[^>]*>)[\s\S]*?(<\/div>)/g, '$1—$2');
+
+    cleanHTML = cleanHTML.replace(/(<div[^>]+class="file-drop-zone[^"]*?"[^>]*?)\s+has-file/g, '$1');
+    cleanHTML = cleanHTML.replace(/(<div[^>]+class="file-drop-zone[^"]*?"[^>]*?)\s+dragover/g, '$1');
+    cleanHTML = cleanHTML.replace(
+      /(<div[^>]+id="fileDropText"[^>]*>)[\s\S]*?(<\/div>)/g,
+      '$1اضغط لاختيار ملف Excel أو اسحبه هنا$2'
+    );
+
+    cleanHTML = cleanHTML.replace(
+      /(<div[^>]+id="uploadProgress"[^>]*?class=")([^"]*?)("[^>]*>)/g,
+      function(match, before, cls, after) {
+        if (cls.indexOf('hidden') === -1) {
+          cls = (cls + ' hidden').trim();
+        }
+        return before + cls + after;
+      }
+    );
+
+    cleanHTML = cleanHTML.replace(
+      /(<button[^>]+id="scanBtn"[^>]*>)[\s\S]*?(<\/button>)/g,
+      '$1📷 مسح QR$2'
+    );
+
+    cleanHTML = cleanHTML.replace(
+      /(<div[^>]+id="stats"[^>]*>)[\s\S]*?(<\/div>)/g,
+      '$1📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR$2'
+    );
+
+    // إعادة عرض الصفحة الرئيسية وإخفاء الباقي
+    cleanHTML = cleanHTML.replace(
+      /(<main[^>]+class="container page active"[^>]+id="pageMain"[^>]*>)/g,
+      '$1'
+    );
+    cleanHTML = cleanHTML.replace(
+      /(<main[^>]+class="container page"[^>]+id="pageAdmin"[^>]*>)/g,
+      function(m) { return m.replace('class="container page"', 'class="container page" style="display:none;"'); }
+    );
+    cleanHTML = cleanHTML.replace(
+      /(<main[^>]+class="container page"[^>]+id="pageSection"[^>]*>)/g,
+      function(m) { return m.replace('class="container page"', 'class="container page" style="display:none;"'); }
+    );
+
+    // إعادة إخفاء شريط المزامنة
+    cleanHTML = cleanHTML.replace(
+      /(<span[^>]+id="syncStatusBadge"[^>]*?)\s+style="[^"]*?"/g,
+      '$1 style="display:none;"'
+    );
+
+    var studentsJSON = JSON.stringify(studentsList);
+    var markersRegex = /\/\*\s*@STUDENTS_DATA_START@\s*\*\/[\s\S]*?\/\*\s*@STUDENTS_DATA_END@\s*\*\//;
+    var newDataBlock =
+      '/* @STUDENTS_DATA_START@ */\n' +
+      'var STUDENTS = ' + studentsJSON + ';\n' +
+      '/* @STUDENTS_DATA_END@ */';
+
+    if (markersRegex.test(cleanHTML)) {
+      cleanHTML = cleanHTML.replace(markersRegex, newDataBlock);
+    } else {
+      var fallbackRegex = /var\s+STUDENTS\s*=\s*\[[\s\S]*?\];/;
+      if (fallbackRegex.test(cleanHTML)) {
+        cleanHTML = cleanHTML.replace(fallbackRegex, 'var STUDENTS = ' + studentsJSON + ';');
+      } else {
+        showToast("❌ تعذّر إيجاد بيانات الطلاب في الصفحة", true);
+        return;
+      }
+    }
+
+    var blob = new Blob([cleanHTML], { type: "text/html;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "index.html";
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+
+    setTimeout(function() {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 1500);
+
+    showToast("✅ تم إنشاء index.html نظيف بالبيانات الجديدة");
+
+  } catch (err) {
+    if (window.console && console.error) console.error(err);
+    showToast("❌ فشل إنشاء الملف: " + (err.message || "خطأ غير معروف"), true);
+  }
+}
+
+/* ============ ربط أحداث الرفع ============ */
+document.addEventListener("DOMContentLoaded", function() {
+  var passInput = document.getElementById("passwordInput");
+  var passOverlay = document.getElementById("passwordOverlay");
+  var upOverlay = document.getElementById("uploadOverlay");
+  var fileInput = document.getElementById("excelFileInput");
+  var dropZone = document.getElementById("fileDropZone");
+
+  if (passInput) {
+    passInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter" || e.keyCode === 13) verifyPassword();
+    });
+  }
+
+  if (passOverlay) {
+    passOverlay.addEventListener("click", function(e) {
+      if (e.target === passOverlay) closePasswordModal();
+    });
+  }
+
+  if (upOverlay) {
+    upOverlay.addEventListener("click", function(e) {
+      if (e.target === upOverlay) closeUploadModal();
+    });
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener("change", function(e) {
+      if (e.target.files && e.target.files[0]) {
+        handleFileSelected(e.target.files[0]);
+      }
+    });
+  }
+
+  if (dropZone) {
+    ["dragenter", "dragover"].forEach(function(ev) {
+      dropZone.addEventListener(ev, function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add("dragover");
+      });
+    });
+    ["dragleave", "drop"].forEach(function(ev) {
+      dropZone.addEventListener(ev, function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove("dragover");
+      });
+    });
+    dropZone.addEventListener("drop", function(e) {
+      var files = e.dataTransfer.files;
+      if (files && files[0]) handleFileSelected(files[0]);
+    });
+  }
+});
+
+/* ============ إغلاق النوافذ بـ Escape ============ */
+document.addEventListener("keydown", function(e) {
+  if (e.key !== "Escape" && e.keyCode !== 27) return;
+
+  var successOverlay = document.getElementById("successOverlay");
+  var passwordOverlay = document.getElementById("passwordOverlay");
+  var uploadOverlay = document.getElementById("uploadOverlay");
+  var adminPassOverlay = document.getElementById("adminPasswordOverlay");
+  var callNotifyOverlay = document.getElementById("callNotifyOverlay");
+
+  if (callNotifyOverlay && callNotifyOverlay.classList.contains("show")) {
+    closeCallNotify();
+  } else if (adminPassOverlay && adminPassOverlay.classList.contains("show")) {
+    closeAdminPassword();
+  } else if (passwordOverlay && passwordOverlay.classList.contains("show")) {
+    closePasswordModal();
+  } else if (uploadOverlay && uploadOverlay.classList.contains("show")) {
+    closeUploadModal();
+  } else if (successOverlay && successOverlay.classList.contains("show")) {
+    closeSuccess();
+  } else if (resultsOverlay.classList.contains("show")) {
+    closeResultsModal();
+  }
+});
+
+/* ============ Toast ============ */
+var toastTimer;
+function showToast(msg, isError, isInfo) {
+  isError = isError || false;
+  isInfo = isInfo || false;
+  clearTimeout(toastTimer);
+  toast.textContent = msg;
+  toast.className = isError ? "error" : (isInfo ? "info" : "");
+  toast.classList.add("show");
+  toastTimer = setTimeout(function() {
+    toast.classList.remove("show");
+    setTimeout(function() { toast.style.display = "none"; }, 300);
+  }, 4000);
+  toast.style.display = "block";
+}
+
+/* ============ التوافق ============ */
+document.addEventListener("touchmove", function(e) {
+  if (e.target.closest && e.target.closest(".results-list, .upload-box, .success-box, .password-box, .results-box, .call-notify-box, .members-list")) {
+    return;
+  }
+}, { passive: true });
+
+window.addEventListener("resize", function() {
+  document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+});
+
+/* =========================================================
+   🔥 Firebase Init
+   ========================================================= */
+function initFirebase() {
+  try {
+    if (typeof firebase === "undefined") {
+      console.warn("Firebase SDK غير محمّل");
+      updateSyncBadge("offline", "Firebase غير متاح");
+      return false;
+    }
+    if (firebase.apps && firebase.apps.length > 0) {
+      firebaseDB = firebase.database();
+      firebaseReady = true;
+      updateSyncBadge("online", "متصل (Firebase)");
+      return true;
+    }
+    firebase.initializeApp(firebaseConfig);
+    firebaseDB = firebase.database();
+    firebaseReady = true;
+    updateSyncBadge("online", "متصل (Firebase)");
+    console.log("✅ Firebase جاهز");
+
+    firebaseDB.ref("callEvents").limitToLast(1).on("child_added", function(snapshot) {
+      var event = snapshot.val();
+      if (event) {
+        event._fbKey = snapshot.key;
+        handleRemoteCallEvent(event);
+      }
+    });
+
+    firebaseDB.ref("calledStudents").on("value", function(snapshot) {
+      var data = snapshot.val();
+      if (data && typeof data === "object") {
+        try {
+          localStorage.setItem(STORAGE_CALLED_KEY, JSON.stringify(data));
+          if (currentSection) renderSectionMembers();
+        } catch(e) {}
+      }
+    });
+
+    cleanupOldEvents();
+    return true;
+  } catch (e) {
+    console.error("فشل تهيئة Firebase:", e);
+    updateSyncBadge("offline", "فشل الاتصال");
+    return false;
+  }
+}
+
+function cleanupOldEvents() {
+  if (!firebaseReady || !firebaseDB) return;
+  var oneHourAgo = Date.now() - (60 * 60 * 1000);
+  firebaseDB.ref("callEvents").orderByChild("timestamp").endAt(oneHourAgo).once("value")
+    .then(function(snap) {
+      snap.forEach(function(child) { child.ref.remove(); });
+    }).catch(function() {});
+}
+
+function updateSyncBadge(state, text) {
+  var badge = document.getElementById("syncStatusBadge");
+  var txt = document.getElementById("syncStatusText");
+  if (!badge || !txt) return;
+  badge.style.display = "inline-flex";
+  badge.style.background = state === "online"
+    ? "rgba(0,184,148,0.25)"
+    : "rgba(214,48,49,0.25)";
+  badge.style.borderColor = state === "online"
+    ? "rgba(0,184,148,0.55)"
+    : "rgba(214,48,49,0.55)";
+  txt.textContent = text;
+}
 
 /* =========================================================
    📌 إدارة الاستدعاءات
@@ -1370,69 +2128,55 @@ function resetSectionCallsData(sectionId) {
    📌 التنقل
    ========================================================= */
 function showPage(pageId) {
-  var pages = document.querySelectorAll(".page");
-  for (var i = 0; i < pages.length; i++) pages[i].classList.remove("active");
+  var pages = document.querySelectorAll(".container.page");
+  for (var i = 0; i < pages.length; i++) {
+    pages[i].classList.remove("active");
+    pages[i].style.display = "none";
+  }
   var target = document.getElementById(pageId);
-  if (target) target.classList.add("active");
+  if (target) {
+    target.classList.add("active");
+    target.style.display = "flex";
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function updateBackButton(show) {
-  var btn = document.getElementById("backBtn");
-  if (show) btn.classList.remove("hidden");
-  else btn.classList.add("hidden");
-}
-
-function updateAddButton(show) {
-  var btn = document.getElementById("addBtn");
-  if (show) btn.classList.remove("hidden");
-  else btn.classList.add("hidden");
-}
-
-function goHome() {
-  stopScan();
+function goBackToMain() {
   currentSection = null;
-  showPage("pageParent");
-  updateBackButton(false);
-  updateAddButton(false);
+  showPage("pageMain");
 }
 
 function goBackToAdmin() {
-  stopScan();
   currentSection = null;
   showPage("pageAdmin");
   renderSections();
-  updateBackButton(true);
-  updateAddButton(false);
 }
 
 /* =========================================================
    📌 كلمة مرور الإدارة
    ========================================================= */
 function openAdminPassword() {
-  document.getElementById("adminPasswordInput").value = "";
-  document.getElementById("adminPasswordError").textContent = "";
-  document.getElementById("adminPasswordModal").classList.add("show");
+  var el = document.getElementById("adminPasswordInput");
+  var err = document.getElementById("adminPasswordError");
+  if (el) el.value = "";
+  if (err) err.textContent = "";
+  document.getElementById("adminPasswordOverlay").classList.add("show");
   document.body.style.overflow = "hidden";
-  setTimeout(function() {
-    document.getElementById("adminPasswordInput").focus();
-  }, 200);
+  setTimeout(function() { if (el) el.focus(); }, 200);
 }
 
 function closeAdminPassword() {
-  document.getElementById("adminPasswordModal").classList.remove("show");
+  document.getElementById("adminPasswordOverlay").classList.remove("show");
   document.body.style.overflow = "";
 }
 
 function verifyAdminPassword() {
   var input = document.getElementById("adminPasswordInput").value;
   var errBox = document.getElementById("adminPasswordError");
-  if (input === ADMIN_PASSWORD) {
+  if (input === ADMIN_PAGE_PASSWORD) {
     closeAdminPassword();
     setTimeout(function() {
       showPage("pageAdmin");
-      updateBackButton(true);
-      updateAddButton(true);
       renderSections();
     }, 300);
   } else {
@@ -1442,23 +2186,8 @@ function verifyAdminPassword() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  var ap = document.getElementById("adminPasswordInput");
-  if (ap) {
-    ap.addEventListener("keydown", function(e) {
-      if (e.key === "Enter" || e.keyCode === 13) verifyAdminPassword();
-    });
-  }
-  var apm = document.getElementById("adminPasswordModal");
-  if (apm) {
-    apm.addEventListener("click", function(e) {
-      if (e.target === apm) closeAdminPassword();
-    });
-  }
-});
-
 /* =========================================================
-   📌 بناء قائمة الشعب
+   📌 عرض الشعب
    ========================================================= */
 function renderSections() {
   var grid = document.getElementById("sectionsGrid");
@@ -1487,18 +2216,14 @@ function renderSections() {
   }
   if (empty) empty.classList.add("hidden");
 
-  keys.sort(function(a, b) {
-    return getSectionShortLabel(a).localeCompare(getSectionShortLabel(b));
-  });
+  keys.sort(function(a, b) { return a.localeCompare(b, 'ar'); });
 
   keys.forEach(function(sectionId) {
     var count = sectionsMap[sectionId];
-    var label = getSectionShortLabel(sectionId);
-
     var btn = document.createElement("button");
     btn.className = "section-btn";
     btn.innerHTML =
-      '<div class="section-label">' + label + '</div>' +
+      '<div class="section-label">' + sectionId + '</div>' +
       '<div class="section-count">' + count + ' طالب</div>';
     btn.onclick = function() { openSection(sectionId); };
     grid.appendChild(btn);
@@ -1512,19 +2237,13 @@ function openSection(sectionId) {
   currentSection = sectionId;
   currentTab = "remaining";
 
-  var shortLabel = getSectionShortLabel(sectionId);
-  var fullName = getSectionName(sectionId);
-
-  document.getElementById("sectionTitleInline").textContent = shortLabel;
-  document.querySelector("#pageSection .page-title p").textContent = fullName || sectionId;
+  document.getElementById("sectionTitleInline").textContent = sectionId;
+  document.getElementById("sectionSubtitle").textContent = sectionId;
 
   document.getElementById("tabRemaining").classList.add("active");
   document.getElementById("tabCalled").classList.remove("active");
 
   showPage("pageSection");
-  updateBackButton(true);
-  updateAddButton(true);
-
   renderSectionMembers();
   checkPendingCallEventForSection(sectionId);
 }
@@ -1546,10 +2265,10 @@ function switchTab(tab) {
 function renderSectionMembers() {
   if (!currentSection) return;
 
-  var sectionKey = currentSection.trim();
+  var sectionKey = currentSection.toUpperCase();
 
   var allInSection = STUDENTS.filter(function(st) {
-    return (st.s || "").trim() === sectionKey;
+    return (st.s || "").toUpperCase() === sectionKey;
   });
 
   var calledList = getCalledInSection(sectionKey);
@@ -1560,23 +2279,19 @@ function renderSectionMembers() {
     return !calledNamesMap[st.n];
   });
 
-  var calledDetailed = calledList.map(function(c) {
-    return { n: c.n, time: c.time };
-  });
-
   document.getElementById("statTotal").textContent = allInSection.length;
-  document.getElementById("statCalled").textContent = calledDetailed.length;
+  document.getElementById("statCalled").textContent = calledList.length;
   document.getElementById("statRemaining").textContent = remainingList.length;
 
   var list = document.getElementById("membersList");
   list.innerHTML = "";
 
-  var dataToRender = (currentTab === "remaining") ? remainingList : calledDetailed;
+  var dataToRender = (currentTab === "remaining") ? remainingList : calledList;
 
   if (!dataToRender.length) {
     var msg = (currentTab === "remaining")
       ? "🎉 تم استدعاء جميع الطلاب في هذه الشعبة"
-      : "لا يوجد طلاب مستدعَون بعد في هذه الشعبة";
+      : "لا يوجد طلاب مستدعَون بعد";
     list.innerHTML = '<div class="empty-msg">' + msg + '</div>';
     return;
   }
@@ -1586,8 +2301,7 @@ function renderSectionMembers() {
     div.className = "member-item " + (currentTab === "called" ? "called" : "remaining");
     var timeHtml = item.time ? '<span class="member-time">🕒 ' + item.time + '</span>' : '';
     div.innerHTML =
-      '<span class="member-name">' + item.n + '</span>' +
-      timeHtml;
+      '<span class="member-name">' + item.n + '</span>' + timeHtml;
     list.appendChild(div);
   });
 }
@@ -1597,515 +2311,14 @@ function resetSectionCalls() {
   if (!confirm("سيتم حذف سجل الاستدعاءات لهذه الشعبة.\nهل أنت متأكد؟")) return;
   resetSectionCallsData(currentSection);
   renderSectionMembers();
-  showToast("✅ تم تصفير الاستدعاءات للشعبة");
+  showToast("✅ تم تصفير الاستدعاءات");
 }
 
 /* =========================================================
-   🔐 النظام الجغرافي
-   ========================================================= */
-function calculateDistance(lat1, lng1, lat2, lng2) {
-  var R = 6371000;
-  var toRad = function(d) { return d * Math.PI / 180; };
-  var dLat = toRad(lat2 - lat1);
-  var dLng = toRad(lng2 - lng1);
-  var a =
-    Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-    Math.sin(dLng/2) * Math.sin(dLng/2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return Math.round(R * c);
-}
-
-function setGeoState(icon, title, msg, color) {
-  color = color || "";
-  var gi = document.getElementById("geoIcon");
-  gi.textContent = icon;
-  gi.className = "geo-icon " + color;
-  document.getElementById("geoTitle").textContent = title;
-  document.getElementById("geoMsg").innerHTML = msg;
-}
-
-function checkLocation() {
-  var geoGate = document.getElementById("geoGate");
-  if (!geoGate) return;
-
-  var spinner = document.getElementById("geoSpinner");
-  var retry = document.getElementById("geoRetryBtn");
-  var coords = document.getElementById("geoCoords");
-
-  spinner.classList.remove("hidden");
-  retry.style.display = "none";
-  coords.textContent = "";
-  setGeoState("📍", "جارٍ التحقق من موقعك...",
-    "يرجى السماح بالوصول إلى الموقع الجغرافي للمتابعة.");
-
-  if (!navigator.geolocation) {
-    spinner.classList.add("hidden");
-    setGeoState("❌", "غير مدعوم", "متصفحك لا يدعم خدمة تحديد الموقع.", "err");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    function(position) {
-      var userLat = position.coords.latitude;
-      var userLng = position.coords.longitude;
-      var accuracy = Math.round(position.coords.accuracy);
-      var distance = calculateDistance(userLat, userLng, SCHOOL_LOCATION.lat, SCHOOL_LOCATION.lng);
-      coords.textContent =
-        "موقعك: " + userLat.toFixed(6) + ", " + userLng.toFixed(6) + " (±" + accuracy + "م)\n" +
-        "المسافة عن المدرسة: " + distance + " متر";
-      spinner.classList.add("hidden");
-      if (distance <= MAX_DISTANCE_METERS) {
-        setGeoState("✅", "تم التحقق بنجاح",
-          "أنت على بعد <b>" + distance + " متر</b> من المدرسة.", "ok");
-        setTimeout(function() {
-          geoGate.classList.add("hidden");
-          document.body.style.overflow = "";
-        }, 1200);
-      } else {
-        setGeoState("🚫", "خارج نطاق المدرسة",
-          "أنت على بعد <b>" + distance + " متر</b> من المدرسة.<br>" +
-          "يُسمح فقط داخل نطاق <b>" + MAX_DISTANCE_METERS + " متر</b>.", "err");
-        retry.style.display = "inline-flex";
-      }
-    },
-    function(error) {
-      spinner.classList.add("hidden");
-      var msg = "تعذّر تحديد موقعك. ";
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          msg = "🚫 تم رفض إذن الوصول إلى الموقع.<br>يجب السماح بالوصول للمتابعة.";
-          break;
-        case error.POSITION_UNAVAILABLE:
-          msg = "📡 معلومات الموقع غير متوفرة.";
-          break;
-        case error.TIMEOUT:
-          msg = "⏱️ انتهت مدة الانتظار.";
-          break;
-      }
-      setGeoState("❌", "خطأ في تحديد الموقع", msg, "err");
-      retry.style.display = "inline-flex";
-    },
-    GEO_OPTIONS
-  );
-}
-
-/* =========================================================
-   📌 البحث والاستدعاء
-   ========================================================= */
-function normalize(s) {
-  return (s || "").toString().trim().toLowerCase()
-    .replace(/[أإآٱا]/g, 'ا')
-    .replace(/[ىي]/g, 'ي')
-    .replace(/[ةه]/g, 'ه')
-    .replace(/[ًٌٍَُِّْـ]/g, '')
-    .replace(/\s+/g, ' ');
-}
-
-function doSearch() {
-  var si = document.getElementById("searchInput");
-  var q = normalize(si.value.trim());
-  if (!q) { showToast("أدخل اسماً للبحث", true); return; }
-
-  var matches = [];
-  for (var i = 0; i < STUDENTS.length; i++) {
-    if (normalize(STUDENTS[i].n).indexOf(q) !== -1) matches.push(STUDENTS[i]);
-  }
-
-  if (!matches.length) { showToast("❌ لا توجد نتائج مطابقة", true); return; }
-  showResultsModal(matches);
-}
-
-function showResultsModal(list) {
-  var resultsCount = document.getElementById("resultsCount");
-  var resultsList = document.getElementById("resultsList");
-  resultsCount.textContent = list.length;
-  resultsList.innerHTML = "";
-
-  list.forEach(function(item) {
-    var div = document.createElement("div");
-    div.className = "result-item";
-    div.innerHTML = '<span class="name">' + item.n + '</span>' +
-                    '<span class="section">' + getSectionShortLabel(item.s) + '</span>';
-    div.onclick = function() {
-      closeResultsModal();
-      selectStudent(item);
-    };
-    resultsList.appendChild(div);
-  });
-
-  document.getElementById("resultsOverlay").classList.add("show");
-  document.body.style.overflow = "hidden";
-}
-
-function closeResultsModal() {
-  document.getElementById("resultsOverlay").classList.remove("show");
-  document.body.style.overflow = "";
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  var ro = document.getElementById("resultsOverlay");
-  if (ro) {
-    ro.addEventListener("click", function(e) {
-      if (e.target === ro) closeResultsModal();
-    });
-  }
-});
-
-async function selectStudent(student) {
-  showToast("⏳ يتم إرسال الاستدعاء...", false, true);
-
-  var sectionName = getSectionName(student.s);
-
-  var message =
-    "🔔 عزيزي المعلم يُرجى اخراج الطالب\n" +
-    "=========================\n" +
-    "👤 الاسم: " + student.n + "\n" +
-    "🏫 الشعبة: " + sectionName + "\n" +
-    "=========================\n" +
-    "🚪 يرجى التوجه إلى بوابة الخروج";
-
-  try {
-    var res = await fetch(TG_API + "/bot" + token + "/sendMessage", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: student.c, text: message })
-    });
-    var json = await res.json();
-
-    if (json.ok) {
-      markStudentCalled(student.s, student.n);
-      broadcastCallEvent(student.n, student.s);
-
-      if (currentSection &&
-          currentSection.trim() === (student.s || "").trim()) {
-        renderSectionMembers();
-        showCallNotification(student.n, student.s);
-      }
-
-      document.getElementById("searchInput").value = "";
-      showToast("✅ تم إرسال الاستدعاء بنجاح");
-    } else {
-      console.error(json);
-      showToast("❌ " + (json.description || "فشل الإرسال"), true);
-    }
-  } catch (err) {
-    console.error(err);
-    showToast("تعذّر الاتصال بـ Telegram", true);
-  }
-}
-
-function closeSuccess() {
-  document.getElementById("successOverlay").classList.remove("show");
-  document.body.style.overflow = "";
-}
-
-/* =========================================================
-   📌 QR Scanner
-   ========================================================= */
-async function toggleScan() {
-  if (scanning) { stopScan(); return; }
-  var readerDiv = document.getElementById("reader");
-  var scanBtn = document.getElementById("scanBtn");
-  readerDiv.style.display = "block";
-  scanBtn.textContent = "❌ إيقاف المسح";
-
-  html5QrCode = new Html5Qrcode("reader");
-  try {
-    await html5QrCode.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: { width: 250, height: 250 } },
-      onQrSuccess,
-      function() {}
-    );
-    scanning = true;
-  } catch (err) {
-    console.error(err);
-    showToast("تعذّر فتح الكاميرا. تأكد من HTTPS والصلاحيات.", true);
-    readerDiv.style.display = "none";
-    scanBtn.textContent = "📷 مسح QR";
-  }
-}
-
-async function stopScan() {
-  if (html5QrCode) {
-    try { await html5QrCode.stop(); html5QrCode.clear(); } catch(e){}
-  }
-  scanning = false;
-  var readerDiv = document.getElementById("reader");
-  var scanBtn = document.getElementById("scanBtn");
-  if (readerDiv) readerDiv.style.display = "none";
-  if (scanBtn) scanBtn.textContent = "📷 مسح QR";
-}
-
-function onQrSuccess(decodedText) {
-  stopScan();
-  var q = normalize(decodedText);
-  var found = null;
-  for (var i = 0; i < STUDENTS.length; i++) {
-    if (normalize(STUDENTS[i].n) === q) { found = STUDENTS[i]; break; }
-  }
-  if (!found) {
-    for (var j = 0; j < STUDENTS.length; j++) {
-      if (normalize(STUDENTS[j].n).indexOf(q) !== -1) { found = STUDENTS[j]; break; }
-    }
-  }
-  if (found) {
-    showToast("📷 " + found.n);
-    selectStudent(found);
-  } else {
-    showToast("❌ لم يُعثر على الطالب: " + decodedText, true);
-    document.getElementById("searchInput").value = decodedText;
-    doSearch();
-  }
-}
-
-/* =========================================================
-   📌 رفع ملف Excel
-   ========================================================= */
-function openUploadModal() {
-  selectedFile = null;
-  document.getElementById("excelFileInput").value = "";
-  document.getElementById("fileDropText").textContent = "اضغط لاختيار ملف Excel أو اسحبه هنا";
-  document.getElementById("fileDropZone").classList.remove("has-file");
-  document.getElementById("uploadStatus").textContent = "";
-  document.getElementById("uploadStatus").className = "upload-status";
-  document.getElementById("uploadProgress").classList.add("hidden");
-  document.getElementById("confirmUploadBtn").disabled = true;
-
-  document.getElementById("uploadOverlay").classList.add("show");
-  document.body.style.overflow = "hidden";
-}
-
-function closeUploadModal() {
-  document.getElementById("uploadOverlay").classList.remove("show");
-  document.body.style.overflow = "";
-}
-
-function handleFileSelected(file) {
-  if (!file.name.match(/\.(xlsx|xls)$/i)) {
-    showUploadStatus("❌ يجب أن يكون الملف بصيغة Excel", "error");
-    return;
-  }
-  selectedFile = file;
-  var dropZone = document.getElementById("fileDropZone");
-  var dropText = document.getElementById("fileDropText");
-  dropZone.classList.add("has-file");
-  dropText.innerHTML = '✅ <b>' + file.name + '</b><br><small style="opacity:.7;">' +
-    (file.size/1024).toFixed(1) + ' KB</small>';
-  document.getElementById("confirmUploadBtn").disabled = false;
-  showUploadStatus("اضغط 'رفع وتحديث' لمعالجة الملف", "info");
-}
-
-function showUploadStatus(msg, type) {
-  type = type || "";
-  var box = document.getElementById("uploadStatus");
-  box.textContent = msg;
-  box.className = "upload-status " + type;
-}
-
-async function processExcelFile() {
-  if (!selectedFile) { showUploadStatus("❌ لم يتم اختيار ملف", "error"); return; }
-  if (typeof XLSX === "undefined") {
-    showUploadStatus("❌ مكتبة قراءة Excel لم تُحمّل.", "error"); return;
-  }
-
-  document.getElementById("uploadProgress").classList.remove("hidden");
-  document.getElementById("confirmUploadBtn").disabled = true;
-  showUploadStatus("", "");
-
-  try {
-    var data = await readFileAsArrayBuffer(selectedFile);
-    var workbook = XLSX.read(data, { type: "array" });
-    var sheet = workbook.Sheets[workbook.SheetNames[0]];
-    var rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
-    if (!rows.length) throw new Error("الملف فارغ أو لا يحتوي على بيانات");
-
-    var firstRow = rows[0];
-    var keys = Object.keys(firstRow);
-    var nameKey = null, channelKey = null, sectionKey = null;
-    for (var i = 0; i < keys.length; i++) {
-      if (!nameKey && /اسم|الاسم|name/i.test(keys[i])) nameKey = keys[i];
-      if (!channelKey && /channel|قناة|معرف/i.test(keys[i])) channelKey = keys[i];
-      if (!sectionKey && /شعبة|section|صف/i.test(keys[i])) sectionKey = keys[i];
-    }
-    if (!nameKey || !channelKey) {
-      throw new Error("تعذّر العثور على الأعمدة المطلوبة (الاسم + Channel_ID)");
-    }
-
-    var newStudents = [];
-    var skipped = 0;
-
-    rows.forEach(function(row) {
-      var name = String(row[nameKey] || "").trim();
-      var channel = String(row[channelKey] || "").trim();
-      var sectionRaw = sectionKey ? String(row[sectionKey] || "").trim() : "";
-      if (!name || !channel) { skipped++; return; }
-      if (channel.charAt(0) !== "@" && channel.charAt(0) !== "-") channel = "@" + channel;
-
-      var sectionId = "";
-      if (sectionRaw && /^GRADE/i.test(sectionRaw)) sectionId = sectionRaw.toUpperCase();
-      else sectionId = channel.replace(/^@/, "").toUpperCase();
-
-      var sectionFormatted = sectionRaw || sectionId;
-      if (/^GRADE/i.test(sectionId)) sectionFormatted = getSectionName(sectionId);
-
-      newStudents.push({ n: name, s: sectionFormatted, c: channel });
-    });
-
-    if (!newStudents.length) throw new Error("لم يتم العثور على أي صف صالح");
-
-    STUDENTS.length = 0;
-    for (var k = 0; k < newStudents.length; k++) STUDENTS.push(newStudents[k]);
-
-    localStorage.setItem(STORAGE_STUDENTS_KEY, JSON.stringify(newStudents));
-
-    var uploadStats = {
-      total: newStudents.length,
-      skipped: skipped,
-      date: new Date().toLocaleString("ar-QA"),
-      fileName: selectedFile.name
-    };
-    localStorage.setItem("last_upload_stats", JSON.stringify(uploadStats));
-
-    // مزامنة مع Firebase
-    if (firebaseReady && firebaseDB) {
-      firebaseDB.ref("studentsData").set(newStudents).catch(function(e) {
-        console.warn("تعذّر حفظ الطلاب في Firebase:", e);
-      });
-    }
-
-    document.getElementById("uploadProgress").classList.add("hidden");
-
-    showUploadStatus(
-      "✅ تم التحديث بنجاح!\n" +
-      "📊 عدد الطلاب: " + newStudents.length + "\n" +
-      "⏭️ تم تخطي: " + skipped + " صف\n" +
-      "📅 " + uploadStats.date,
-      "success"
-    );
-
-    renderSections();
-    updateStats();
-
-    setTimeout(function() {
-      closeUploadModal();
-      showToast("✅ تم تحديث بيانات " + newStudents.length + " طالب");
-    }, 2500);
-
-  } catch (err) {
-    document.getElementById("uploadProgress").classList.add("hidden");
-    console.error(err);
-    showUploadStatus("❌ " + (err.message || "فشل معالجة الملف"), "error");
-    document.getElementById("confirmUploadBtn").disabled = false;
-  }
-}
-
-function readFileAsArrayBuffer(file) {
-  return new Promise(function(resolve, reject) {
-    var reader = new FileReader();
-    reader.onload = function(e) { resolve(e.target.result); };
-    reader.onerror = function() { reject(new Error("تعذّر قراءة الملف")); };
-    reader.readAsArrayBuffer(file);
-  });
-}
-
-function resetStudentsData() {
-  if (!confirm("سيتم حذف البيانات المحدّثة والعودة للبيانات الأصلية المدمجة.\nهل أنت متأكد؟")) return;
-  localStorage.removeItem(STORAGE_STUDENTS_KEY);
-  localStorage.removeItem("last_upload_stats");
-  localStorage.removeItem(STORAGE_CALLED_KEY);
-  localStorage.removeItem(STORAGE_CALL_EVENT_KEY);
-  showToast("✅ تم استرجاع البيانات الأصلية");
-  setTimeout(function() { location.reload(); }, 1500);
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  var upOverlay = document.getElementById("uploadOverlay");
-  var fileInput = document.getElementById("excelFileInput");
-  var dropZone = document.getElementById("fileDropZone");
-
-  if (upOverlay) {
-    upOverlay.addEventListener("click", function(e) {
-      if (e.target === upOverlay) closeUploadModal();
-    });
-  }
-  if (fileInput) {
-    fileInput.addEventListener("change", function(e) {
-      if (e.target.files && e.target.files[0]) handleFileSelected(e.target.files[0]);
-    });
-  }
-  if (dropZone) {
-    ["dragenter", "dragover"].forEach(function(ev) {
-      dropZone.addEventListener(ev, function(e) {
-        e.preventDefault(); e.stopPropagation();
-        dropZone.classList.add("dragover");
-      });
-    });
-    ["dragleave", "drop"].forEach(function(ev) {
-      dropZone.addEventListener(ev, function(e) {
-        e.preventDefault(); e.stopPropagation();
-        dropZone.classList.remove("dragover");
-      });
-    });
-    dropZone.addEventListener("drop", function(e) {
-      var files = e.dataTransfer.files;
-      if (files && files[0]) handleFileSelected(files[0]);
-    });
-  }
-
-  var si = document.getElementById("searchInput");
-  if (si) {
-    si.addEventListener("keydown", function(e) {
-      if (e.key === "Enter" || e.keyCode === 13) doSearch();
-    });
-  }
-});
-
-/* =========================================================
-   📌 Escape لإغلاق النوافذ
-   ========================================================= */
-document.addEventListener("keydown", function(e) {
-  if (e.key !== "Escape" && e.keyCode !== 27) return;
-
-  var cno = document.getElementById("callNotifyOverlay");
-  if (cno && cno.classList.contains("show")) { closeCallNotify(); return; }
-
-  var po = document.getElementById("adminPasswordModal");
-  var uo = document.getElementById("uploadOverlay");
-  var so = document.getElementById("successOverlay");
-  var ro = document.getElementById("resultsOverlay");
-  if (po && po.classList.contains("show")) closeAdminPassword();
-  else if (uo && uo.classList.contains("show")) closeUploadModal();
-  else if (so && so.classList.contains("show")) closeSuccess();
-  else if (ro && ro.classList.contains("show")) closeResultsModal();
-});
-
-/* =========================================================
-   📌 الإحصائيات
-   ========================================================= */
-function updateStats() {
-  var statsEl = document.getElementById("stats");
-  if (!statsEl) return;
-  var lastStats = localStorage.getItem("last_upload_stats");
-  var suffix = "";
-  if (lastStats) {
-    try {
-      var s = JSON.parse(lastStats);
-      suffix = " — آخر تحديث: " + s.date + " (" + s.total + " طالب)";
-    } catch(e){}
-  }
-  statsEl.textContent = "📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR" + suffix;
-}
-
-/* =========================================================
-   🔊 النطق + المنبثق + المزامنة
+   🔊 النطق والمنبثق والمزامنة
    ========================================================= */
 function speakArabic(text) {
-  if (!speechSupported) {
-    console.warn("Speech Synthesis غير مدعوم");
-    return;
-  }
+  if (!speechSupported) return;
   try {
     window.speechSynthesis.cancel();
     var utterance = new SpeechSynthesisUtterance(text);
@@ -2113,16 +2326,13 @@ function speakArabic(text) {
     utterance.rate = 0.85;
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
-
     var voices = window.speechSynthesis.getVoices();
-    var arabicVoice = null;
     for (var i = 0; i < voices.length; i++) {
       if (voices[i].lang && voices[i].lang.toLowerCase().indexOf("ar") === 0) {
-        arabicVoice = voices[i];
+        utterance.voice = voices[i];
         break;
       }
     }
-    if (arabicVoice) utterance.voice = arabicVoice;
     window.speechSynthesis.speak(utterance);
   } catch (e) {
     console.warn("فشل النطق:", e);
@@ -2140,7 +2350,6 @@ function broadcastCallEvent(studentName, sectionId) {
     section: sectionId,
     timestamp: Date.now()
   };
-
   try {
     localStorage.setItem(STORAGE_CALL_EVENT_KEY, JSON.stringify(event));
     lastProcessedCallEvent = event;
@@ -2163,9 +2372,8 @@ function handleCallEvent(event) {
   if (lastProcessedCallEvent && lastProcessedCallEvent.id === event.id) return;
   lastProcessedCallEvent = event;
 
-  var eventSection = (event.section || "").trim();
-
-  if (currentSection && currentSection.trim() === eventSection) {
+  if (currentSection &&
+      currentSection.toUpperCase() === event.section.toUpperCase()) {
     renderSectionMembers();
     showCallNotification(event.name, event.section);
   }
@@ -2188,7 +2396,6 @@ function handleRemoteCallEvent(event) {
       Math.abs((lastProcessedCallEvent.timestamp || 0) - normalizedEvent.timestamp) < 5000) {
     return;
   }
-
   lastProcessedCallEvent = normalizedEvent;
 
   try {
@@ -2196,7 +2403,7 @@ function handleRemoteCallEvent(event) {
   } catch(e) {}
 
   if (currentSection &&
-      currentSection.trim() === (normalizedEvent.section || "").trim()) {
+      currentSection.toUpperCase() === normalizedEvent.section.toUpperCase()) {
     renderSectionMembers();
     showCallNotification(normalizedEvent.name, normalizedEvent.section);
   }
@@ -2209,8 +2416,7 @@ function checkPendingCallEventForSection(sectionId) {
     var event = JSON.parse(raw);
     if (!event || !event.section) return;
     if (event.timestamp && (Date.now() - event.timestamp) > 30000) return;
-
-    if (event.section.trim() === sectionId.trim()) {
+    if (event.section.toUpperCase() === sectionId.toUpperCase()) {
       setTimeout(function() {
         showCallNotification(event.name, event.section);
       }, 500);
@@ -2221,17 +2427,11 @@ function checkPendingCallEventForSection(sectionId) {
 function showCallNotification(studentName, sectionId) {
   currentCallName = studentName;
   currentCallSection = sectionId;
-
   var overlay = document.getElementById("callNotifyOverlay");
   document.getElementById("callNotifyName").textContent = studentName;
-  document.getElementById("callNotifySection").textContent =
-    "🏫 " + getSectionName(sectionId) + " (" + getSectionShortLabel(sectionId) + ")";
-
+  document.getElementById("callNotifySection").textContent = "🏫 " + sectionId;
   overlay.classList.add("show");
-
-  setTimeout(function() {
-    speakArabic(studentName);
-  }, 300);
+  setTimeout(function() { speakArabic(studentName); }, 300);
 }
 
 function closeCallNotify() {
@@ -2275,6 +2475,19 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
   startCallPolling();
+
+  var ap = document.getElementById("adminPasswordInput");
+  if (ap) {
+    ap.addEventListener("keydown", function(e) {
+      if (e.key === "Enter" || e.keyCode === 13) verifyAdminPassword();
+    });
+  }
+  var apOverlay = document.getElementById("adminPasswordOverlay");
+  if (apOverlay) {
+    apOverlay.addEventListener("click", function(e) {
+      if (e.target === apOverlay) closeAdminPassword();
+    });
+  }
 });
 
 if (speechSupported) {
@@ -2284,47 +2497,10 @@ if (speechSupported) {
 }
 
 /* =========================================================
-   📌 Toast
+   📌 Init Firebase عند الإقلاع
    ========================================================= */
-var toastTimer;
-function showToast(msg, isError, isInfo) {
-  isError = isError || false;
-  isInfo = isInfo || false;
-  var toast = document.getElementById("toast");
-  clearTimeout(toastTimer);
-  toast.textContent = msg;
-  toast.className = isError ? "error" : (isInfo ? "info" : "");
-  toast.classList.add("show");
-  toastTimer = setTimeout(function() {
-    toast.classList.remove("show");
-    setTimeout(function() { toast.style.display = "none"; }, 300);
-  }, 4000);
-  toast.style.display = "block";
-}
-
-/* =========================================================
-   📌 Init
-   ========================================================= */
-(function init() {
-  function updateVH() {
-    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
-  }
-  updateVH();
-  window.addEventListener('resize', updateVH);
-  window.addEventListener('orientationchange', function() { setTimeout(updateVH, 100); });
-
-  document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
-
-  // شاشة التحقق من الموقع
-  document.body.style.overflow = "hidden";
-  var geoGate = document.getElementById("geoGate");
-  if (geoGate) geoGate.classList.remove("hidden");
-  checkLocation();
-
-  // Firebase
+(function initAdminSystem() {
   initFirebase();
-
-  // مزامنة أولية
   setTimeout(function() {
     if (firebaseReady && firebaseDB) {
       firebaseDB.ref("calledStudents").once("value").then(function(snapshot) {
@@ -2336,22 +2512,11 @@ function showToast(msg, isError, isInfo) {
           } catch(e) {}
         }
       }).catch(function() {});
-
-      firebaseDB.ref("studentsData").once("value").then(function(snapshot) {
-        var data = snapshot.val();
-        if (data && Array.isArray(data) && data.length > 0) {
-          try {
-            STUDENTS.length = 0;
-            for (var i = 0; i < data.length; i++) STUDENTS.push(data[i]);
-            localStorage.setItem(STORAGE_STUDENTS_KEY, JSON.stringify(data));
-          } catch(e) {}
-        }
-      }).catch(function() {});
     }
   }, 1500);
-
-  updateStats();
 })();
+
+console.log("✅ النظام جاهز — عند الرفع يتم إنشاء index.html نظيف بالبيانات الجديدة");
 </script>
 
 </body>
