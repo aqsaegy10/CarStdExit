@@ -13,12 +13,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <style>
-  *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   :root {
     --navy: #0b2545; --navy-2: #13315c;
     --green-1: #0b3a2e; --green-2: #14563f; --green-3: #1e7a58;
@@ -29,9 +24,7 @@
     --card-bg: rgba(255,255,255,0.08); --card-border: rgba(255,255,255,0.14);
     --vh: 1vh;
   }
-  html {
-    -webkit-text-size-adjust: 100%; text-size-adjust: 100%; min-height: 100%;
-  }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; min-height: 100%; }
   html, body {
     min-height: 100%;
     font-family: 'Segoe UI', Tahoma, 'Noto Naskh Arabic', 'Helvetica Neue', Arial, sans-serif;
@@ -128,14 +121,8 @@
     min-height: 56px;
     appearance: none;
   }
-  .input-field:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 4px rgba(212,162,76,0.25);
-  }
-  .btn-row {
-    display: flex; gap: 12px; margin-top: 18px;
-    flex-wrap: wrap; justify-content: center;
-  }
+  .input-field:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(212,162,76,0.25); }
+  .btn-row { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; justify-content: center; }
   .btn {
     padding: clamp(12px, 2.6vw, 16px) clamp(20px, 4vw, 32px);
     border: none; border-radius: 12px;
@@ -145,10 +132,8 @@
     font-family: inherit;
     display: inline-flex; align-items: center; justify-content: center;
     gap: 6px; white-space: nowrap;
-    user-select: none;
-    min-height: 50px;
-    appearance: none;
-    touch-action: manipulation;
+    user-select: none; min-height: 50px;
+    appearance: none; touch-action: manipulation;
   }
   .btn:active { transform: scale(0.97); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -159,10 +144,7 @@
   .btn-danger { background: var(--err); color: #fff; }
   .btn-danger:hover { background: #b02427; }
   .btn-sm { padding: 7px 12px; font-size: clamp(11px, 2vw, 13px); border-radius: 9px; min-height: unset; }
-  .status-bar {
-    display: flex; justify-content: space-between; align-items: center;
-    gap: 10px; margin-bottom: 14px; flex-wrap: wrap;
-  }
+  .status-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .status-dot-wrap {
     display: inline-flex; align-items: center; gap: 8px;
     background: rgba(0,184,148,0.15); border: 1px solid rgba(0,184,148,0.35);
@@ -195,21 +177,16 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     z-index: 9999; max-width: calc(100vw - 32px);
     text-align: center; line-height: 1.5;
-    opacity: 0;
-    transition: opacity .25s, transform .25s;
+    opacity: 0; transition: opacity .25s, transform .25s;
   }
-  #toast.show {
-    display: block; opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+  #toast.show { display: block; opacity: 1; transform: translateX(-50%) translateY(0); }
   #toast.error { background: var(--err); }
   #toast.info { background: var(--info); }
   .modal-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.7);
     backdrop-filter: blur(6px);
-    display: none;
-    align-items: center; justify-content: center;
+    display: none; align-items: center; justify-content: center;
     padding: 16px; z-index: 10000; opacity: 0;
     transition: opacity .2s;
   }
@@ -267,8 +244,7 @@
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.8);
     backdrop-filter: blur(12px);
-    display: none;
-    align-items: center; justify-content: center;
+    display: none; align-items: center; justify-content: center;
     padding: 20px; z-index: 100000; opacity: 0;
     transition: opacity .25s;
   }
@@ -302,8 +278,7 @@
     display: inline-flex; align-items: center; justify-content: center;
     transition: transform .15s, background .2s;
     flex-shrink: 0; line-height: 1;
-    appearance: none;
-    touch-action: manipulation;
+    appearance: none; touch-action: manipulation;
   }
   .results-close-icon:hover { background: #b02427; transform: rotate(90deg); }
   .results-list {
@@ -339,8 +314,7 @@
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.8);
     backdrop-filter: blur(12px);
-    display: none;
-    align-items: center; justify-content: center;
+    display: none; align-items: center; justify-content: center;
     padding: 20px; z-index: 100001; opacity: 0;
     transition: opacity .25s;
   }
@@ -383,8 +357,7 @@
     font-family: inherit; min-width: 200px;
     display: inline-flex; align-items: center; justify-content: center;
     gap: 8px; min-height: 54px;
-    appearance: none;
-    touch-action: manipulation;
+    appearance: none; touch-action: manipulation;
   }
   .success-close-btn:hover { background: var(--gold-2); box-shadow: 0 10px 30px rgba(212,162,76,0.6); transform: translateY(-2px); }
   .success-close-btn:active { transform: scale(0.97); }
@@ -408,11 +381,8 @@
     display: flex; align-items: center; justify-content: center;
     line-height: 1; z-index: 9000;
     transition: all .2s;
-    padding: 0;
-    user-select: none;
-    opacity: 0.55;
-    appearance: none;
-    touch-action: manipulation;
+    padding: 0; user-select: none; opacity: 0.55;
+    appearance: none; touch-action: manipulation;
   }
   .add-btn:hover {
     background: rgba(212,162,76,0.3); border-color: var(--gold);
@@ -425,8 +395,7 @@
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.85);
     backdrop-filter: blur(12px);
-    display: none;
-    align-items: center; justify-content: center;
+    display: none; align-items: center; justify-content: center;
     padding: 20px; z-index: 100002; opacity: 0;
     transition: opacity .25s;
     overflow-y: auto; -webkit-overflow-scrolling: touch;
@@ -456,8 +425,7 @@
   .password-error { color: #ff6b6b; font-size: clamp(12px, 2.2vw, 13px); font-weight: 700; min-height: 20px; margin: 4px 0; text-align: center; }
   .file-input-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
   .file-drop-zone {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 8px;
     padding: clamp(20px, 4vw, 32px) clamp(14px, 3vw, 20px);
     border: 2px dashed rgba(212,162,76,0.5); border-radius: 14px;
@@ -501,7 +469,6 @@
     60% { transform: translateX(-8px); }
     80% { transform: translateX(8px); }
   }
-  /* ============ Admin Card Button ============ */
   .admin-card-btn {
     margin-top: 14px;
     padding: 16px 24px;
@@ -513,13 +480,10 @@
     font-weight: 900;
     font-size: clamp(15px, 3vw, 18px);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     gap: 10px;
     transition: all .25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    width: 100%;
-    min-height: 60px;
+    width: 100%; min-height: 60px;
     touch-action: manipulation;
   }
   .admin-card-btn:hover {
@@ -529,7 +493,6 @@
     background: linear-gradient(160deg, rgba(212,162,76,0.35), rgba(212,162,76,0.15));
   }
   .admin-card-btn:active { transform: scale(0.97); }
-  /* ============ Admin Sections Grid ============ */
   .admin-info-bar {
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.12);
@@ -575,7 +538,6 @@
     background: rgba(0,0,0,0.25);
     padding: 3px 10px; border-radius: 999px; font-weight: 700;
   }
-  /* ============ Section Stats ============ */
   .section-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -600,7 +562,6 @@
   .stat-box.called .stat-num { color: #a8f0dc; }
   .stat-box.remaining { background: rgba(9,132,227,0.15); border-color: rgba(9,132,227,0.5); }
   .stat-box.remaining .stat-num { color: #74c0fc; }
-  /* ============ Members Tabs & List ============ */
   .members-tabs {
     display: flex; gap: 8px; margin-bottom: 16px;
     background: rgba(0,0,0,0.2);
@@ -649,7 +610,6 @@
   .member-item.called { background: rgba(0,184,148,0.15); border-color: rgba(0,184,148,0.4); }
   .member-item.called .member-name { color: #a8f0dc; }
   .member-item.remaining { background: rgba(9,132,227,0.1); border-color: rgba(9,132,227,0.3); }
-  /* ============ Call Notify Modal ============ */
   .call-notify-overlay {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.85);
@@ -708,19 +668,6 @@
   .call-notify-btn.speak:hover { background: #0768b8; }
   .call-notify-btn.close { background: var(--gold); color: #0b2545; }
   .call-notify-btn.close:hover { background: var(--gold-2); }
-  /* ============ Header Back Button ============ */
-  .header-back-btn {
-    background: rgba(255,255,255,0.12);
-    border: 1.5px solid rgba(255,255,255,0.25);
-    color: #fff; padding: 8px 16px; border-radius: 10px;
-    font-size: clamp(12px, 2.2vw, 14px); font-weight: 700;
-    cursor: pointer; font-family: inherit;
-    display: inline-flex; align-items: center; gap: 6px;
-    transition: all .2s;
-    touch-action: manipulation;
-  }
-  .header-back-btn:hover { background: rgba(255,255,255,0.25); }
-  /* ============ Responsive ============ */
   @media (min-width: 641px) and (max-width: 1024px) {
     .container { max-width: 100%; padding-left: 24px; padding-right: 24px; }
     .results-box { max-width: 680px; }
@@ -786,1321 +733,20 @@
     .password-overlay, .upload-overlay { display: none !important; }
   }
 </style>
-<style>/* stylelint-disable */
-/* stylelint-enable */
-/** Buttons
----------------------------------------------------------*/
-th-rw4gc {
-  --transparent: rgba(255, 255, 255, 0);
-  --white: hsl(0, 0%, 100%);
-  --th-white: hsl(0, 0%, 100%);
-  --black: hsl(0, 0%, 0%);
-  --th-black: hsl(0, 0%, 0%);
-  --lightGrey: hsl(0, 0%, 94%);
-  --th-grey-white: hsl(210, 10%, 97%);
-  --th-grey-light: hsl(210, 10%, 94.8%);
-  --th-grey-medium: hsl(212, 10%, 94%);
-  --th-grey: hsl(216, 22%, 91%);
-  --th-grey-dark: hsl(221, 20%, 78%);
-  --th-slate: hsl(221, 20%, 33%);
-  --th-slate-light: hsl(222, 20%, 45%);
-  --th-slate-dark: hsl(222, 22%, 18%);
-  --th-slate-alt: #333F57;
-  --th-slate-hover:#3E4A62;
-  --th-slate-dark-hover800:hsl(220, 22%, 24%);
-  --th-slate-dark-active800:hsl(219, 24%, 26%);
-  --th-slate-dark-hover600:hsl(222, 22%, 21%);
-  --th-slate-dark-active600:hsl(221, 24%, 23%);
-  --th-cool-grey-600: hsl(203, 16%, 44%);
-  --th-cool-grey-700: hsl(204, 18%, 30%);
-  --th-cool-grey-750: hsl(203, 18%, 32%);
-  --th-cool-grey-800: hsl(209, 20%, 25%);
-  --th-cool-grey-850: hsl(209, 20%, 21%);
-  --th-cool-grey-900: hsl(210, 24%, 16%);
-  --fontColorDark: var( --th-slate-dark);
-  --fontColorWhite: hsl(0, 0%, 100%);
-  --list-item-hover:hsl(225, 20%, 96%);
-  --list-item-light-hover: hsl(210, 20%, 98%);
-  --list-item-hover-dark:hsla(222, 22%, 18%, 0.50);
-  --list-item-light-hover-dark: hsla(222, 20%, 33%, 0.50);
-  --greyTransparent: hsla(222, 22%, 18%, 0.12);
-  --whiteTransparent: hsla(0, 0%, 100%, 0.12);
-  --defaultColor: hsl(220, 20%, 91%);
-  --defaultColorHover: hsl(220, 19%, 78%);
-  --defaultColorActive: hsl(220, 19%, 68%);
-  --defaultColorSelected: hsl(221, 20%, 75%);
-  --buttonBorderColor: 2px solid hsl(220, 20%, 91%);
-  --buttonBorderColorHover: 2px solid hsl(220, 19%, 78%);
-  --buttonBorderColorActive: 2px solid hsl(220, 19%, 68%);
-  --buttonBorderColorSelected: 2px solid hsl(221, 20%, 75%);
-  --iconFillColor: var( --th-slate-dark );
-  --primaryColor: hsl(211, 100%, 45%);
-  --primaryColorHover: hsl(211, 100%, 35%);
-  --primaryColorActive: hsl(211, 100%, 25%);
-  --primaryButtonBorder: 2px solid hsl(211, 100%, 45%);
-  --primaryButtonBorderHover: 2px solid hsl(211, 100%, 35%);
-  --primaryButtonBorderActive: 2px solid hsl(211, 100%, 25%);
-  --secondaryColor: var(--th-slate);
-  --secondaryColorHover: hsl(221, 20%, 23%);
-  --secondaryColorActive: hsl(221, 20%, 13%);
-  --secondaryButtonBorderColor: 2px solid var(--th-slate);
-  --secondaryButtonBorderColorHover: 2px solid hsl(221, 20%, 23%);
-  --secondaryButtonBorderColorActive: 2px solid hsl(221, 20%, 13%);
-  --disabledColor: hsl(0, 0%, 50%);
-  --disabledBackgroundColor: hsl(0, 0%, 95%);
-  --brandColorGreen: hsl(76, 60%, 52%);
-  --brandColorGreenActive: hsl(76, 62%, 40%);
-  --primaryColorGreen: hsl(79, 100%, 24%);
-  --primaryColorGreenHover: hsl(79, 100%, 14%);
-  --primaryColorGreenActive: hsl(79, 100%, 4%);
-  --buttonBorderGreen: 2px solid hsl(79, 100%, 24%);
-  --buttonBorderGreenHover: 2px solid hsl(79, 100%, 14%);
-  --buttonBorderGreenActive: 2px solid hsl(79, 100%, 4%);
-  --brandColorPink: hsl(344, 98%, 59%);
-  --primaryColorPink: #e12362;
-  --primaryColorPinkHover: hsl(340, 76%, 41%);
-  --primaryColorPinkActive: hsl(340, 76%, 31%);
-  --buttonBorderPink: 2px solid hsl(340, 76%, 51%);
-  --buttonBorderPinkHover: 2px solid hsl(340, 76%, 41%);
-  --buttonBorderPinkActive: 2px solid hsl(340, 76%, 31%);
-  --brandColorTeal: hsl(180, 85%, 34%);
-  --primaryColorTeal: hsl(184, 50%, 35%);
-  --primaryColorTealHover: hsl(184, 50%, 25%);
-  --primaryColorTealActive: hsl(184, 50%, 15%);
-  --buttonBorderTeal: 2px solid hsl(184, 50%, 35%);
-  --buttonBorderTealHover: 2px solid hsl(184, 50%, 25%);
-  --buttonBorderTealActive: 2px solid hsl(184, 50%, 15%);
-  --brandColorPurple: hsl(264, 100%, 68%);
-  --primaryColorPurple: hsl(264, 83%, 62%);
-  --primaryColorPurpleHover: hsl(264, 83%, 52%);
-  --primaryColorPurpleActive: hsl(264, 83%, 42%);
-  --buttonBorderPurple: 2px solid hsl(264, 83%, 62%);
-  --buttonBorderPurpleHover: 2px solid hsl(264, 83%, 52%);
-  --buttonBorderPurpleActive: 2px solid hsl(264, 83%, 42%);
-  --brandColorOrange: hsl(33, 94%, 48%);
-  --primaryColorOrange: hsl(15, 79%, 45%);
-  --primaryColorOrangeHover: hsl(15, 80%, 35%);
-  --primaryColorOrangeActive: hsl(15, 80%, 25%);
-  --buttonBorderOrange: 2px solid hsl(15, 79%, 45%);
-  --buttonBorderOrangeHover: 2px solid hsl(15, 80%, 35%);
-  --buttonBorderOrangeActive: 2px solid hsl(15, 80%, 25%);
-  --brandColorBlue: hsl(197, 100%, 50%);
-  --brandColorBlueActive: hsl(197, 100%, 39%);
-  --brandColorBlueWCAG: hsl(197, 100%, 42%);
-  --primaryColorBlue: hsl(201, 100%, 37%);
-  --primaryColorBlueHover: hsl(201, 100%, 27%);
-  --primaryColorBlueActive: hsl(201, 100%, 17%);
-  --buttonBorderBlue: 2px solid hsl(201, 100%, 37%);
-  --buttonBorderBlueHover: 2px solid hsl(201, 100%, 27%);
-  --buttonBorderBlueActive: 2px solid hsl(201, 100%, 17%);
-  --BrandcolorYellow: hsl(41, 90%, 61%);
-  --primaryColorReachDeck: hsl(209, 100%, 39%);
-  --primaryColorReachDeckHover: hsl(209, 100%, 29%);
-  --primaryColorReachDeckActive: hsl(209, 100%, 19%);
-  --buttonBorderReachDeck: 2px solid hsl(209, 100%, 39%);
-  --buttonBorderReachDeckHover: 2px solid hsl(209, 100%, 29%);
-  --buttonBorderReachDeckActive: 2px solid hsl(209, 100%, 19%);
-  --reachDeckEditorColor: hsl(112, 100%, 26%);
-  --launchpadButtonLight: hsl(210, 10%, 96%);
-  --launchpadButtonLightHover: hsl(220, 8%, 92%);
-  --launchpadButtonLightActive:hsl(0, 0%, 90%);
-  --ContrastPinkOrbitNoteHover: hsl(343, 81%, 48%);
-  --ContrastPinkOrbitNoteActive: hsl(345, 96%, 42%);
-  --ContrastButtonBorderPink: hsl(345, 96%, 42%);
-  --primaryColorClaroNavy: hsl(207, 74%, 27%);
-  --primaryColorClaroNavyHover: hsl(206, 83%, 21%);
-  --primaryColorClaroNavyActive: hsl(206, 89%, 17%);
-  --buttonBorderClaro: 2px solid hsl(207, 74%, 27%);
-  --buttonBorderClaroHover: 2px solid hsl(206, 83%, 21%);
-  --buttonBorderClaroActive: 2px solid hsl(206, 89%, 17%);
-  --primaryColorClaroBlue: hsl(201, 100%, 37%);
-  --primaryColorClaroBlueHover: hsl(201, 100%, 31%);
-  --primaryColorClaroBlueActive: hsl(201, 100%, 27%);
-  --claroDark: hsl(218, 54%, 20%);
-  --claroGrey: hsl(217, 31%, 68%);
-  --claroBlue: hsl(191, 88%, 40%);
-  --claroBlueAlt: hsl(188, 78%, 50%);
-  --claroGreen: hsl(75, 63%, 51%);
-  --altColor: var(--claroGreen);
-  --altColorHover: hsl(75, 70%, 40%);
-  --altColorActive: hsl(75, 77%, 33%);
-  --altButtonBorderColor: 2px solid var(--claroGreen);
-  --altButtonBorderColorHover: 2px solid hsl(75, 70%, 40%);
-  --altButtonBorderColorActive: 2px solid hsl(75, 77%, 33%);
-  --brandColorLingdys: hsl(0, 82%, 49%);
-  --primaryColorLingdys: hsl(217, 34%, 38%);
-  --primaryColorLingdysHover: hsl(217, 37%, 24%);
-  --primaryColorLingdysActive: hsl(217, 39%, 18%);
-  --buttonBorderLingdys: 2px solid hsl(217, 34%, 38%);
-  --buttonBorderLingdysHover: 2px solid hsl(217, 37%, 24%);
-  --buttonBorderLingdysActive: 2px solid hsl(217, 39%, 18%);
-  --brandColorAppWriter: #F70790;
-  --primaryColorAppWriter: #D8087F;
-  --primaryColorAppWriterHover:#B40669;
-  --primaryColorAppWriterActive: #9F055C;
-  --buttonBorderAppwriter: 2px solid #D8087F;
-  --buttonBorderAppwriterHover: 2px solid #B40669;
-  --buttonBorderAppWriterActive: 2px solid #9F055C;
-  --iconToggleFillOrbitNote: hsl(196, 99%, 50%);
-  --textColor: var( --th-slate-dark );
-  --textColorLight: var( --th-white );
-  --border: 1px solid var( --th-grey );
-  --borderDark: 1px solid var( --th-grey-dark );
-  --infoColor: hsl(194, 77%, 24%);
-  --successColor: hsla(134, 71%, 43%, 0.584);
-  --errorColor: hsl(0, 71%, 51%);
-  --warningColor: hsl(45, 97%, 51%);
-  --infoBackgroundColor: hsl(180, 100%, 99%);
-  --successBackgroundColor: hsl(78, 100%, 98%);
-  --errorBackgroundColor: hsl(0, 100%, 98%);
-  --warningBackgroundColor: hsl(35, 100%, 98%);
-  --notificationDarkModeBackground: hsl(218, 22%, 37%);
-  --infoBorderColor: hsl(191, 44%, 82%);
-  --successBorderColor: hsl(100, 28%, 69%);
-  --errorBorderColor: hsl(0, 37%, 73%);
-  --warningBorderColor: hsl(41, 30%, 71%);
-  --notificationDarkModeBorder: hsl(217, 19%, 41%);
-  --infoTitleColor: hsl(194, 77%, 24%);
-  --successTitleColor: hsl(121, 48%, 23%);
-  --errorTitleColor: hsl(1, 47%, 40%);
-  --warningTitleColor: hsl(37, 92%, 25%);
-  --infoWarningColor: hsl(194, 77%, 24%);
-  --successWarningColor: hsla(121, 48%, 23%, 0.8);
-  --errorWarningColor: hsla(1, 47%, 40%, 0.8);
-  --warningWarningColor: hsla(37, 92%, 25%, 0.8);
-  --line-height-base: 1.5;
-  --zindex-modal: 1050;
-  --modal-dialog-margin: 2rem;
-  --modal-content-border-radius: 1px;
-  --buttonBorderRadius: 30px;
-  --buttonRoundness: 30px;
-  --buttonLinkTextColor: var( --primaryColor)!important;
-  --buttonLinkIconColor: var( --primaryColor)!important;
-  --buttonNoBackgroundTextColor: var( --th-slate-dark);
-  --buttonNoBackgroundIconColor: var( --th-slate-dark);
-  --buttonNoBackgroundColor: transparent;
-  --buttonNoBackgroundColorHover: var(--icon-button-background-hover-color);
-  --buttonNoBackgroundColorActive: var(--icon-button-background-active-color);
-  --buttonNoBackgroundBorder: 2px solid transparent;
-  --buttonNoBackgroundBorderHover: 2px solid transparent;
-  --buttonNoBackgroundBorderActive: 2px solid transparent;
-  --activeDotColor: inherit;
-  --themeColorDefault: var(--defaultColor);
-  --themeColorGroundworks: var(--primaryColor);
-  --themeColorReadWrite: var(--primaryColorPurple);
-  --themeColorEquatio: var(--primaryColorBlue);
-  --themeColorBrowsealoud: var(--primaryColorOrange);
-  --themeColorWriq: var(--primaryColorTeal);
-  --themeColorFluencyTutor: var(--primaryColorGreen);
-  --themeColorSnapVerter: var(--primaryColorGreen);
-  --themeColorSpeechStream: var(--primaryColorPink);
-  --themeColorTexthelp: var(--primaryColorTeal);
-  --themeColorReachDeck: var(--primaryColorReachDeck);
-  --themeColorPdfReader: var(--primaryColorBlue);
-  --uniloginBackgroundColor: #F7F7F7;
-  --uniloginWindowBackgroundColor: var(--primaryColorBlue);
-  --line-height-base: 1.5;
-  --zindex-modal: 1050;
-  --modal-dialog-margin: 2em;
-  --modal-content-border-radius: 1px;
-  --modal-inner-padding: 1.5em;
-  --modal-title-padding: 1.5em;
-  --modal-title-line-height: var(--line-height-base);
-  --modal-content-bg: #fff;
-  --modal-content-border-color: rgba(0, 0, 0, .2);
-  --modal-content-fallback-border-color: #999;
-  --modal-backdrop-bg: #000;
-  --modal-backdrop-opacity: .5;
-  --modal-header-border-color: #e5e5e5;
-  --modal-footer-border-color: var(--modal-header-border-color);
-  --modal-header-background-color: #f5f5f5;
-  --select-border: 1px solid #DADADA;
-  --select-background: hsl(0, 0%, 100%);
-  --select-background-color: #efefef;
-  --select-background-color-hover: hsl(0, 0%, 97%);
-  --input-border: 1px solid #DADADA;
-  --input-background-color: #ffffff;
-  --settings-title-color: var(--primaryColor);
-  --settings-item-background-color: var(--th-white);
-  --settings-item-background-hover-color: var(--th-grey-medium);
-  --settings-item-background-active-color: var(--th-grey);
-  --list-group-background-color: transparent;
-  --list-group-item-background-color: var(--th-white);
-  --list-group-item-background-hover-color: var(--th-grey-light);
-  --list-group-item-background-active-color: var(--th-grey);
-  --list-group-item-icon-color: var(--th-slate-dark);
-  --ListGroupSearchItemColor: var(--th-white);
-  --ListGroupSearchItemColorHover: #f9fafb;
-  --ListGroupSearchItemTextColor: var(--th-slate);
-  --ListGroupSearchItemBorderColor: hsla(0, 0%, 0%, 0.15);
-  --ListGroupSearchItemAsideColor: hsl(0, 0%, 95%);
-  --ListGroupSearchItemAsideTextColor: #000;
-  --toolbar-button-disabled: hsl(0, 0%, 96.1%);
-  --toolbar-button-background: hsl(0, 0%, 96.1%);
-  --toolbar-button-hover-background: hsl(0, 0%, 80%);
-  --toolbar-button-color: hsl(0, 0%, 0%);
-  --toolbar-button-hover-active-background: hsl(0, 0%, 70.2%);
-  --toolbar-button-default-size: 43px;
-  --toolbar-button-focus-color: hsl(213, 71.3%, 60.4%);
-  --toolbar-button-svg-color: hsl(0, 0%, 29%);
-  --toolbar-button-toggle-color: hsl(264, 100%, 68%);
-  --panel-inner-padding: .7em;
-  --icon-button-background-default-color: hsla(0, 0%, 0%, 0.077);
-  --icon-button-background-hover-color: hsla(0, 0%, 0%, 0.125);
-  --icon-button-background-active-color: hsla(0, 0%, 0%, 0.187);
-  --icon-button-background-default-color-dark: rgba(255, 255, 255, 0.077);
-  --icon-button-background-hover-color-dark: rgba(255, 255, 255, 0.146);
-  --icon-button-background-active-color-dark: rgba(255, 255, 255, 0.221);
-  --icon-button-border-color: solid 2px transparent;
-  --menuIconFillColor: var(--th-slate);
-  --cardIconFillColor: var(--th-slate);
-  --default-menu-notify-background-colour: hsl(264, 100%, 68%);
-  --toolbarButtonBackgroundColor: var( --defaultColor);
-  --toolbarButtonBackgroundHoverColor: var( --icon-button-background-hover-color);
-  --toolbarButtonBackgroundActiveColor: var( --icon-button-background-active-color);
-  --toolbarIconHoverFill: var( --th-slate);
-  --toolbarIconToggleFill: var( --primaryColor);
-  --dashboardContentBackgroundColor: #fff;
-  --dashboardHeaderBackgroundColor: #fff;
-  --dashboardSidebarBorderTopColor: var( --lightGrey);
-  --dashboardTextColor: var(--th-slate);
-  --dashboardTitleTextColor: var(--fontColorDark);
-  --dashboardSubTitleTextColor: var(--th-slate-light);
-  --dashboardCardBackgroundColor: var(--white);
-  --dashboardCardBackgroundHoverColor: var(--th-grey-light);
-  --dashboardCardBackgroundActiveColor: var(--lightGrey);
-  --dashboardCardHighlightColor: var(--primaryColor);
-  --dashboardCardBorderColor: var(--lightGrey);
-  --dashboardCardFooterLinkColor: var(--primaryColor);
-  --dashboardCardAuditorColor: hsl(208, 100%, 43%);
-  --dashboardCardAuditorLabelColor: hsl(208, 100%, 43%);
-  --dashboardCardEditorLabelColor: var(--reachDeckEditorColor);
-  --dashboardCardToolbarColor: var(--primaryColorOrange);
-  --dashboardCardToolbarLabelColor: var(--primaryColorOrange);
-  --dashboardPaneBackgroundColor: #fcfcfc;
-  --dashboardPaneBorderColor: rgba(92, 106, 138, 0.4);
-  --dashboardPaneDashedBorderColor: var(--dashboardDashedBorderLight);
-  --dashboardDashedBorderLight: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%235C6A8ACC' stroke-width='2' stroke-dasharray='4%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
-  --dashboardDashedBorderDark: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23323E52FF' stroke-width='2' stroke-dasharray='4%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
-  --icon-opacity: 1;
-  --accordionBackgroundColor: #fff;
-  --accordionTextColor: #484848;
-  --accordionTextBottomColor: #484848;
-  --accordionIconColor: var(--toolbarWhite);
-  --accordionBackgroundColorHover: #f9fafb;
-  --tableBackgroundColor: none;
-  --tableBackgroundHeaderColor: #F9FAFB;
-  --tableBackgroundAltColor: #f7f7f7;
-  --tableBackgroundHoverColor: hsl(210, 20%, 98%);
-  --tableBorderColor: #E2E2E3;
-  --tableTextColor: #484848;
-}
-
-/* stylelint-disable */
-/* stylelint-enable */
-.th-wq,
-.th-th {
-  --toolbarBackgroundColor: var(--defaultColor);
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--themeColorWriq);
-  --themeColorSecondary: var(--secondaryColor);
-  --dashboardTopColor: var(--brandColorTeal);
-  --dashboardTitleColor: var(--themeColorWriq);
-  --iconFillColor: var(--white);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--primaryColorTeal);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorTealHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorTealActive);
-  --primaryButtonBorderActive: var(--buttonBorderTealActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderTeal);
-  --primaryButtonBorderHover: var(--buttonBorderTealHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --secondaryButtonBackgroundColor: var(--secondaryColor);
-  --secondaryButtonBackgroundHoverColor: var(--secondaryColorHover);
-  --secondaryButtonBackgroundActiveColor: var(--secondaryColorActive);
-  --secondaryButtonTextColor: var(--fontColorWhite);
-  --secondaryButtonTextHoverColor: var(--fontColorWhite);
-  --secondaryButtonTextActiveColor: var(--fontColorWhite);
-  --secondaryButtonTextVisitedColor: var(--fontColorWhite);
-  --secondaryButtonBorder: var(--secondaryButtonBorder);
-  --secondaryButtonBorderHover: var(--secondaryButtonBorderColorHover);
-  --secondaryButtonBorderRadius: var(--buttonRoundness);
-  --secondaryButtonIconFillColor: var(--white);
-  --table-hover-item: var(--list-item-light-hover);
-  --settingsTitleColor: var(--themeColorPrimary);
-}
-
-.th-rw,
-.th-wa {
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--themeColorReadWrite);
-  --themeColorSecondary: var(--secondaryColor);
-  --toolbarBackgroundColor: var(--defaultColor);
-  --toolbarIconFill: var(--th-slate);
-  --toolbarIconHoverFill: var(--th-slate);
-  --toolbarIconActiveFill: var(--th-slate);
-  --toolbarIconToggledHoverFill: var(--primaryColorPurple);
-  --toolbarIconToggleFill: var(--primaryColorPurple);
-  --toolbarIconToggleHoverFill: var(--primaryColorPurple);
-  --dashboardTopColor: var(--brandColorPurple);
-  --dashboardTitleColor: var(--themeColorReadWrite);
-  --iconFillColor: var(--th-slate-dark);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderActive: var(--buttonBorderColorActive);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--primaryColorPurple);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorPurpleHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorPurpleActive);
-  --primaryButtonBorderActive: var(--buttonBorderPurpleActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderPurple);
-  --primaryButtonBorderHover: var(--buttonBorderPurpleHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --secondaryButtonBackgroundColor: var(--secondaryColor);
-  --secondaryButtonBackgroundHoverColor: var(--secondaryColorHover);
-  --secondaryButtonBackgroundActiveColor: var(--secondaryColorActive);
-  --secondaryButtonTextColor: var(--fontColorWhite);
-  --secondaryButtonTextHoverColor: var(--fontColorWhite);
-  --secondaryButtonTextActiveColor: var(--fontColorWhite);
-  --secondaryButtonTextVisitedColor: var(--fontColorWhite);
-  --secondaryButtonBorder: var(--secondaryButtonBorder);
-  --secondaryButtonBorderHover: var(--secondaryButtonBorderColorHover);
-  --secondaryButtonBorderRadius: var(--buttonRoundness);
-  --secondaryButtonIconFillColor: var(--white);
-  --table-hover-item: var(--list-item-light-hover);
-  --settingsTitleColor: var(--themeColorPrimary);
-  --menuNotifyBackgroundColour: var(--brandColorPurple);
-  --uniloginBackgroundColor: #FAF7FF;
-  --uniloginWindowBackgroundColor: var(--primaryColorPurple);
-}
-
-.th-pr {
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--themeColorPdfReader);
-  --themeColorSecondary: var(--secondaryColor);
-  --primaryButtonBackgroundColor: var(--primaryColorBlue);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorBlueHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorBlueActive);
-  --primaryButtonBorderActive: var(--buttonBorderBlueActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderBlue);
-  --primaryButtonBorderHover: var(--buttonBorderBlueHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --toolbarBackgroundColor: var(--th-grey);
-  --toolbarButtonBackgroundColor: var(--th-grey);
-  --toolbarButtonBackgroundHoverColor: var(--ContrastPinkOrbitNoteHover);
-  --toolbarButtonBackgroundActiveColor: var(--ContrastPinkOrbitNoteActive);
-  --toolbarButtonBorderActive: var(--ContrastButtonBorderPink);
-  --toolbarIconFill: var(--th-slate);
-  --toolbarIconHoverFill: var(--white);
-  --toolbarIconActiveFill: var(--white);
-  --toolbarIconToggleFill: var(--ContrastPinkOrbitNoteActive);
-  --toolbarIconToggleHoverFill: var(--white);
-  --toolbarIconToggledHoverFill: var(--white);
-  --iconButtonBackgroundDefaultColor: var(--icon-button-background-default-color);
-  --iconButtonBackgroundHoverColor: var(--icon-button-background-hover-color);
-  --iconButtonBackgroundActiveColor: var(--icon-button-background-active-color);
-  --iconButtonBorderColor: 2px solid transparent;
-  --iconFillColor: var(--th-slate);
-  --panelBackgroundColor: var(--th-grey-light);
-  --panelBackgroundColorLight: var(--white);
-  --panelBackgroundColorDark: var(--th-grey);
-  --fontColor: var(--th-slate-dark);
-  --borderColor: 1px solid var(--th-grey-dark);
-  --settingsTitleColor: var(--themeColorPrimary);
-  --menuNotifyBackgroundColour: var(--brandColorPink);
-  --dashboardTopColor: var(--primaryColorBlue);
-  --dashboardTitleColor: var(--themeColorEquatio);
-  --cardIconFillColor: var(--primaryColorBlue);
-}
-
-.th-eq {
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--themeColorEquatio);
-  --themeColorSecondary: var(--secondaryColor);
-  --dashboardTopColor: var(--brandColorBlue);
-  --dashboardTitleColor: var(--themeColorEquatio);
-  --iconFillColor: var(--th-slate-dark);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--primaryColorBlue);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorBlueHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorBlueActive);
-  --primaryButtonBorderActive: var(--buttonBorderBlueActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderBlue);
-  --primaryButtonBorderHover: var(--buttonBorderBlueHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --secondaryButtonBackgroundColor: var(--secondaryColor);
-  --secondaryButtonBackgroundHoverColor: var(--secondaryColorHover);
-  --secondaryButtonBackgroundActiveColor: var(--secondaryColorActive);
-  --secondaryButtonTextColor: var(--fontColorWhite);
-  --secondaryButtonTextHoverColor: var(--fontColorWhite);
-  --secondaryButtonTextActiveColor: var(--fontColorWhite);
-  --secondaryButtonTextVisitedColor: var(--fontColorWhite);
-  --secondaryButtonBorder: var(--secondaryButtonBorder);
-  --secondaryButtonBorderHover: var(--secondaryButtonBorderColorHover);
-  --secondaryButtonBorderRadius: var(--buttonRoundness);
-  --secondaryButtonIconFillColor: var(--white);
-  --table-hover-item: var(--list-item-light-hover);
-  --settingsTitleColor: var(--themeColorPrimary);
-  --uniloginBackgroundColor: #F2F9FF;
-  --uniloginWindowBackgroundColor: var(--brandColorBlueWCAG);
-}
-
-.th-ba {
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--themeColorBrowsealoud);
-  --themeColorSecondary: var(--secondaryColor);
-  --toolbarBackgroundColor: var(--th-grey);
-  --toolbarIconButtonFillColor: var(--th-slate);
-  --toolbarButtonBackgroundColor: var(--th-grey);
-  --toolbarButtonBackgroundHoverColor: var(--primaryColorOrangeHover);
-  --toolbarButtonBackgroundActiveColor: var(--primaryColorOrangeActive);
-  --toolbarButtonBorderActive: var(--buttonBorderOrange);
-  --toolbarIconFill: var(--th-slate);
-  --toolbarIconHoverFill: var(--th-slate);
-  --toolbarIconActiveFill: var(--primaryColorBlue);
-  --toolbarIconToggleFill: var(--primaryColorBlue);
-  --toolbarIconToggleHoverFill: var(--white);
-  --dashboardTopColor: var(--brandColorOrange);
-  --dashboardTitleColor: var(--themeColorBrowsealoud);
-  --iconFillColor: var(--white);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonBorderIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--primaryColorOrange);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorOrangeHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorOrangeActive);
-  --primaryButtonBorderActive: var(--buttonBorderOrangeActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderOrange);
-  --primaryButtonBorderHover: var(--buttonBorderOrangeHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --secondaryButtonBackgroundColor: var(--secondaryColor);
-  --secondaryButtonBackgroundHoverColor: var(--secondaryColorHover);
-  --secondaryButtonBackgroundActiveColor: var(--secondaryColorActive);
-  --secondaryButtonTextColor: var(--fontColorWhite);
-  --secondaryButtonTextHoverColor: var(--fontColorWhite);
-  --secondaryButtonTextActiveColor: var(--fontColorWhite);
-  --secondaryButtonTextVisitedColor: var(--fontColorWhite);
-  --secondaryButtonBorder: var(--secondaryButtonBorder);
-  --secondaryButtonBorderHover: var(--secondaryButtonBorderColorHover);
-  --secondaryButtonBorderRadius: var(--buttonRoundness);
-  --secondaryButtonIconFillColor: var(--white);
-  --table-hover-item: var(--list-item-light-hover);
-  --settingsTitleColor: var(--themeColorPrimary);
-  --menuNotifyBackgroundColour: var(--white);
-}
-.th-ba .gw-menu-notification--inline {
-  --menuNotifyBackgroundColour: var(--themeColorBrowsealoud);
-}
-
-.th-at {
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--themeColorReachDeck);
-  --themeColorSecondary: var(--secondaryColor);
-  --toolbarBackgroundColor: var(--defaultColor);
-  --toolbarIconFill: var(--th-slate);
-  --toolbarIconHoverFill: var(--th-slate);
-  --toolbarIconActiveFill: var(--th-slate);
-  --toolbarIconToggledHoverFill: var(--primaryColorBlue);
-  --toolbarIconToggleFill: var(--primaryColorBlue);
-  --toolbarIconToggleHoverFill: var(--primaryColorBlue);
-  --dashboardTopColor: var(--th-grey);
-  --dashboardTitleColor: var(--th-slate-dark);
-  --iconFillColor: var(--th-slate-dark);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonBorderIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--primaryColorReachDeck);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorReachDeckHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorReachDeckActive);
-  --primaryButtonBorderActive: var(--buttonBorderReachDeckActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderReachDeck);
-  --primaryButtonBorderHover: var(--buttonBorderReachDeckHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --secondaryButtonBackgroundColor: var(--secondaryColor);
-  --secondaryButtonBackgroundHoverColor: var(--secondaryColorHover);
-  --secondaryButtonBackgroundActiveColor: var(--secondaryColorActive);
-  --secondaryButtonTextColor: var(--fontColorWhite);
-  --secondaryButtonTextHoverColor: var(--fontColorWhite);
-  --secondaryButtonTextActiveColor: var(--fontColorWhite);
-  --secondaryButtonTextVisitedColor: var(--fontColorWhite);
-  --secondaryButtonBorder: var(--secondaryButtonBorder);
-  --secondaryButtonBorderHover: var(--secondaryButtonBorderColorHover);
-  --secondaryButtonBorderRadius: var(--buttonRoundness);
-  --secondaryButtonIconFillColor: var(--white);
-  --dashboardTopColor: #E12362;
-  --dashboardContentBackgroundColor: #F2F5F9;
-  --tableBackgroundHeaderColor: #DFE1E5;
-  --table-hover-item: var(--list-item-light-hover);
-  --settingsTitleColor: var(--themeColorPrimary);
-}
-
-.th-rd {
-  font-size: 10px;
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--themeColorReachDeck);
-  --themeColorSecondary: var(--secondaryColor);
-  --toolbarBackgroundColor: var(--defaultColor);
-  --toolbarIconFill: var(--th-slate);
-  --toolbarIconHoverFill: var(--th-slate);
-  --toolbarIconActiveFill: var(--th-slate);
-  --toolbarIconToggledHoverFill: var(--primaryColorBlue);
-  --toolbarIconToggleFill: var(--primaryColorBlue);
-  --toolbarIconToggleHoverFill: var(--primaryColorBlue);
-  --dashboardTopColor: var(--th-grey);
-  --dashboardTitleColor: var(--th-slate-dark);
-  --iconFillColor: var(--th-slate-dark);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonBorderIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--primaryColorReachDeck);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorReachDeckHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorReachDeckActive);
-  --primaryButtonBorderActive: var(--buttonBorderReachDeckActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderReachDeck);
-  --primaryButtonBorderHover: var(--buttonBorderReachDeckHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --secondaryButtonBackgroundColor: var(--secondaryColor);
-  --secondaryButtonBackgroundHoverColor: var(--secondaryColorHover);
-  --secondaryButtonBackgroundActiveColor: var(--secondaryColorActive);
-  --secondaryButtonTextColor: var(--fontColorWhite);
-  --secondaryButtonTextHoverColor: var(--fontColorWhite);
-  --secondaryButtonTextActiveColor: var(--fontColorWhite);
-  --secondaryButtonTextVisitedColor: var(--fontColorWhite);
-  --secondaryButtonBorder: var(--secondaryButtonBorder);
-  --secondaryButtonBorderHover: var(--secondaryButtonBorderColorHover);
-  --secondaryButtonBorderRadius: var(--buttonRoundness);
-  --secondaryButtonIconFillColor: var(--white);
-  --table-hover-item: var(--list-item-light-hover);
-  --settingsTitleColor: var(--themeColorPrimary);
-}
-
-.th-ss {
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--themeColorSpeechStream);
-  --themeColorSecondary: var(--secondaryColor);
-  --dashboardTopColor: var(--brandColorPink);
-  --dashboardTitleColor: var(--themeColorSpeechStream);
-  --iconFillColor: var(--th-slate-dark);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonBorderIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--themeColorSpeechStream);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorPinkHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorPinkActive);
-  --primaryButtonBorderActive: var(--buttonBorderPinkActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderPink);
-  --primaryButtonBorderHover: var(--buttonBorderPinkHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --secondaryButtonBackgroundColor: var(--secondaryColor);
-  --secondaryButtonBackgroundHoverColor: var(--secondaryColorHover);
-  --secondaryButtonBackgroundActiveColor: var(--secondaryColorActive);
-  --secondaryButtonTextColor: var(--fontColorWhite);
-  --secondaryButtonTextHoverColor: var(--fontColorWhite);
-  --secondaryButtonTextActiveColor: var(--fontColorWhite);
-  --secondaryButtonTextVisitedColor: var(--fontColorWhite);
-  --secondaryButtonBorder: var(--secondaryButtonBorder);
-  --secondaryButtonBorderHover: var(--secondaryButtonBorderColorHover);
-  --secondaryButtonBorderRadius: var(--buttonRoundness);
-  --secondaryButtonIconFillColor: var(--white);
-  --table-hover-item: var(--list-item-light-hover);
-  --settingsTitleColor: var(--themeColorPrimary);
-}
-
-.th-st {
-  --uniloginBackgroundColor: #F2F9FF;
-  --uniloginWindowBackgroundColor: #2A3953;
-}
-
-.th-sv,
-.th-ft {
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--themeColorFluencyTutor);
-  --themeColorSecondary: var(--secondaryColor);
-  --dashboardTopColor: var(--brandColorGreen);
-  --dashboardTitleColor: var(--themeColorFluencyTutor);
-  --iconFillColor: var(--th-slate-dark);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonBorderIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--themeColorFluencyTutor);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorGreenHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorGreenActive);
-  --primaryButtonBorderActive: var(--buttonBorderGreenActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderGreen);
-  --primaryButtonBorderHover: var(--buttonBorderGreenHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --secondaryButtonBackgroundColor: var(--secondaryColor);
-  --secondaryButtonBackgroundHoverColor: var(--secondaryColorHover);
-  --secondaryButtonBackgroundActiveColor: var(--secondaryColorActive);
-  --secondaryButtonTextColor: var(--fontColorWhite);
-  --secondaryButtonTextHoverColor: var(--fontColorWhite);
-  --secondaryButtonTextActiveColor: var(--fontColorWhite);
-  --secondaryButtonTextVisitedColor: var(--fontColorWhite);
-  --secondaryButtonBorder: var(--secondaryButtonBorder);
-  --secondaryButtonBorderHover: var(--secondaryButtonBorderColorHover);
-  --secondaryButtonBorderRadius: var(--buttonRoundness);
-  --secondaryButtonIconFillColor: var(--white);
-  --table-hover-item: var(--list-item-light-hover);
-  --settingsTitleColor: var(--themeColorPrimary);
-}
-
-.th-cr {
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--primaryColorClaroNavy);
-  --themeColorSecondary: var(--secondaryColor);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonBorderIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--primaryColorClaroNavy);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorClaroNavyHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorClaroNavyActive);
-  --primaryButtonBorderActive: var(--buttonBorderClaroActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderClaro);
-  --primaryButtonBorderHover: var(--buttonBorderClaroHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --altButtonBackgroundColor: var(--altColor);
-  --altButtonBackgroundHoverColor: var(--altColorHover);
-  --altButtonBackgroundActiveColor: var(--altColorActive);
-  --altButtonTextColor: var(--fontColorWhite);
-  --altButtonTextHoverColor: var(--fontColorWhite);
-  --altButtonTextActiveColor: var(--fontColorWhite);
-  --altButtonTextVisitedColor: var(--fontColorWhite);
-  --altButtonBorder: var(--altButtonBorder);
-  --altButtonBorderHover: var(--altButtonBorderColorHover);
-  --altButtonBorderRadius: var(--buttonRoundness);
-  --altButtonIconFillColor: var(--white);
-  --uniloginBackgroundColor: #F2F9FF;
-  --uniloginWindowBackgroundColor: var(--themeColorPrimary);
-}
-
-.th-wh {
-  background: #F6F6F6;
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--primaryColorClaroNavy);
-  --themeColorSecondary: var(--secondaryColor);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonBorderIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--primaryColorClaroBlue);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorClaroBlueHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorClaroBlueActive);
-  --primaryButtonBorderActive: var(--buttonBorderClaroActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--primaryColorClaroBlue);
-  --primaryButtonBorderHover: var(--primaryColorClaroBlueHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --altButtonBackgroundColor: var(--altColor);
-  --altButtonBackgroundHoverColor: var(--altColorHover);
-  --altButtonBackgroundActiveColor: var(--altColorActive);
-  --altButtonTextColor: var(--fontColorWhite);
-  --altButtonTextHoverColor: var(--fontColorWhite);
-  --altButtonTextActiveColor: var(--fontColorWhite);
-  --altButtonTextVisitedColor: var(--fontColorWhite);
-  --altButtonBorder: var(--altButtonBorder);
-  --altButtonBorderHover: var(--altButtonBorderColorHover);
-  --altButtonBorderRadius: var(--buttonRoundness);
-  --altButtonIconFillColor: var(--white);
-  --uniloginBackgroundColor: #F2F9FF;
-  --uniloginWindowBackgroundColor: var(--primaryColorClaroNavy);
-}
-
-.th-lds {
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--primaryColorLingdys);
-  --themeColorSecondary: var(--secondaryColor);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonBorderIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--primaryColorLingdys);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorLingdysHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorLingdysActive);
-  --primaryButtonBorderActive: var(--buttonBorderLingdysActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderLingdys);
-  --primaryButtonBorderHover: var(--buttonBorderLingdysHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --altButtonBackgroundColor: var(--altColor);
-  --altButtonBackgroundHoverColor: var(--altColorHover);
-  --altButtonBackgroundActiveColor: var(--altColorActive);
-  --altButtonTextColor: var(--fontColorWhite);
-  --altButtonTextHoverColor: var(--fontColorWhite);
-  --altButtonTextActiveColor: var(--fontColorWhite);
-  --altButtonTextVisitedColor: var(--fontColorWhite);
-  --altButtonBorder: var(--altButtonBorder);
-  --altButtonBorderHover: var(--altButtonBorderColorHover);
-  --altButtonBorderRadius: var(--buttonRoundness);
-  --altButtonIconFillColor: var(--white);
-  --uniloginBackgroundColor: #F2F9FF;
-  --uniloginWindowBackgroundColor: var(--themeColorPrimary);
-}
-
-.th-aw {
-  --themeColorDefault: var(--defaultColor);
-  --themeColorPrimary: var(--primaryColorClaroNavy);
-  --themeColorSecondary: var(--secondaryColor);
-  --buttonBackgroundColor: var(--defaultColor);
-  --buttonBackgroundHoverColor: var(--defaultColorHover);
-  --buttonBackgroundActiveColor: var(--defaultColorActive);
-  --buttonTextColor: var(--fontColorDark);
-  --buttonTextHoverColor: var(--fontColorDark);
-  --buttonTextActiveColor: var(--fontColorDark);
-  --buttonTextVisitedColor: var(--fontColorDark);
-  --buttonBorder: var(--buttonBorder);
-  --buttonBorderHover: var(--buttonBorderColorHover);
-  --buttonBorderRadius: var(--buttonRoundness);
-  --buttonBorderIconFillColor: var(--black);
-  --primaryButtonBackgroundColor: var(--primaryColorAppWriter);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorAppWriterHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorAppWriterActive);
-  --primaryButtonBorderActive: var(--buttonBorderAppWriterActive);
-  --primaryButtonTextColor: var(--fontColorWhite);
-  --primaryButtonTextHoverColor: var(--fontColorWhite);
-  --primaryButtonTextActiveColor: var(--fontColorWhite);
-  --primaryButtonTextVisitedColor: var(--fontColorWhite);
-  --primaryButtonBorder: var(--buttonBorderAppWriter);
-  --primaryButtonBorderHover: var(--buttonBorderAppWriterHover);
-  --primaryButtonBorderRadius: var(--buttonRoundness);
-  --primaryButtonIconFillColor: var(--white);
-  --altButtonBackgroundColor: var(--altColor);
-  --altButtonBackgroundHoverColor: var(--altColorHover);
-  --altButtonBackgroundActiveColor: var(--altColorActive);
-  --altButtonTextColor: var(--fontColorWhite);
-  --altButtonTextHoverColor: var(--fontColorWhite);
-  --altButtonTextActiveColor: var(--fontColorWhite);
-  --altButtonTextVisitedColor: var(--fontColorWhite);
-  --altButtonBorder: var(--altButtonBorder);
-  --altButtonBorderHover: var(--altButtonBorderColorHover);
-  --altButtonBorderRadius: var(--buttonRoundness);
-  --altButtonIconFillColor: var(--white);
-  --uniloginBackgroundColor: #F7F7F7;
-  --uniloginWindowBackgroundColor: var(--primaryColorAppWriter);
-}
-
-th-rw4gc.dark-mode {
-  --toolbarBackgroundColor: var(--th-slate-dark);
-  --toolbarButtonBackgroundColor: var(--th-slate-dark);
-  --toolbarButtonBackgroundHoverColor: var(--icon-button-background-hover-color-dark);
-  --toolbarButtonBackgroundActiveColor: var(--icon-button-background-active-color-dark);
-  --toolbarButtonBorderActive: var(--buttonBorderPink);
-  --toolbarIconFill: var(--white);
-  --toolbarIconHoverFill: var(--white);
-  --toolbarIconActiveFill: var(--white);
-  --dashboardHeaderBackgroundColor: var(--th-slate-dark);
-  --dashboardSidebarBorderTopColor: var(--th-slate);
-  --dashboardSidebarBackgroundColor: var(--th-slate-dark);
-  --dashboardContentBackgroundColor: var(--th-slate);
-  --dashboardCardBackgroundColor: var(--th-slate-dark);
-  --dashboardCardBackgroundHoverColor: var(--th-slate-dark-hover600);
-  --dashboardCardBackgroundActiveColor: var(--th-slate-dark-active600);
-  --dashboardCardHighlightColor: var(--brandColorBlue);
-  --dashboardTextColor: var(--th-white);
-  --dashboardTitleTextColor: var(--th-white);
-  --dashboardSubTitleTextColor: var(--th-white);
-  --menuIconFillColor: var(--white);
-  --iconButtonBackgroundDefaultColor: var(--icon-button-background-default-color-dark);
-  --iconButtonBackgroundHoverColor: var(--icon-button-background-hover-color-dark);
-  --iconButtonBackgroundActiveColor: var(--icon-button-background-active-color-dark);
-  --iconButtonBorderColor: 2px solid transparent;
-  --iconFillColor: var(--white);
-  --buttonLinkTextColor: var(--white);
-  --buttonLinkIconColor: var(--white);
-  --buttonNoBackgroundTextColor: var(--white);
-  --buttonNoBackgroundIconColor: var(--white);
-  --buttonNoBackgroundColor: transparent;
-  --buttonNoBackgroundColorHover: var(--icon-button-background-hover-color-dark);
-  --buttonNoBackgroundColorActive: var(--icon-button-background-active-color-dark);
-  --buttonNoBackgroundBorder: 2px solid transparent;
-  --buttonNoBackgroundBorderHover: 2px solid transparent;
-  --buttonNoBackgroundBorderActive: 2px solid transparent;
-  --panelBackgroundColor: var(--th-slate);
-  --panelBackgroundColorLight: var(--th-slate-light);
-  --panelBackgroundColorDark: var(--th-slate-dark);
-  --fontColor: var(--textColorLight);
-  --borderColor: 1px solid var(--th-slate-light);
-  --infoBackgroundColor: var(--notificationDarkModeBackground);
-  --successBackgroundColor: var(--notificationDarkModeBackground);
-  --errorBackgroundColor: var(--notificationDarkModeBackground);
-  --warningBackgroundColor: var(--notificationDarkModeBackground);
-  --infoBorderColor: var(--notificationDarkModeBorder);
-  --successBorderColor: var(--notificationDarkModeBorder);
-  --errorBorderColor: var(--notificationDarkModeBorder);
-  --warningBorderColor: var(--notificationDarkModeBorder);
-  --infoWarningColor: #fff;
-  --successWarningColor: #fff;
-  --errorWarningColor: #fff;
-  --warningWarningColor: #fff;
-  --infoTitleColor: #fff;
-  --successTitleColor: #fff;
-  --errorTitleColor: #fff;
-  --warningTitleColor: #fff;
-  --accordionBackgroundColor: var(--th-slate-dark);
-  --accordionTextColor: #fff;
-  --accordionTextBottomColor: #f5f5f5;
-  --accordionIconColor: var(--toolbarWhite);
-  --accordionBackgroundColorHover: var(--th-slate-dark-hover600);
-  --tableBackgroundColor: var(--th-slate);
-  --tableBackgroundHeaderColor: var(--th-slate-alt);
-  --tableBackgroundAltColor: var(--th-slate-alt);
-  --tableBackgroundHoverColor: var(--th-slate-hover);
-  --tableBorderColor: var(--th-slate-dark);
-  --tableTextColor: #fff;
-  --ListGroupSearchItemColor: var(--th-slate-dark);
-  --ListGroupSearchItemColorHover: var(--th-slate-dark-hover800);
-  --ListGroupSearchItemTextColor: var(--th-white);
-  --ListGroupSearchItemBorderColor:rgba(0, 0, 0, 0.225);
-  --ListGroupSearchItemAsideColor: var(--th-slate-dark);
-  --ListGroupSearchItemAsideTextColor: #fff;
-}
-.dark-mode.th-rw {
-  --toolbarIconActiveFill: var(--white);
-  --toolbarIconToggledHoverFill: var(--brandColorPurple);
-  --toolbarIconToggleFill: var(--brandColorPurple);
-  --toolbarIconToggleHoverFill: var(--brandColorPurple);
-}
-.dark-mode.th-pr {
-  --toolbarButtonBackgroundHoverColor: var(--primaryColorBlue);
-  --toolbarButtonBackgroundActiveColor: var(--primaryColorBlueHover);
-  --toolbarButtonBorderActive: var(--buttonBorderBlueActive);
-  --toolbarIconToggleFill: var(--iconToggleFillOrbitNote);
-  --textColor: var(--textColorLight);
-  --cardIconFillColor: var(--brandColorBlue);
-  --primaryButtonBackgroundColor: var(--primaryColor);
-  --primaryButtonBackgroundHoverColor: var(--primaryColorHover);
-  --primaryButtonBackgroundActiveColor: var(--primaryColorActive);
-  --primaryButtonBorderActive: var(--primaryButtonBorderActive);
-  --primaryButtonBorder: var(--primaryButtonBorder);
-  --primaryButtonBorderHover: var(--primaryButtonBorderHover);
-  --dashboardTopColor: var(--primaryColorBlue);
-  --dashboardTitleColor: var(--themeColorEquatio);
-  --dashboardPaneBackgroundColor: var(--th-slate-dark);
-  --dashboardPaneBorderColor: var(--th-slate-dark);
-  --dashboardPaneDashedBorderColor: var(--dashboardDashedBorderDark);
-  --listGroupItemBackgroundColor: var(--th-slate-dark);
-  --listGroupItemBackgroundColorHover: var(--th-slate-dark-hover800);
-  --listGroupItemBackgroundColorActive: var(--th-slate-dark-active800);
-  --listGroupTileBackgroundColorActive: var(--th-slate-dark-active800);
-  --list-item-hover: var(--listGroupItemBackgroundColorHover);
-}
-.dark-mode.th-rd {
-  --toolbarIconToggledHoverFill: var(--brandColorBlue);
-  --toolbarIconToggleFill: var(--brandColorBlue);
-  --toolbarIconToggleHoverFill: var(--brandColorBlue);
-  --dashboardTopColor: var(--th-slate);
-  --dashboardCardAuditorColor: var(--primaryColorBlue);
-  --dashboardCardAuditorLabelColor: var(--th-grey);
-  --dashboardCardEditorColor: var(--reachDeckEditorColor);
-  --dashboardCardEditorLabelColor: var(--th-grey);
-  --dashboardCardToolbarColor: var(--primaryColorOrange);
-  --dashboardCardToolbarLabelColor: var(--th-grey);
-  --dashboardCardBorderColor: var(--th-slate-light);
-  --dashboardCardFooterLinkColor: hsl(197, 100%, 50%);
-  --icon-opacity: .9;
-  --cardIconFillColor: var(--th-white);
-  --listGroupItemBackgroundColor: var(--th-slate-dark);
-  --listGroupItemBackgroundColorHover: var(--th-slate-dark-hover800);
-  --listGroupItemBackgroundColorActive: var(--th-slate-dark-active800);
-  --listGroupTileBackgroundColorActive: var(--th-slate-dark-active800);
-  --list-item-hover: var(--listGroupItemBackgroundColorHover);
-}
-th-rw4gc.dark-mode {
-  --inputBorder: 1px solid var(--th-slate);
-  --inputTextColor: var( --th-white);
-  --inputBackgroundColor: var(--th-cool-grey-800);
-  --modalHeaderBackgroundColor: var(--th-cool-grey-800);
-  --modalContentBackgroundColor: var(--th-cool-grey-700);
-  --modalContentBorderColorHeader: var(--th-cool-grey-700);
-  --modalContentBorderColorFooter: var(--th-cool-grey-700);
-  --modalTextColor: var(--th-white);
-  --settingsDialogBackgroundColor: var(--th-cool-grey-700);
-  --settingsDialogMenuBackgroundColor: var(--th-cool-grey-800);
-  --settingsDialogItemSelectedBackgroundColor: var(--th-slate-dark);
-  --settingsDialogItemBackgroundColorHover: var(--th-cool-grey-700);
-  --settingsDialogItemBackgroundColorActive: var(--th-cool-grey-600);
-  --settingsTitleColor: #fff;
-  --selectBorder: 1px solid var( --slate-light);
-  --selectBackgroundColor: var( --th-slate);
-  --selectBackgroundColorHover: rgba(255, 255, 255, 0.146);
-  --selectBackgroundColorActive: rgba(255, 255, 255, 0.221);
-}
-.dark-mode .gw-select {
-  background: transparent url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' height='22px' width='22px' viewBox='0 0 18 18'>%3Cpath d='M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z' fill='%23fff'/%3E%3Cpath d='M0-.75h24v24H0z' fill='none'/%3E</svg>") no-repeat;
-  background-repeat: no-repeat, repeat;
-  background-position: right 0.9em top 40%, 0 0;
-  background-color: #434e65 transparent;
-  border: 1px solid #fff;
-  background-size: 1.3em auto, 100%;
-  color: #fff;
-}
-.dark-mode .gw-select > option {
-  background: #434e65;
-}
-th-rw4gc.dark-mode {
-  --listGroupBackgroundColor: transparent;
-  --listGroupItemTextColor: var(--th-white);
-  --listGroupItemBackgroundColor: var(--th-cool-grey-800);
-  --listGroupItemActionsBackgroundColor: var(--th-cool-grey-850);
-  --listGroupItemBackgroundColorHover: var(--th-cool-grey-700);
-  --listGroupItemBackgroundColorActive: var(--th-cool-grey-600);
-  --listGroupItemIconColor: var(--th-white);
-  --listGroupItemArrowColor: var(--th-cool-grey-800);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root .day.dark-scheme {
-    background: #333;
-    color: white;
-  }
-  :root .night.dark-scheme {
-    background: black;
-    color: #ddd;
-  }
-}
-@media (prefers-color-scheme: light) {
-  :root .day.light-scheme {
-    background: white;
-    color: #555;
-  }
-  :root .night.light-scheme {
-    background: #eee;
-    color: black;
-  }
-}</style><style>th-rw4gc.th-rw {
-  color-scheme: light;
-  --listGroupItemBackgroundColorActive: white;
-  --squareButtonBackgroundHover: #f5f5f5;
-  --squareButtonIconFillColor: rgb(36, 42, 56);
-  --squareButtonActiveBackGroundColor: #EFEFEF;
-  --squareButtonIconTickColor: #506C7E ;
-}
-
-th-rw4gc.dark-mode {
-  --listGroupItemBackgroundColorFocus: rgb(63, 79, 90);
-  --modalTextColorFocus: white;
-  --listGroupItemBackgroundColorActive: rgb(36, 45, 51);
-  --modalTextColorActive: white;
-  --squareButtonBackgroundHover: rgb(56, 71, 81);
-  --squareButtonIconFillColor: white;
-  --squareButtonActiveBackGroundColor: #24323E;
-  --squareButtonIconTickColor: #FFF ;
-}
-
-th-rw4gc.dark-mode.th-rw {
-  color-scheme: dark;
-  --toolbarIconButtonFillColor: var(--white);
-  --settingsTitleColor: var(--white);
-}
-
-.gw-toolbar--s1 {
-  --th-fontSize: 5px;
-}
-
-.gw-toolbar--s2 {
-  --th-fontSize: 10px;
-}
-
-.gw-toolbar--s3 {
-  --th-fontSize: 15px;
-}
-
-.gw-toolbar--s4 {
-  --th-fontSize: 20px;
-}
-
-.gw-listitem-fontsize-s10 {
-  --gw-listitem-fontsize: 10px !important;
-}
-
-.gw-listitem-fontsize-s11 {
-  --gw-listitem-fontsize: 11px !important;
-}
-
-.gw-listitem-fontsize-s12 {
-  --gw-listitem-fontsize: 12px !important;
-}
-
-.gw-listitem-fontsize-s13 {
-  --gw-listitem-fontsize: 13px !important;
-}
-
-.gw-listitem-fontsize-s14 {
-  --gw-listitem-fontsize: 14px !important;
-}
-
-.gw-listitem-fontsize-s15 {
-  --gw-listitem-fontsize: 15px !important;
-}
-
-.gw-listitem-fontsize-s16 {
-  --gw-listitem-fontsize: 16px !important;
-}
-
-.gw-listitem-fontsize-s17 {
-  --gw-listitem-fontsize: 17px !important;
-}
-
-.gw-listitem-fontsize-s18 {
-  --gw-listitem-fontsize: 18px !important;
-}
-
-.gw-listitem-fontsize-s19 {
-  --gw-listitem-fontsize: 19px !important;
-}
-
-.gw-listitem-fontsize-s20 {
-  --gw-listitem-fontsize: 20px !important;
-}
-
-.gw-listitem-fontsize-s21 {
-  --gw-listitem-fontsize: 21px !important;
-}
-
-.gw-listitem-fontsize-s22 {
-  --gw-listitem-fontsize: 22px !important;
-}
-
-.gw-listitem-fontsize-s23 {
-  --gw-listitem-fontsize: 23px !important;
-}
-
-.gw-listitem-fontsize-s24 {
-  --gw-listitem-fontsize: 24px !important;
-}
-
-th-rw4gc {
-  color-scheme: light;
-  --th-fontSize: 10px;
-  --th-placeholderColor: hsl(222, 10%, 46%);
-}
-
-th-rw4gc.dark-mode {
-  color-scheme: dark;
-  --th-placeholderColor: hsl(222, 10%, 62%);
-}
-
-.gw-info {
-  --notification-bg-color: var(--infoBackgroundColor);
-  --notification-border-color: var(--infoBorderColor);
-  --notification-color: var(--infoTitleColor);
-}
-
-.gw-success {
-  --notification-bg-color: var(--successBackgroundColor);
-  --notification-border-color: var(--successBorderColor);
-  --notification-color: var(--successTitleColor);
-}
-
-.gw-error {
-  --notification-bg-color: var(--errorBackgroundColor);
-  --notification-border-color: var(--errorBorderColor);
-  --notification-color: var(--errorTitleColor);
-}
-
-.gw-warning {
-  --notification-bg-color: var(--warningBackgroundColor);
-  --notification-border-color: var(--warningBorderColor);
-  --notification-color: var(--warningTitleColor);
-}
-
-th-rw4gc.th-rw {
-  --toolbarIconToggleFill: var(--primaryColorPurple);
-  --toolbarIconToggleHoverFill: var(--primaryColorPurple);
-  --settingsTitleColor: var(--primaryColorPurple);
-}
-
-.gw-toolbar--undocked {
-  --toolbarWidth: fit-content;
-  --toolbarDisplay: block;
-  --toolbarPosition: fixed;
-}
-
-.gw-ul--small {
-  --liWidth: 150px;
-}
-
-.gw-ul--medium {
-  --liWidth: 300px;
-}
-
-.gw-ul--large {
-  --liWidth: 450px;
-}
-
-gw-radio label.gw-radio__input-label b {
-  font-weight: var(--label-bold-font-weight, bold);
-  font-size: var(--label-bold-font-size, 1.4em);
-  font-family: var(--label-bold-font-family, "Open Sans", sans-serif);
-  color: var(--label-bold-color, inherit);
-}
-
-gw-radio label.gw-radio__input-label u {
-  text-decoration: underline;
-  font-size: 1em; /* Inherit from parent label (1.2em) */
-  font-weight: normal;
-}</style></head>
-<body data-new-gr-c-s-check-loaded="14.1328.0" data-gr-ext-installed="" style="overflow: hidden;">
+</head>
+<body style="overflow: hidden;">
 
 <!-- ============ شاشة التحقق من الموقع ============ -->
 <div class="geo-gate hidden" id="geoGate">
   <div class="geo-box">
     <div class="geo-icon ok" id="geoIcon">✅</div>
-    <h2 id="geoTitle">تم التحقق بنجاح</h2>
-    <p id="geoMsg">أنت على بعد <b>147 متر</b> من المدرسة. جارٍ فتح النظام...</p>
+    <h2 id="geoTitle">جارٍ التحقق من موقعك...</h2>
+    <p id="geoMsg">يرجى السماح بالوصول إلى الموقع الجغرافي للمتابعة.</p>
     <div class="geo-spinner hidden" id="geoSpinner"></div>
     <button class="btn btn-primary" id="geoRetryBtn" style="display:none;" onclick="checkLocation()">
       🔄 إعادة المحاولة
     </button>
-    <div class="geo-coords" id="geoCoords">موقعك: 25.284304, 51.407963 (±200م)
-المسافة عن المدرسة: 147 متر</div>
+    <div class="geo-coords" id="geoCoords"></div>
   </div>
 </div>
 
@@ -2155,11 +801,11 @@ gw-radio label.gw-radio__input-label u {
 <main class="container page active" id="pageAdmin" style="display: flex;">
   <div class="card">
     <div class="admin-info-bar">
-      <div class="info-item">🏫 عدد الشعب: <b id="totalSections">24</b></div>
-      <div class="info-item">👥 إجمالي الطلاب: <b id="totalStudents">291</b></div>
+      <div class="info-item">🏫 عدد الشعب: <b id="totalSections">25</b></div>
+      <div class="info-item">👥 إجمالي الطلاب: <b id="totalStudents">695</b></div>
       <button class="btn btn-danger btn-sm" onclick="goBackToMain()">🔙 رجوع</button>
     </div>
-    <div class="sections-grid" id="sectionsGrid"><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 1</div><div class="section-count">15 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 2</div><div class="section-count">14 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 3</div><div class="section-count">17 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 4</div><div class="section-count">16 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 5</div><div class="section-count">12 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 6</div><div class="section-count">10 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 7</div><div class="section-count">14 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 8</div><div class="section-count">13 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 1</div><div class="section-count">12 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 2</div><div class="section-count">11 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 3</div><div class="section-count">10 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 4</div><div class="section-count">16 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 5</div><div class="section-count">9 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 6</div><div class="section-count">16 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 7</div><div class="section-count">7 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 8</div><div class="section-count">9 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 1</div><div class="section-count">11 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 2</div><div class="section-count">13 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 3</div><div class="section-count">11 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 4</div><div class="section-count">8 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 5</div><div class="section-count">11 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 6</div><div class="section-count">8 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 7</div><div class="section-count">16 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 8</div><div class="section-count">12 طالب</div></button></div>
+    <div class="sections-grid" id="sectionsGrid"><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 1</div><div class="section-count">32 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 2</div><div class="section-count">30 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 3</div><div class="section-count">31 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 4</div><div class="section-count">33 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 5</div><div class="section-count">33 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 6</div><div class="section-count">33 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 7</div><div class="section-count">33 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 8</div><div class="section-count">32 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 1</div><div class="section-count">30 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 2</div><div class="section-count">29 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 3</div><div class="section-count">28 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 4</div><div class="section-count">27 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 5</div><div class="section-count">29 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 6</div><div class="section-count">28 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 7</div><div class="section-count">28 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 8</div><div class="section-count">29 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 1</div><div class="section-count">25 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 2</div><div class="section-count">27 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 3</div><div class="section-count">26 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 4</div><div class="section-count">27 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 5</div><div class="section-count">27 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 6</div><div class="section-count">25 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 7</div><div class="section-count">27 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 8</div><div class="section-count">25 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 9</div><div class="section-count">1 طالب</div></button></div>
     <div class="empty-msg hidden" id="adminEmpty">لا توجد شعب مسجّلة حالياً.</div>
   </div>
 </main>
@@ -2167,7 +813,7 @@ gw-radio label.gw-radio__input-label u {
 <!-- ============================================================
      PAGE 3: SECTION DETAILS (تفاصيل الشعبة)
      ============================================================ -->
-<main class="container page" style="display:none;" id="pageSection" style="display: none;">
+<main class="container page" style="display:none;" id="pageSection" >
   <div class="card">
     <div class="page-title" style="padding: 0 0 14px 0;">
       <h1 style="font-size: clamp(20px, 4.5vw, 30px);">📖 شعبة <span id="sectionTitleInline"></span></h1>
@@ -2211,14 +857,12 @@ gw-radio label.gw-radio__input-label u {
 
 <!-- ============ زر + السري ============ -->
 <button class="add-btn" id="addBtn" onclick="openPasswordModal()" title="إضافة/تحديث البيانات" aria-label="تحديث البيانات">+</button>
+
 <!-- ============ نافذة تغيير التوكن ============ -->
 <div class="modal-overlay" id="tokenModal">
   <div class="modal-box">
     <h3>🔄 تغيير توكن بوت تيليجرام</h3>
-    <p>
-      الصق التوكن الجديد الذي حصلت عليه من <b>@BotFather</b>.
-      سيُحفظ في هذا المتصفح فقط.
-    </p>
+    <p>الصق التوكن الجديد الذي حصلت عليه من <b>@BotFather</b>. سيُحفظ في هذا المتصفح فقط.</p>
     <input type="password" id="newTokenInput" class="input-field" placeholder="123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" autocomplete="off" spellcheck="false">
     <div class="btn-row">
       <button class="btn btn-primary" style="flex:1;" onclick="saveNewToken()">💾 حفظ</button>
@@ -2234,7 +878,7 @@ gw-radio label.gw-radio__input-label u {
       <h3>🔍 اختر الطالب المطلوب خروجه <span class="results-count" id="resultsCount">0</span></h3>
       <button class="results-close-icon" onclick="closeResultsModal()" title="إغلاق" aria-label="إغلاق">×</button>
     </div>
-    <div class="results-list" id="resultsList"></div><div class="result-item"><span class="name">محمد راشد محمد سويحيت المرى</span><span class="section">الصف السابع - شعبة 1</span></div><div class="result-item"><span class="name">راشد سالم محمد سالم عفيفه</span><span class="section">الصف السابع - شعبة 2</span></div><div class="result-item"><span class="name">عبدالمحسن على راشد الشيبه المرى</span><span class="section">الصف السابع - شعبة 2</span></div><div class="result-item"><span class="name">عمر راشد محمد الصعاق المرى</span><span class="section">الصف السابع - شعبة 3</span></div><div class="result-item"><span class="name">محمد ناصر راشد العذبه المرى</span><span class="section">الصف السابع - شعبة 3</span></div><div class="result-item"><span class="name">بندر خالد راشد صالح اباالزمات</span><span class="section">الصف السابع - شعبة 4</span></div><div class="result-item"><span class="name">محمد عبدالله محمد راشد روضه</span><span class="section">الصف السابع - شعبة 5</span></div><div class="result-item"><span class="name">خالد راشد خالد صالح القاشوطى</span><span class="section">الصف السابع - شعبة 7</span></div><div class="result-item"><span class="name">راشد عبدالعزيز راشد المريزيق المرى</span><span class="section">الصف السابع - شعبة 8</span></div><div class="result-item"><span class="name">عبدالله راشد على المريزيق المرى</span><span class="section">الصف السابع - شعبة 8</span></div><div class="result-item"><span class="name">راشد جارالله راشد العذبه المرى</span><span class="section">الصف الثامن - شعبة 1</span></div><div class="result-item"><span class="name">راشد محمد راشد المريزيق المرى</span><span class="section">الصف الثامن - شعبة 1</span></div><div class="result-item"><span class="name">راشد محمد راشد فهيد الودعانى</span><span class="section">الصف الثامن - شعبة 1</span></div><div class="result-item"><span class="name">راشد محمد حمد على الهاجرى</span><span class="section">الصف الثامن - شعبة 2</span></div><div class="result-item"><span class="name">راشد على عبدالله المريزيق المرى</span><span class="section">الصف الثامن - شعبة 3</span></div><div class="result-item"><span class="name">عمير حمد راشد عمير المرى</span><span class="section">الصف الثامن - شعبة 3</span></div><div class="result-item"><span class="name">راشد محمد عبدالله المريزيق المرى</span><span class="section">الصف الثامن - شعبة 4</span></div><div class="result-item"><span class="name">حمد راشد على الشيبه المرى</span><span class="section">الصف الثامن - شعبة 5</span></div><div class="result-item"><span class="name">راشد حمد على راشد المري</span><span class="section">الصف الثامن - شعبة 5</span></div><div class="result-item"><span class="name">راشد حمد راشد سالم المرى</span><span class="section">الصف الثامن - شعبة 6</span></div><div class="result-item"><span class="name">محمد حمد محمد راشد الاسود</span><span class="section">الصف الثامن - شعبة 6</span></div><div class="result-item"><span class="name">محمد راشد محمد الصعاق المرى</span><span class="section">الصف الثامن - شعبة 6</span></div><div class="result-item"><span class="name">على راشد على عليان المرى</span><span class="section">الصف الثامن - شعبة 7</span></div><div class="result-item"><span class="name">راشد عبدالله خالد ال زابن الدوسرى</span><span class="section">الصف الثامن - شعبة 8</span></div><div class="result-item"><span class="name">عبدالله فهيد راشد ال رشدان الفهيدى</span><span class="section">الصف التاسع - شعبة 2</span></div><div class="result-item"><span class="name">راشد حمد راشد ال سلطان الهاجري</span><span class="section">الصف التاسع - شعبة 3</span></div><div class="result-item"><span class="name">راشد حنيف فهد حنيف الدوسرى</span><span class="section">الصف التاسع - شعبة 3</span></div><div class="result-item"><span class="name">راشد سعود راشد الصعاق المرى</span><span class="section">الصف التاسع - شعبة 3</span></div><div class="result-item"><span class="name">عبدالرحمن متعب راشد الصعاق المرى</span><span class="section">الصف التاسع - شعبة 3</span></div><div class="result-item"><span class="name">عبدالله متعب راشد الصعاق المرى</span><span class="section">الصف التاسع - شعبة 3</span></div><div class="result-item"><span class="name">على سعود راشد شفيع الفهيده</span><span class="section">الصف التاسع - شعبة 3</span></div><div class="result-item"><span class="name">محمد متعب راشد الصعاق المرى</span><span class="section">الصف التاسع - شعبة 3</span></div><div class="result-item"><span class="name">نايف على راشد العذبه المرى</span><span class="section">الصف التاسع - شعبة 3</span></div><div class="result-item"><span class="name">راشد مبارك سعيد حصوان المرى</span><span class="section">الصف التاسع - شعبة 4</span></div><div class="result-item"><span class="name">راشد سالم راشد سالم ابوشهاب</span><span class="section">الصف التاسع - شعبة 5</span></div><div class="result-item"><span class="name">راشد فهيد على الحسناء المرى</span><span class="section">الصف التاسع - شعبة 6</span></div><div class="result-item"><span class="name">راشد حمد حسين محسن المرقب</span><span class="section">الصف التاسع - شعبة 7</span></div><div class="result-item"><span class="name">عبدالمحسن سلطان محسن راشد نديله</span><span class="section">الصف التاسع - شعبة 7</span></div><div class="result-item"><span class="name">على راشد سالم راشد العذبى</span><span class="section">الصف التاسع - شعبة 7</span></div><div class="result-item"><span class="name">محمد جابر على راشد عليان</span><span class="section">الصف التاسع - شعبة 7</span></div><div class="result-item"><span class="name">راشد هزاع راشد العذبه المرى</span><span class="section">الصف التاسع - شعبة 8</span></div><div class="result-item"><span class="name">فاضل عبدالله راشد حمد العذبى</span><span class="section">الصف التاسع - شعبة 8</span></div></div>
+    <div class="results-list" id="resultsList"></div>
     <div class="results-footer">
       <button class="btn btn-danger" onclick="closeResultsModal()">✖️ إغلاق</button>
     </div>
@@ -2254,7 +898,7 @@ gw-radio label.gw-radio__input-label u {
 
 <!-- ============ نافذة كلمة المرور (رفع البيانات) ============ -->
 <div class="password-overlay" id="passwordOverlay">
-  <div class="password-box" style="animation: 0.4s ease 0s 1 normal none running shake;">
+  <div class="password-box">
     <div class="password-icon">🔐</div>
     <h3 class="password-title">تحديث بيانات الطلاب</h3>
     <p class="password-desc">أدخل كلمة المرور للمتابعة</p>
@@ -2276,24 +920,19 @@ gw-radio label.gw-radio__input-label u {
       اختر ملف <b>Excel (.xlsx)</b> يحتوي على الأعمدة التالية:<br>
       <code>الاسم</code> &nbsp;|&nbsp; <code>الشعبة</code> &nbsp;|&nbsp; <code>Channel_ID</code>
     </p>
-
     <input type="file" id="excelFileInput" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" class="file-input-hidden">
     <label for="excelFileInput" class="file-drop-zone has-file" id="fileDropZone">
       <div class="file-drop-icon">📁</div>
       <div class="file-drop-text" id="fileDropText">اضغط لاختيار ملف Excel أو اسحبه هنا</div>
     </label>
-
     <div class="upload-progress hidden" id="uploadProgress">
       <div class="progress-spinner"></div>
       <span id="progressText">جارٍ معالجة الملف...</span>
     </div>
-
     <div class="upload-status success" id="uploadStatus"></div>
-
     <button class="btn btn-danger btn-sm" style="margin-bottom:12px; width:100%;" onclick="resetStudentsData()">
       🔄 استرجاع البيانات الأصلية
     </button>
-
     <div class="btn-row">
       <button class="btn btn-primary" id="confirmUploadBtn" style="flex:1;" onclick="processExcelFile()" disabled>📥 رفع وتحديث</button>
       <button class="btn btn-danger" style="flex:1;" onclick="closeUploadModal()">إلغاء</button>
@@ -2330,7 +969,7 @@ gw-radio label.gw-radio__input-label u {
   </div>
 </div>
 
-<div id="toast" class="error" style="display: none;">❌ لا توجد نتائج مطابقة</div>
+<div id="toast"></div>
 
 <script>
 /* =========================================================
@@ -2360,6 +999,20 @@ var lastProcessedCallEvent = null;
 var callPollingInterval = null;
 
 /* =========================================================
+   📍 إعدادات الموقع الجغرافي
+   ========================================================= */
+var SCHOOL_LOCATION = {
+  lat: 25.2847285,
+  lng: 51.4093489
+};
+var MAX_DISTANCE_METERS = 250;
+var GEO_OPTIONS = {
+  enableHighAccuracy: true,
+  timeout: 20000,
+  maximumAge: 0
+};
+
+/* =========================================================
    🔧 إعدادات توافق المتصفحات
    ========================================================= */
 (function setVH() {
@@ -2379,20 +1032,6 @@ document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
    🔑 التوكن المدمج
    ========================================================= */
 var DEFAULT_TOKEN = "8812887559:AAHenzlOj2f4nL1hciwmxfcr9fbGfMD9YGU";
-
-/* =========================================================
-   📍 إعدادات الموقع الجغرافي
-   ========================================================= */
-var SCHOOL_LOCATION = {
-  lat: 25.2847285,
-  lng: 51.4093489
-};
-var MAX_DISTANCE_METERS = 250;
-var GEO_OPTIONS = {
-  enableHighAccuracy: true,
-  timeout: 15000,
-  maximumAge: 0
-};
 
 /* =========================================================
    🏷️ خريطة أسماء الشعب
@@ -2463,14 +1102,6 @@ var resultsOverlay = document.getElementById("resultsOverlay");
 var resultsList    = document.getElementById("resultsList");
 var resultsCount   = document.getElementById("resultsCount");
 
-var geoGate    = document.getElementById("geoGate");
-var geoIcon    = document.getElementById("geoIcon");
-var geoTitle   = document.getElementById("geoTitle");
-var geoMsg     = document.getElementById("geoMsg");
-var geoSpinner = document.getElementById("geoSpinner");
-var geoRetry   = document.getElementById("geoRetryBtn");
-var geoCoords  = document.getElementById("geoCoords");
-
 /* =========================================================
    تحميل البيانات المخصصة من localStorage
    ========================================================= */
@@ -2491,11 +1122,12 @@ function loadCustomStudents() {
   return false;
 }
 loadCustomStudents();
+
 /* =========================================================
    📍 حساب المسافة (صيغة Haversine)
    ========================================================= */
 function calculateDistance(lat1, lng1, lat2, lng2) {
-  var R = 6371000; // نصف قطر الأرض بالأمتار
+  var R = 6371000;
   var toRad = function(d) { return d * Math.PI / 180; };
   var dLat = toRad(lat2 - lat1);
   var dLng = toRad(lng2 - lng1);
@@ -2570,7 +1202,6 @@ function checkLocation() {
     return;
   }
 
-  // ✅ تأكد من وجود إعدادات الموقع
   var schoolLat = (typeof SCHOOL_LOCATION !== "undefined" && SCHOOL_LOCATION) ? SCHOOL_LOCATION.lat : 25.2847285;
   var schoolLng = (typeof SCHOOL_LOCATION !== "undefined" && SCHOOL_LOCATION) ? SCHOOL_LOCATION.lng : 51.4093489;
   var maxDist = (typeof MAX_DISTANCE_METERS !== "undefined") ? MAX_DISTANCE_METERS : 250;
@@ -2633,9 +1264,9 @@ function checkLocation() {
 
 /* ============ تشغيل بوابة الموقع ============ */
 (function runGeoGate() {
-  // ✅ لا نمنع التمرير قبل تحديد الموقع
   checkLocation();
 })();
+
 /* ============ Modal: تغيير التوكن ============ */
 function openTokenModal() {
   newTokenInput.value = "";
@@ -2672,9 +1303,11 @@ function saveNewToken() {
     .catch(function() { showToast("تعذّر الاتصال بـ Telegram", true); });
 }
 
-tokenModal.addEventListener("click", function(e) {
-  if (e.target === tokenModal) closeTokenModal();
-});
+if (tokenModal) {
+  tokenModal.addEventListener("click", function(e) {
+    if (e.target === tokenModal) closeTokenModal();
+  });
+}
 
 /* ============ Normalization ============ */
 function normalize(s) {
@@ -2687,9 +1320,11 @@ function normalize(s) {
 }
 
 /* ============ البحث ============ */
-searchInput.addEventListener("keydown", function(e) {
-  if (e.key === "Enter" || e.keyCode === 13) doSearch();
-});
+if (searchInput) {
+  searchInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" || e.keyCode === 13) doSearch();
+  });
+}
 
 function doSearch() {
   var q = normalize(searchInput.value.trim());
@@ -2732,9 +1367,11 @@ function closeResultsModal() {
   document.body.style.overflow = "";
 }
 
-resultsOverlay.addEventListener("click", function(e) {
-  if (e.target === resultsOverlay) closeResultsModal();
-});
+if (resultsOverlay) {
+  resultsOverlay.addEventListener("click", function(e) {
+    if (e.target === resultsOverlay) closeResultsModal();
+  });
+}
 
 /* ============ إرسال الاستدعاء ============ */
 async function selectStudent(student) {
@@ -2762,13 +1399,11 @@ async function selectStudent(student) {
     var json = await res.json();
 
     if (json.ok) {
-      // ✅ سجّل الاستدعاء في Firebase + حدث المزامنة
       try {
         markStudentCalled(student.s, student.n);
         broadcastCallEvent(student.n, student.s);
       } catch(e) { if (window.console) console.warn("تعذّر حفظ الاستدعاء:", e); }
 
-      // ✅ إذا كانت شعبة الطالب مفتوحة في صفحة الإدارة → أظهر المنبثق
       if (typeof currentSection !== "undefined" && currentSection &&
           currentSection.toUpperCase() === student.s.toUpperCase()) {
         renderSectionMembers();
@@ -2791,9 +1426,7 @@ async function selectStudent(student) {
 function showSuccessPopup(studentName, sectionName) {
   var overlay = document.getElementById("successOverlay");
   var studentBox = document.getElementById("successStudent");
-
   studentBox.innerHTML = "<b>👤 الاسم:</b> " + studentName + "\n<b>🏫 الشعبة:</b> " + sectionName;
-
   overlay.classList.add("show");
   document.body.style.overflow = "hidden";
 }
@@ -2957,9 +1590,7 @@ async function processExcelFile() {
     var worksheet = workbook.Sheets[firstSheetName];
     var rows = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
 
-    if (!rows.length) {
-      throw new Error("الملف فارغ أو لا يحتوي على بيانات");
-    }
+    if (!rows.length) throw new Error("الملف فارغ أو لا يحتوي على بيانات");
 
     var firstRow = rows[0];
     var keys = Object.keys(firstRow);
@@ -2972,10 +1603,7 @@ async function processExcelFile() {
     }
 
     if (!nameKey || !channelKey) {
-      throw new Error(
-        "تعذّر العثور على الأعمدة المطلوبة.\n" +
-        "تأكد من وجود عمود للاسم وعمود Channel_ID"
-      );
+      throw new Error("تعذّر العثور على الأعمدة المطلوبة.\nتأكد من وجود عمود للاسم وعمود Channel_ID");
     }
 
     var newStudents = [];
@@ -2987,10 +1615,7 @@ async function processExcelFile() {
       var sectionRaw = sectionKey ? String(row[sectionKey] || "").trim() : "";
 
       if (!name || !channel) { skipped++; return; }
-
-      if (channel.charAt(0) !== "@" && channel.charAt(0) !== "-") {
-        channel = "@" + channel;
-      }
+      if (channel.charAt(0) !== "@" && channel.charAt(0) !== "-") channel = "@" + channel;
 
       var sectionId = "";
       if (sectionRaw && /^GRADE/i.test(sectionRaw)) {
@@ -3004,16 +1629,10 @@ async function processExcelFile() {
         sectionFormatted = getSectionName(sectionId);
       }
 
-      newStudents.push({
-        n: name,
-        s: sectionFormatted,
-        c: channel
-      });
+      newStudents.push({ n: name, s: sectionFormatted, c: channel });
     });
 
-    if (!newStudents.length) {
-      throw new Error("لم يتم العثور على أي صف صالح في الملف");
-    }
+    if (!newStudents.length) throw new Error("لم يتم العثور على أي صف صالح في الملف");
 
     STUDENTS.length = 0;
     for (var k = 0; k < newStudents.length; k++) STUDENTS.push(newStudents[k]);
@@ -3041,10 +1660,7 @@ async function processExcelFile() {
 
     updateStats();
 
-    setTimeout(function() {
-      downloadUpdatedHTMLFile(newStudents);
-    }, 500);
-
+    setTimeout(function() { downloadUpdatedHTMLFile(newStudents); }, 500);
     setTimeout(function() {
       closeUploadModal();
       showToast("✅ تم التحديث وتنزيل index.html — جاهز للرفع");
@@ -3087,9 +1703,7 @@ function downloadUpdatedHTMLFile(studentsList) {
 
     var doctype = "<!DOCTYPE html>\n";
     var currentHTML = document.documentElement.outerHTML;
-    if (currentHTML.indexOf('<!DOCTYPE') !== 0) {
-      currentHTML = doctype + currentHTML;
-    }
+    if (currentHTML.indexOf('<!DOCTYPE') !== 0) currentHTML = doctype + currentHTML;
 
     var cleanHTML = currentHTML;
 
@@ -3129,50 +1743,36 @@ function downloadUpdatedHTMLFile(studentsList) {
 
     cleanHTML = cleanHTML.replace(/(<div[^>]+class="file-drop-zone[^"]*?"[^>]*?)\s+has-file/g, '$1');
     cleanHTML = cleanHTML.replace(/(<div[^>]+class="file-drop-zone[^"]*?"[^>]*?)\s+dragover/g, '$1');
-    cleanHTML = cleanHTML.replace(
-      /(<div[^>]+id="fileDropText"[^>]*>)[\s\S]*?(<\/div>)/g,
-      '$1اضغط لاختيار ملف Excel أو اسحبه هنا$2'
-    );
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="fileDropText"[^>]*>)[\s\S]*?(<\/div>)/g, '$1اضغط لاختيار ملف Excel أو اسحبه هنا$2');
 
     cleanHTML = cleanHTML.replace(
       /(<div[^>]+id="uploadProgress"[^>]*?class=")([^"]*?)("[^>]*>)/g,
       function(match, before, cls, after) {
-        if (cls.indexOf('hidden') === -1) {
-          cls = (cls + ' hidden').trim();
-        }
+        if (cls.indexOf('hidden') === -1) cls = (cls + ' hidden').trim();
         return before + cls + after;
       }
     );
 
-    cleanHTML = cleanHTML.replace(
-      /(<button[^>]+id="scanBtn"[^>]*>)[\s\S]*?(<\/button>)/g,
-      '$1📷 مسح QR$2'
-    );
+    cleanHTML = cleanHTML.replace(/(<button[^>]+id="scanBtn"[^>]*>)[\s\S]*?(<\/button>)/g, '$1📷 مسح QR$2');
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="stats"[^>]*>)[\s\S]*?(<\/div>)/g, '$1📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR$2');
 
-    cleanHTML = cleanHTML.replace(
-      /(<div[^>]+id="stats"[^>]*>)[\s\S]*?(<\/div>)/g,
-      '$1📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR$2'
-    );
+    // إظهار بوابة الموقع عند الفتح
+    cleanHTML = cleanHTML.replace(/(<div[^>]+class="geo-gate[^"]*?"[^>]*?)\s+hidden/g, '$1');
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="geoIcon"[^>]*?class=")[^"]*?("[^>]*>)/g, '$1geo-icon$2');
+    cleanHTML = cleanHTML.replace(/(<h2[^>]+id="geoTitle"[^>]*>)[\s\S]*?(<\/h2>)/g, '$1جارٍ التحقق من موقعك...$2');
+    cleanHTML = cleanHTML.replace(/(<p[^>]+id="geoMsg"[^>]*>)[\s\S]*?(<\/p>)/g, '$1يرجى السماح بالوصول إلى الموقع الجغرافي للمتابعة.$2');
+    cleanHTML = cleanHTML.replace(/(<div[^>]+id="geoCoords"[^>]*>)[\s\S]*?(<\/div>)/g, '$1$2');
 
-    // إعادة عرض الصفحة الرئيسية وإخفاء الباقي
-    cleanHTML = cleanHTML.replace(
-      /(<main[^>]+class="container page active"[^>]+id="pageMain"[^>]*>)/g,
-      '$1'
-    );
-    cleanHTML = cleanHTML.replace(
-      /(<main[^>]+class="container page"[^>]+id="pageAdmin"[^>]*>)/g,
-      function(m) { return m.replace('class="container page"', 'class="container page" style="display:none;"'); }
-    );
-    cleanHTML = cleanHTML.replace(
-      /(<main[^>]+class="container page"[^>]+id="pageSection"[^>]*>)/g,
-      function(m) { return m.replace('class="container page"', 'class="container page" style="display:none;"'); }
-    );
+    // إخفاء الصفحات الإدارية
+    cleanHTML = cleanHTML.replace(/(<main[^>]+class="container page"[^>]+id="pageAdmin"[^>]*>)/g, function(m) {
+      return m.replace(/style="[^"]*"/, '').replace('class="container page"', 'class="container page" style="display:none;"');
+    });
+    cleanHTML = cleanHTML.replace(/(<main[^>]+class="container page"[^>]+id="pageSection"[^>]*>)/g, function(m) {
+      return m.replace(/style="[^"]*"/, '').replace('class="container page"', 'class="container page" style="display:none;"');
+    });
 
-    // إعادة إخفاء شريط المزامنة
-    cleanHTML = cleanHTML.replace(
-      /(<span[^>]+id="syncStatusBadge"[^>]*?)\s+style="[^"]*?"/g,
-      '$1 style="display:none;"'
-    );
+    // إخفاء شريط المزامنة
+    cleanHTML = cleanHTML.replace(/(<span[^>]+id="syncStatusBadge"[^>]*?)\s+style="[^"]*?"/g, '$1 style="display:none;"');
 
     var studentsJSON = JSON.stringify(studentsList);
     var markersRegex = /\/\*\s*@STUDENTS_DATA_START@\s*\*\/[\s\S]*?\/\*\s*@STUDENTS_DATA_END@\s*\*\//;
@@ -3224,44 +1824,32 @@ document.addEventListener("DOMContentLoaded", function() {
   var fileInput = document.getElementById("excelFileInput");
   var dropZone = document.getElementById("fileDropZone");
 
-  if (passInput) {
-    passInput.addEventListener("keydown", function(e) {
-      if (e.key === "Enter" || e.keyCode === 13) verifyPassword();
-    });
-  }
+  if (passInput) passInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" || e.keyCode === 13) verifyPassword();
+  });
 
-  if (passOverlay) {
-    passOverlay.addEventListener("click", function(e) {
-      if (e.target === passOverlay) closePasswordModal();
-    });
-  }
+  if (passOverlay) passOverlay.addEventListener("click", function(e) {
+    if (e.target === passOverlay) closePasswordModal();
+  });
 
-  if (upOverlay) {
-    upOverlay.addEventListener("click", function(e) {
-      if (e.target === upOverlay) closeUploadModal();
-    });
-  }
+  if (upOverlay) upOverlay.addEventListener("click", function(e) {
+    if (e.target === upOverlay) closeUploadModal();
+  });
 
-  if (fileInput) {
-    fileInput.addEventListener("change", function(e) {
-      if (e.target.files && e.target.files[0]) {
-        handleFileSelected(e.target.files[0]);
-      }
-    });
-  }
+  if (fileInput) fileInput.addEventListener("change", function(e) {
+    if (e.target.files && e.target.files[0]) handleFileSelected(e.target.files[0]);
+  });
 
   if (dropZone) {
     ["dragenter", "dragover"].forEach(function(ev) {
       dropZone.addEventListener(ev, function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault(); e.stopPropagation();
         dropZone.classList.add("dragover");
       });
     });
     ["dragleave", "drop"].forEach(function(ev) {
       dropZone.addEventListener(ev, function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault(); e.stopPropagation();
         dropZone.classList.remove("dragover");
       });
     });
@@ -3282,19 +1870,12 @@ document.addEventListener("keydown", function(e) {
   var adminPassOverlay = document.getElementById("adminPasswordOverlay");
   var callNotifyOverlay = document.getElementById("callNotifyOverlay");
 
-  if (callNotifyOverlay && callNotifyOverlay.classList.contains("show")) {
-    closeCallNotify();
-  } else if (adminPassOverlay && adminPassOverlay.classList.contains("show")) {
-    closeAdminPassword();
-  } else if (passwordOverlay && passwordOverlay.classList.contains("show")) {
-    closePasswordModal();
-  } else if (uploadOverlay && uploadOverlay.classList.contains("show")) {
-    closeUploadModal();
-  } else if (successOverlay && successOverlay.classList.contains("show")) {
-    closeSuccess();
-  } else if (resultsOverlay.classList.contains("show")) {
-    closeResultsModal();
-  }
+  if (callNotifyOverlay && callNotifyOverlay.classList.contains("show")) closeCallNotify();
+  else if (adminPassOverlay && adminPassOverlay.classList.contains("show")) closeAdminPassword();
+  else if (passwordOverlay && passwordOverlay.classList.contains("show")) closePasswordModal();
+  else if (uploadOverlay && uploadOverlay.classList.contains("show")) closeUploadModal();
+  else if (successOverlay && successOverlay.classList.contains("show")) closeSuccess();
+  else if (resultsOverlay.classList.contains("show")) closeResultsModal();
 });
 
 /* ============ Toast ============ */
@@ -3315,9 +1896,7 @@ function showToast(msg, isError, isInfo) {
 
 /* ============ التوافق ============ */
 document.addEventListener("touchmove", function(e) {
-  if (e.target.closest && e.target.closest(".results-list, .upload-box, .success-box, .password-box, .results-box, .call-notify-box, .members-list")) {
-    return;
-  }
+  if (e.target.closest && e.target.closest(".results-list, .upload-box, .success-box, .password-box, .results-box, .call-notify-box, .members-list")) return;
 }, { passive: true });
 
 window.addEventListener("resize", function() {
@@ -3377,9 +1956,8 @@ function cleanupOldEvents() {
   if (!firebaseReady || !firebaseDB) return;
   var oneHourAgo = Date.now() - (60 * 60 * 1000);
   firebaseDB.ref("callEvents").orderByChild("timestamp").endAt(oneHourAgo).once("value")
-    .then(function(snap) {
-      snap.forEach(function(child) { child.ref.remove(); });
-    }).catch(function() {});
+    .then(function(snap) { snap.forEach(function(child) { child.ref.remove(); }); })
+    .catch(function() {});
 }
 
 function updateSyncBadge(state, text) {
@@ -3387,12 +1965,8 @@ function updateSyncBadge(state, text) {
   var txt = document.getElementById("syncStatusText");
   if (!badge || !txt) return;
   badge.style.display = "inline-flex";
-  badge.style.background = state === "online"
-    ? "rgba(0,184,148,0.25)"
-    : "rgba(214,48,49,0.25)";
-  badge.style.borderColor = state === "online"
-    ? "rgba(0,184,148,0.55)"
-    : "rgba(214,48,49,0.55)";
+  badge.style.background = state === "online" ? "rgba(0,184,148,0.25)" : "rgba(214,48,49,0.25)";
+  badge.style.borderColor = state === "online" ? "rgba(0,184,148,0.55)" : "rgba(214,48,49,0.55)";
   txt.textContent = text;
 }
 
@@ -3628,8 +2202,7 @@ function renderSectionMembers() {
     var div = document.createElement("div");
     div.className = "member-item " + (currentTab === "called" ? "called" : "remaining");
     var timeHtml = item.time ? '<span class="member-time">🕒 ' + item.time + '</span>' : '';
-    div.innerHTML =
-      '<span class="member-name">' + item.n + '</span>' + timeHtml;
+    div.innerHTML = '<span class="member-name">' + item.n + '</span>' + timeHtml;
     list.appendChild(div);
   });
 }
@@ -3844,9 +2417,8 @@ if (speechSupported) {
   }, 1500);
 })();
 
-console.log("✅ النظام جاهز — عند الرفع يتم إنشاء index.html نظيف بالبيانات الجديدة");
+console.log("✅ النظام جاهز");
 </script>
 
 
-
-</body><grammarly-desktop-integration data-grammarly-shadow-root="true" style="visibility: visible !important;"></grammarly-desktop-integration></html>
+</body></html>
