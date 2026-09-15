@@ -734,15 +734,15 @@
   }
 </style>
 </head>
-<body style="overflow: hidden;">
+<body>
 
 <!-- ============ شاشة التحقق من الموقع ============ -->
-<div class="geo-gate hidden" id="geoGate">
+<div class="geo-gate" id="geoGate">
   <div class="geo-box">
-    <div class="geo-icon ok" id="geoIcon">✅</div>
+    <div class="geo-icon" id="geoIcon">📍</div>
     <h2 id="geoTitle">جارٍ التحقق من موقعك...</h2>
     <p id="geoMsg">يرجى السماح بالوصول إلى الموقع الجغرافي للمتابعة.</p>
-    <div class="geo-spinner hidden" id="geoSpinner"></div>
+    <div class="geo-spinner" id="geoSpinner"></div>
     <button class="btn btn-primary" id="geoRetryBtn" style="display:none;" onclick="checkLocation()">
       🔄 إعادة المحاولة
     </button>
@@ -765,14 +765,14 @@
 <div class="year-ribbon">
   <span class="year-badge">📅 العام الدراسي 2026–2027</span>
   <span class="year-badge" id="syncStatusBadge" style="display:none;">
-    <span id="syncStatusText">متصل (Firebase)</span>
+    <span id="syncStatusText">جاري الاتصال...</span>
   </span>
 </div>
 
 <!-- ============================================================
      PAGE 1: MAIN (الصفحة الرئيسية)
      ============================================================ -->
-<main class="container page" id="pageMain" style="display: none;">
+<main class="container page active" id="pageMain">
   <div class="card" id="mainCard">
     <div class="status-bar">
       <span class="status-dot-wrap"><span class="status-dot"></span> متصل بـ Telegram</span>
@@ -798,14 +798,14 @@
 <!-- ============================================================
      PAGE 2: ADMIN SECTIONS (الشعب الدراسية)
      ============================================================ -->
-<main class="container page active" id="pageAdmin" style="display: flex;">
+<main class="container page" id="pageAdmin" style="display: none;">
   <div class="card">
     <div class="admin-info-bar">
-      <div class="info-item">🏫 عدد الشعب: <b id="totalSections">25</b></div>
-      <div class="info-item">👥 إجمالي الطلاب: <b id="totalStudents">695</b></div>
+      <div class="info-item">🏫 عدد الشعب: <b id="totalSections">0</b></div>
+      <div class="info-item">👥 إجمالي الطلاب: <b id="totalStudents">0</b></div>
       <button class="btn btn-danger btn-sm" onclick="goBackToMain()">🔙 رجوع</button>
     </div>
-    <div class="sections-grid" id="sectionsGrid"><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 1</div><div class="section-count">32 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 2</div><div class="section-count">30 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 3</div><div class="section-count">31 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 4</div><div class="section-count">33 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 5</div><div class="section-count">33 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 6</div><div class="section-count">33 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 7</div><div class="section-count">33 طالب</div></button><button class="section-btn"><div class="section-label">الصف التاسع - شعبة 8</div><div class="section-count">32 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 1</div><div class="section-count">30 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 2</div><div class="section-count">29 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 3</div><div class="section-count">28 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 4</div><div class="section-count">27 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 5</div><div class="section-count">29 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 6</div><div class="section-count">28 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 7</div><div class="section-count">28 طالب</div></button><button class="section-btn"><div class="section-label">الصف الثامن - شعبة 8</div><div class="section-count">29 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 1</div><div class="section-count">25 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 2</div><div class="section-count">27 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 3</div><div class="section-count">26 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 4</div><div class="section-count">27 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 5</div><div class="section-count">27 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 6</div><div class="section-count">25 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 7</div><div class="section-count">27 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 8</div><div class="section-count">25 طالب</div></button><button class="section-btn"><div class="section-label">الصف السابع - شعبة 9</div><div class="section-count">1 طالب</div></button></div>
+    <div class="sections-grid" id="sectionsGrid"></div>
     <div class="empty-msg hidden" id="adminEmpty">لا توجد شعب مسجّلة حالياً.</div>
   </div>
 </main>
@@ -813,7 +813,7 @@
 <!-- ============================================================
      PAGE 3: SECTION DETAILS (تفاصيل الشعبة)
      ============================================================ -->
-<main class="container page" style="display:none;" id="pageSection" >
+<main class="container page" id="pageSection" style="display: none;">
   <div class="card">
     <div class="page-title" style="padding: 0 0 14px 0;">
       <h1 style="font-size: clamp(20px, 4.5vw, 30px);">📖 شعبة <span id="sectionTitleInline"></span></h1>
@@ -1072,7 +1072,6 @@ function getSectionName(channelId) {
 /* =========================================================
    📌 بيانات الطلاب المُدمجة
    ========================================================= */
-/* @STUDENTS_DATA_START@ */
 /* @STUDENTS_DATA_START@ */
 var STUDENTS = [
 {"n":"ابوبكر مصعب عمر احمد","s":"07/1","c":"@GRADE701"},
@@ -2713,5 +2712,5 @@ if (speechSupported) {
 console.log("✅ النظام جاهز");
 </script>
 
-
-</body></html>
+</body>
+</html>
