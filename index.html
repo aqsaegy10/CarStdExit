@@ -1191,12 +1191,11 @@ function loadCustomStudents() {
   return false;
 }
 loadCustomStudents();
-
 /* =========================================================
    📍 حساب المسافة (صيغة Haversine)
    ========================================================= */
 function calculateDistance(lat1, lng1, lat2, lng2) {
-  var R = 6371000;
+  var R = 6371000; // نصف قطر الأرض بالأمتار
   var toRad = function(d) { return d * Math.PI / 180; };
   var dLat = toRad(lat2 - lat1);
   var dLng = toRad(lng2 - lng1);
@@ -1210,23 +1209,33 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
 
 function setGeoState(icon, title, msg, color) {
   color = color || "";
-  geoIcon.textContent = icon;
-  geoIcon.className = "geo-icon " + color;
-  geoTitle.textContent = title;
-  geoMsg.innerHTML = msg;
+  var gIcon = document.getElementById("geoIcon");
+  var gTitle = document.getElementById("geoTitle");
+  var gMsg = document.getElementById("geoMsg");
+  if (gIcon) {
+    gIcon.textContent = icon;
+    gIcon.className = "geo-icon " + color;
+  }
+  if (gTitle) gTitle.textContent = title;
+  if (gMsg) gMsg.innerHTML = msg;
 }
 
 function openSystem() {
-  geoGate.classList.add("hidden");
+  var gate = document.getElementById("geoGate");
+  if (gate) gate.classList.add("hidden");
   document.body.style.overflow = "";
   updateStats();
   setTimeout(function() {
-    try { searchInput.focus(); } catch(e){}
+    try {
+      var si = document.getElementById("searchInput");
+      if (si) si.focus();
+    } catch(e){}
   }, 200);
 }
 
 function updateStats() {
-  if (!stats) return;
+  var statsEl = document.getElementById("stats");
+  if (!statsEl) return;
   var lastStats = localStorage.getItem("last_upload_stats");
   var suffix = "";
   if (lastStats) {
@@ -1235,54 +1244,66 @@ function updateStats() {
       suffix = " — آخر تحديث: " + s.date + " (" + s.total + " طالب)";
     } catch(e){}
   }
-  stats.textContent = "📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR" + suffix;
+  statsEl.textContent = "📚 سيتم استدعاء الطالب مباشرة عند اختياره من القائمة أو مسح QR" + suffix;
 }
 
 /* ============ التحقق من الموقع ============ */
 function checkLocation() {
-  geoSpinner.classList.remove("hidden");
-  geoRetry.style.display = "none";
-  geoCoords.textContent = "";
+  var gate = document.getElementById("geoGate");
+  var spinner = document.getElementById("geoSpinner");
+  var retryBtn = document.getElementById("geoRetryBtn");
+  var coordsEl = document.getElementById("geoCoords");
+
+  if (gate) gate.classList.remove("hidden");
+  if (spinner) spinner.classList.remove("hidden");
+  if (retryBtn) retryBtn.style.display = "none";
+  if (coordsEl) coordsEl.textContent = "";
+
   setGeoState("📍", "جارٍ التحقق من موقعك...",
     "يرجى السماح بالوصول إلى الموقع الجغرافي للمتابعة.");
 
   if (!navigator.geolocation) {
-    geoSpinner.classList.add("hidden");
+    if (spinner) spinner.classList.add("hidden");
     setGeoState("❌", "غير مدعوم",
       "متصفحك لا يدعم خدمة تحديد الموقع. جرب متصفحاً حديثاً مثل Chrome أو Safari.", "err");
+    if (retryBtn) retryBtn.style.display = "inline-flex";
     return;
   }
+
+  // ✅ تأكد من وجود إعدادات الموقع
+  var schoolLat = (typeof SCHOOL_LOCATION !== "undefined" && SCHOOL_LOCATION) ? SCHOOL_LOCATION.lat : 25.2847285;
+  var schoolLng = (typeof SCHOOL_LOCATION !== "undefined" && SCHOOL_LOCATION) ? SCHOOL_LOCATION.lng : 51.4093489;
+  var maxDist = (typeof MAX_DISTANCE_METERS !== "undefined") ? MAX_DISTANCE_METERS : 250;
 
   navigator.geolocation.getCurrentPosition(
     function(position) {
       var userLat = position.coords.latitude;
       var userLng = position.coords.longitude;
       var accuracy = Math.round(position.coords.accuracy);
-      var distance = calculateDistance(
-        userLat, userLng,
-        SCHOOL_LOCATION.lat, SCHOOL_LOCATION.lng
-      );
+      var distance = calculateDistance(userLat, userLng, schoolLat, schoolLng);
 
-      geoCoords.textContent =
-        "موقعك: " + userLat.toFixed(6) + ", " + userLng.toFixed(6) + " (±" + accuracy + "م)\n" +
-        "المسافة عن المدرسة: " + distance + " متر";
+      if (coordsEl) {
+        coordsEl.textContent =
+          "موقعك: " + userLat.toFixed(6) + ", " + userLng.toFixed(6) + " (±" + accuracy + "م)\n" +
+          "المسافة عن المدرسة: " + distance + " متر";
+      }
 
-      geoSpinner.classList.add("hidden");
+      if (spinner) spinner.classList.add("hidden");
 
-      if (distance <= MAX_DISTANCE_METERS) {
+      if (distance <= maxDist) {
         setGeoState("✅", "تم التحقق بنجاح",
           "أنت على بعد <b>" + distance + " متر</b> من المدرسة. جارٍ فتح النظام...", "ok");
         setTimeout(openSystem, 1200);
       } else {
         setGeoState("🚫", "خارج نطاق المدرسة",
           "أنت على بعد <b>" + distance + " متر</b> من المدرسة.<br>" +
-          "يُسمح باستخدام النظام فقط داخل نطاق <b>" + MAX_DISTANCE_METERS + " متر</b> من المدرسة.",
+          "يُسمح باستخدام النظام فقط داخل نطاق <b>" + maxDist + " متر</b> من المدرسة.",
           "err");
-        geoRetry.style.display = "inline-flex";
+        if (retryBtn) retryBtn.style.display = "inline-flex";
       }
     },
     function(error) {
-      geoSpinner.classList.add("hidden");
+      if (spinner) spinner.classList.add("hidden");
       var msg = "تعذّر تحديد موقعك. ";
       switch (error.code) {
         case error.PERMISSION_DENIED:
@@ -1295,19 +1316,26 @@ function checkLocation() {
         case error.TIMEOUT:
           msg = "⏱️ انتهت مدة الانتظار. جرب مرة أخرى في مكان مفتوح.";
           break;
+        case error.UNKNOWN_ERROR:
+          msg = "❌ خطأ غير معروف في تحديد الموقع.";
+          break;
       }
       setGeoState("❌", "خطأ في تحديد الموقع", msg, "err");
-      geoRetry.style.display = "inline-flex";
+      if (retryBtn) retryBtn.style.display = "inline-flex";
     },
-    GEO_OPTIONS
+    {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 0
+    }
   );
 }
 
+/* ============ تشغيل بوابة الموقع ============ */
 (function runGeoGate() {
-  document.body.style.overflow = "hidden";
+  // ✅ لا نمنع التمرير قبل تحديد الموقع
   checkLocation();
 })();
-
 /* ============ Modal: تغيير التوكن ============ */
 function openTokenModal() {
   newTokenInput.value = "";
